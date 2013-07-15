@@ -81,14 +81,21 @@ type family CanonicalUnit (unit :: *) where
     = If (IsCanonical unit) unit (CanonicalUnit (BaseUnit unit))
 -}
 
--- | Get the canonical unit from a given unit. For example: @CanonicalUnit Foot = Meter@
+-- | Get the canonical unit from a given unit.
+-- For example: @CanonicalUnit Foot = Meter@
 type CanonicalUnit (unit :: *) = CanonicalUnit' (BaseUnit unit) unit
+
+-- | Helper function in 'CanonicalUnit'
 type family CanonicalUnit' (base_unit :: *) (unit :: *) :: * where
   CanonicalUnit' Canonical unit = unit
   CanonicalUnit' base      unit = CanonicalUnit' (BaseUnit base) base
 
+-- | Essentially, a constraint that checks if a conversion ratio can be
+-- calculated for a @BaseUnit@ of a unit.
 type BaseHasConvRatio unit = HasConvRatio (IsCanonical unit) unit
 
+-- | This is like 'Unit', but deals with 'Canonical'. It is necessary
+-- to be able to define 'canonicalConvRatio' in the right way.
 class is_canonical ~ IsCanonical unit
       => HasConvRatio (is_canonical :: Bool) (unit :: *) where
   baseUnitRatio :: unit -> Double
@@ -99,5 +106,3 @@ instance ( False ~ IsCanonical noncanonical_unit
          , Unit (BaseUnit noncanonical_unit) )
          => HasConvRatio False noncanonical_unit where
   baseUnitRatio _ = canonicalConvRatio (undefined :: BaseUnit noncanonical_unit)
-
-  

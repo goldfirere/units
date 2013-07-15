@@ -1,0 +1,43 @@
+name:           units
+version:        1.0.0
+cabal-version:  >= 1.10
+synopsis:       A domain-specific type system for dimensional analysis
+homepage:       http://www.cis.upenn.edu/~eir/packages/units
+category:       Math
+author:         Richard Eisenberg <eir@cis.upenn.edu>
+maintainer:     Richard Eisenberg <eir@cis.upenn.edu>
+bug-reports:    https://github.com/goldfirere/units/issues
+stability:      experimental
+extra-source-files: README.md, CHANGES.md
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+description:
+    The units package provides a mechanism for compile-time dimensional analysis
+    in Haskell programs. It defines an embedded type system based on
+    units-of-measure. The units defined are fully extensible, and need not relate
+    to physical properties. In fact, the core package defines only one built-in
+    unit: Scalar. The package supports defining multiple inter-convertible units,
+    such as Meter and Foot. When extracting a number from a dimensioned quantity,
+    the desired unit must be specified, and the value is converted into that unit.
+
+    The Haddock documentation is insufficient for using the units package. Please
+    see the README file, available from the package home page.
+
+source-repository this
+  type:     git
+  location: https://github.com/goldfirere/units.git
+  tag:      v1.0.0
+
+library
+  build-depends:      
+      base >= 4 && < 5
+  exposed-modules:    Data.Dimensions, Data.Dimensions.Show,
+                      Data.Dimensions.Internal,
+                      Data.Dimensions.SI, Data.Dimensions.SI.Prefixes,
+                      Data.Dimensions.SI.Types
+  other-modules:      Data.Dimensions.Dim, Data.Dimensions.DimSpec,
+                      Data.Dimensions.Units, Data.Dimensions.UnitCombinators,
+                      Data.Dimensions.TypePrelude, Data.Dimensions.Z
+  hs-source-dirs:     src
+  default-language:   Haskell2010

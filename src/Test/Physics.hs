@@ -3,10 +3,9 @@
 module Test.Physics where
 
 import Data.Dimensions
-import Test.SI
+import Data.Dimensions.SI
+import Data.Dimensions.SI.Types
 
-type Energy = Mass %* Acceleration %* Length
-type Momentum = Mass %* Velocity
 type Position = Length
 
 cur_pos :: Position -> Velocity -> Acceleration -> Time -> Position

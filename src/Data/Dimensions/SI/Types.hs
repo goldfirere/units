@@ -52,3 +52,5 @@ type LuminousFlux        = MkDim Lumen
 type Illuminance         = MkDim Lux
 type Kerma               = MkDim Gray
 type CatalyticActivity   = MkDim Katal
+
+type Momentum            = Mass %* Velocity
