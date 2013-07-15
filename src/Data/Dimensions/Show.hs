@@ -10,7 +10,11 @@
 {-# LANGUAGE PolyKinds, DataKinds, TypeOperators, FlexibleInstances,
              ScopedTypeVariables #-}
 
-module Data.Dimensions.Show where
+-- | This module defines only a @Show@ instance for dimensioned quantities.
+-- The Show instance prints out the number stored internally with its canonical
+-- units.
+
+module Data.Dimensions.Show () where
 
 import Data.Typeable (Proxy(..))
 import Data.List

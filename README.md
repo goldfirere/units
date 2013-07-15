@@ -47,6 +47,12 @@ grows over time.
     for you to build your own set of units and operate with them. All modules
     implicitly depend on this one.
 
+ -  __`Data.Dimensions.Show`__
+
+    This module defines a `Show` instance for dimensioned quantities, printing
+    out the number stored along with its canonical dimension. This behavior
+    may not be the best for every setting, so it is exported separately.
+
  -  __`Data.Dimensions.SI`__
 
     This module exports unit definitions for the [SI][] system of units.

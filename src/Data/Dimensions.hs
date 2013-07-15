@@ -24,27 +24,55 @@
 {-# LANGUAGE ExplicitNamespaces, DataKinds, FlexibleInstances, TypeFamilies,
              TypeOperators, ConstraintKinds #-}
 
-module Data.Dimensions (
-  Z(..), Succ, Pred, type (#+), type (#-), type (#*), type (#/), NegZ,
-  One, Two, Three, Four, Five, MOne, MTwo, MThree, MFour, MFive,
-  pZero, pOne, pTwo, pThree, pFour, pFive,
-  pMOne, pMTwo, pMThree, pMFour, pMFive,
-  pSucc, pPred,
+{-| The units package is a framework for strongly-typed dimensional analysis.
+    This haddock documentation is generally /not/ enough to be able to use this
+    package effectively. Please see the readme at
+    <https://github.com/goldfirere/units/blob/master/README.md>.
 
+    Some of the types below refer to declarations that are not exported and
+    not documented here. This is because Haddock does not allow finely-tuned
+    abstraction in documentation. (In particular, right-hand sides of type 
+    synonym declarations are always included.) If a symbol is not exported,
+    you do /not/ need to know anything about it to use this package.
+
+    The type @Dim@, which is not exported, is the type used internally to
+    represent dimensioned quantities.
+
+    Though it doesn't appear here, @Scalar@ is an instance of @Num@, and
+    generally has all the numeric instances that @Double@ has.
+-}
+
+module Data.Dimensions (
+  -- * Term-level combinators
   (.+), (.-), (.*), (./), (.^), (*.),
   (.<), (.>), (.<=), (.>=), dimEq, dimNeq,
   nthRoot, dimSqrt, dimCubeRoot,
   unity, zero, dim,
+  dimIn, (#), dimOf, (%),
 
-  Canonical, Unit(type BaseUnit, conversionRatio),
-
-  MkDim, dimIn, (#), dimOf, (%),
-
+  -- * Type-level unit combinators
   (:*)(..), (:/)(..), (:^)(..), (:@)(..),
-  type (%*), type (%/), type (%^),
   UnitPrefix(..),
 
-  Number(..), Scalar
+  -- * Type-level dimensioned-quantity combinators
+  type (%*), type (%/), type (%^),
+
+  -- * Creating new units
+  Unit(type BaseUnit, conversionRatio), MkDim, Canonical,
+
+  -- * Scalars, the only built-in unit
+  Number(..), Scalar, scalar,
+
+  -- * Type-level integers
+  Z(..), Succ, Pred, type (#+), type (#-), type (#*), type (#/), NegZ,
+
+  -- ** Synonyms for small numbers
+  One, Two, Three, Four, Five, MOne, MTwo, MThree, MFour, MFive,
+
+  -- ** Term-level singletons
+  pZero, pOne, pTwo, pThree, pFour, pFive,
+  pMOne, pMTwo, pMThree, pMFour, pMFive,
+  pSucc, pPred
 
   ) where
 
@@ -53,29 +81,43 @@ import Data.Dimensions.Dim
 import Data.Dimensions.DimSpec
 import Data.Dimensions.Units
 import Data.Dimensions.UnitCombinators
-import Data.Dimensions.Show ()
 
+-- | Extracts a @Double@ from a dimensioned quantity, expressed in
+--   the given unit. For example:
+--
+--   > inMeters :: Length -> Double
+--   > inMeters x = dimIn x Meter
 dimIn :: Unit unit => MkDim (CanonicalUnit unit) -> unit -> Double
 dimIn (Dim val) u = val / canonicalConvRatio u
 
 infix 5 #
+-- | Infix synonym for 'dimIn'
 (#) :: Unit unit => MkDim (CanonicalUnit unit) -> unit -> Double
 (#) = dimIn
 
+-- | Creates a dimensioned quantity in the given unit. For example:
+--
+--   > height :: Length
+--   > height = dimOf 2.0 Meter
 dimOf :: Unit unit => Double -> unit -> MkDim (CanonicalUnit unit)
 dimOf d u = Dim (d * canonicalConvRatio u)
 
 infix 9 %
+-- | Infix synonym for 'dimOf'
 (%) :: Unit unit => Double -> unit -> MkDim (CanonicalUnit unit)
 (%) = dimOf
 
+-- | The number 1, expressed as a unitless dimensioned quantity.
 unity :: Dim '[]
 unity = Dim 1
 
+-- | The number 0, expressed as a polymorphic dimensioned quantity.
+-- The polymorphism allows it to be added to any dimensioned quantity
+-- without fuss.
 zero :: Dim '[DAny]
 zero = Dim 0
 
--- Dimension cast, with a short, convenient name.
+-- | Dimension-safe cast. See the README for more info.
 dim :: (d @~ e) => Dim d -> Dim e
 dim (Dim x) = Dim x
 
@@ -83,9 +125,16 @@ dim (Dim x) = Dim x
 --- "Number" unit -------------------------------------------
 -------------------------------------------------------------
 
+-- | The unit for unitless dimensioned quantities
 data Number = Number -- the unit for unadorned numbers
 instance Unit Number where
   type BaseUnit Number = Canonical
   type DimSpecsOf Number = '[]
 
+-- | The type of unitless dimensioned quantities
+-- This is an instance of @Num@, though Haddock doesn't show it.
 type Scalar = MkDim Number
+
+-- | Convert a Double into a unitless dimensioned quantity
+scalar :: Double -> Dim '[]
+scalar = Dim
