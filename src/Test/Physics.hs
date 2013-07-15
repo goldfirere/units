@@ -1,9 +1,9 @@
 {-# LANGUAGE TypeOperators, ConstraintKinds, ScopedTypeVariables #-}
 
-module Physics where
+module Test.Physics where
 
 import Data.Dimensions
-import SI
+import Test.SI
 
 type Energy = Mass %* Acceleration %* Length
 type Momentum = Mass %* Velocity

@@ -1,6 +1,6 @@
 {-# LANGUAGE DataKinds, TypeFamilies, TypeOperators #-}
 
-module SI where
+module Test.SI where
 
 import Data.Dimensions
 
