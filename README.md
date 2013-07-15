@@ -123,7 +123,7 @@ quantity.
 Note that, as you can see in the function examples at the end, it is necessary
 to specify the choice of unit when creating a dimensioned quantity or
 extracting from a dimensioned quantity. Thus, other than thinking about the
-vaguaries of floating point wibbles and the `Show` instance, it is _completely
+vagaries of floating point wibbles and the `Show` instance, it is _completely
 irrelevant_ which unit is canonical. The type `Length` defined here could be
 used equally well in a program that deals exclusively in feet as it could in a
 program with meters.
