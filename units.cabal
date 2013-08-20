@@ -1,5 +1,5 @@
 name:           units
-version:        1.0.0
+version:        1.0.1
 cabal-version:  >= 1.10
 synopsis:       A domain-specific type system for dimensional analysis
 homepage:       http://www.cis.upenn.edu/~eir/packages/units
@@ -27,11 +27,11 @@ description:
 source-repository this
   type:     git
   location: https://github.com/goldfirere/units.git
-  tag:      v1.0.0
+  tag:      v1.0.1
 
 library
   build-depends:      
-      base >= 4 && < 5
+      base >= 4.7 && < 5
   exposed-modules:    Data.Dimensions, Data.Dimensions.Show,
                       Data.Dimensions.Internal,
                       Data.Dimensions.SI, Data.Dimensions.SI.Prefixes,
