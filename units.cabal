@@ -5,7 +5,7 @@ synopsis:       A domain-specific type system for dimensional analysis
 homepage:       http://www.cis.upenn.edu/~eir/packages/units
 category:       Math
 author:         Richard Eisenberg <eir@cis.upenn.edu>
-maintainer:     Richard Eisenberg <eir@cis.upenn.edu>
+maintainer:     Richard Eisenberg <eir@cis.upenn.edu>, Takayuki Muranushi <muranushi@gmail.com>
 bug-reports:    https://github.com/goldfirere/units/issues
 stability:      experimental
 extra-source-files: README.md, CHANGES.md
