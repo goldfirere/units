@@ -24,7 +24,7 @@ ghc-head:
 	tar xf ghc-head.tar.bz2
 	sudo apt-get install libgmp3c2 libgmp3-dev  libghc-zlib-dev freeglut3-dev -y
 	cd ghc-head/; ./configure;	sudo make install
-	cabal install cabal-install
-	cabal update
+# cabal install cabal-install
+# cabal update
 	ghc --version
 	cabal --version
