@@ -19,7 +19,6 @@ install: init build test
 doc:
 	cabal haddock --hyperlink-source
 
-
 ghc-head:
 	wget --quiet -O ghc-head.tar.bz2 http://paraiso-lang.org/html/ghc-head.tar.bz2
 	tar xf ghc-head.tar.bz2
@@ -29,4 +28,3 @@ ghc-head:
 	cabal update
 	ghc --version
 	cabal --version
-
