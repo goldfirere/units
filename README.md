@@ -1,6 +1,8 @@
 units
 =====
 
+[![Build Status](https://travis-ci.org/nushio3/units.png?branch=master)](https://travis-ci.org/nushio3/units)
+
 The _units_ package provides a mechanism for compile-time dimensional analysis
 in Haskell programs. It defines an embedded type system based on
 units-of-measure. The units defined are fully extensible, and need not relate
