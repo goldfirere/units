@@ -37,6 +37,7 @@ library
                       Data.Dimensions.SI, Data.Dimensions.SI.Prefixes,
                       Data.Dimensions.SI.Types
   other-modules:      Data.Dimensions.Dim, Data.Dimensions.DimSpec,
+                      Data.Dimensions.Map,
                       Data.Dimensions.Units, Data.Dimensions.UnitCombinators,
                       Data.Dimensions.TypePrelude, Data.Dimensions.Z
   hs-source-dirs:     src
