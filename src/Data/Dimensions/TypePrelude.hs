@@ -43,3 +43,4 @@ infix 4 :=:
 type family (a :: *) :=: (b :: *) :: Bool where
   (a :: *) :=: (a :: *) = True
   (a :: *) :=: (b :: *) = False
+
