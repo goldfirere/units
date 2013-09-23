@@ -28,9 +28,8 @@ type family Extract (s :: a)
                     (map :: [(a, b)] )
                  :: ([(a, b)], Maybe (a,b)) where
   Extract s '[] = '( '[], Nothing )
-
-infix 4 :==:
--- | Type-level equality over any kind.
-type family (a :: k) :==: (b :: k) :: Bool where
-  (a :: k) :==: (a :: k) = True
-  (a :: k) :==: (b :: k) = False
+  Extract s (h ': t) =
+    If (s :==: Fst h)
+      '(t, Just h)
+      '(h ': Fst (Extract s t), Snd (Extract s t))
+  

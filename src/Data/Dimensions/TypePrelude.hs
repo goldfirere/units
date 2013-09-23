@@ -44,3 +44,8 @@ type family (a :: *) :=: (b :: *) :: Bool where
   (a :: *) :=: (a :: *) = True
   (a :: *) :=: (b :: *) = False
 
+infix 4 :==:
+-- | Type-level equality over any kind.
+type family (a :: k) :==: (b :: k) :: Bool where
+  (a :: k) :==: (a :: k) = True
+  (a :: k) :==: (b :: k) = False
