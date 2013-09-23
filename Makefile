@@ -1,4 +1,4 @@
-all: build doc
+all: build
 
 .PHONY: init build doc test install ghc-head
 
