@@ -1,5 +1,5 @@
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances #-}
-{-# LANGUAGE GADTs, PolyKinds, KindSignatures, RankNTypes, ScopedTypeVariables #-}
+{-# LANGUAGE GADTs, PolyKinds, KindSignatures, ScopedTypeVariables #-}
 
 module Data.Dimensions.Zahl where
 
@@ -12,9 +12,8 @@ data Zahl = Posi Nat | Nega Nat
 
 -- | Singleton for Zahl
 data instance Sing (z :: Zahl) where
-  SPosi :: forall (n :: Nat). Sing n -> Sing (Posi n) 
-  SNega :: forall (n :: Nat). Sing n -> Sing (Nega n)
--- you don't nee forall n, it's inferred
+  SPosi :: Sing n -> Sing (Posi n) 
+  SNega :: Sing n -> Sing (Nega n)
   
 instance forall (n::Nat) . (SingI n) => SingI (Posi n) where
   sing = SPosi (sing :: Sing n)
