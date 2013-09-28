@@ -6,8 +6,18 @@ module Data.Dimensions.Zahl where
 import GHC.TypeLits hiding ((+)(..),(-)(..))
 import qualified GHC.TypeLits as Nat
 import Data.Dimensions.TypePrelude
+import Prelude hiding ((==))
 
--- | The datatype for type-level integers
+-- | The datatype for type-level integers.
+--   In order to produce most readable error messages, we use
+--   typelevel natural numbers from 'GHC.TypeLits' and extend it 
+--   to integers.
+--   .
+--   The drawback of this approch is having duplicated definitions of zero
+--   'Posi' 0 and 'Nega' 0. We try to minimize the bad effect of duplicated
+--   zeroes by two means; (1) Library functions always produce @Posi 0@ and
+--   (2) Type-level quality '==' is defined so that 'Posi' 0 == 'Nega' 0.
+
 data Zahl = Posi Nat | Nega Nat
 
 -- | Singleton for Zahl
@@ -56,5 +66,11 @@ type family (a :: Zahl) - (b :: Zahl) :: Zahl where
   Posi n - Posi m = If (m <=? n) (Posi (n Nat.- m)) (Nega (m Nat.- n))
   Nega m - Nega n = If (m <=? n) (Posi (n Nat.- m)) (Nega (m Nat.- n))
 
+type family (a :: Zahl) == (b :: Zahl) :: Bool where
+  Posi a == Posi a = True
+  Nega a == Nega a = True
+  Posi 0 == Nega 0 = True
+  Nega 0 == Posi 0 = True
+  a == b           = False
 
 
