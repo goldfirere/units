@@ -1,7 +1,7 @@
 units
 =====
 
-[![Build Status](https://travis-ci.org/nushio3/units.png?branch=master)](https://travis-ci.org/nushio3/units)
+[![Build Status](https://travis-ci.org/goldfirere/units.png?branch=master)](https://travis-ci.org/goldfirere/units)
 
 The _units_ package provides a mechanism for compile-time dimensional analysis
 in Haskell programs. It defines an embedded type system based on

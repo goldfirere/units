@@ -8,6 +8,12 @@ import qualified GHC.TypeLits as Nat
 import Data.Dimensions.TypePrelude
 import Prelude hiding ((==))
 
+-- RAE: This seems wrong: there seems to be 2 representations for 0.
+-- No time to fix right now.
+
+-- TM: Thank you for the comment. I documented my approach, and I will
+-- experiment if it works out.
+
 -- | The datatype for type-level integers.
 --   In order to produce most readable error messages, we use
 --   typelevel natural numbers from 'GHC.TypeLits' and extend it 
@@ -18,6 +24,8 @@ import Prelude hiding ((==))
 --   zeroes by two means; (1) Library functions always produce @Posi 0@ and
 --   (2) Type-level quality '==' is defined so that 'Posi' 0 == 'Nega' 0.
 
+
+-- | The datatype for type-level integers
 data Zahl = Posi Nat | Nega Nat
 
 -- | Singleton for Zahl
