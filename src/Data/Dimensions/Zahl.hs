@@ -7,6 +7,9 @@ import GHC.TypeLits hiding ((+)(..),(-)(..))
 import qualified GHC.TypeLits as Nat
 import Data.Dimensions.TypePrelude
 
+-- RAE: This seems wrong: there seems to be 2 representations for 0.
+-- No time to fix right now.
+
 -- | The datatype for type-level integers
 data Zahl = Posi Nat | Nega Nat
 
