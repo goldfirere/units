@@ -31,12 +31,12 @@ instance Arbitrary Expr where
       go n
         | n <= 1 = 
            oneof [ return PZ
-                 , return NZ ]
+                 , return NZ 
+                 , resize 10 $ Val <$> arbitrary]
         | otherwise = do 
            nL <- choose (0,n)  
            let nR = n - nL
-           oneof [ Val <$> arbitrary
-                 , Add <$> resize nL arbitrary <*> resize nR arbitrary 
+           oneof [ Add <$> resize nL arbitrary <*> resize nR arbitrary 
                  , Sub <$> resize nL arbitrary <*> resize nR arbitrary ]
     in sized go 
 
