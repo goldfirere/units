@@ -54,7 +54,7 @@ type family Succ (z :: Zahl) :: Zahl where
 
 type family Pred (z :: Zahl) :: Zahl where
   Pred (Nega n) = Nega (n Nat.+ 1)
-  Pred (Posi 0) = Nega 0
+  Pred (Posi 0) = Nega 1
   Pred (Posi n) = Posi (n Nat.- 1)
 
 type family Negate (z :: Zahl) :: Zahl where

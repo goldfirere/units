@@ -21,6 +21,8 @@ data Expr
   = PZ
   | NZ
   | Val Integer
+  | Inc Expr
+  | Dec Expr
   | Add Expr Expr
   | Sub Expr Expr
     deriving (Eq, Show)
@@ -36,11 +38,16 @@ instance Arbitrary Expr where
         | otherwise = do 
            nL <- choose (0,n)  
            let nR = n - nL
-           oneof [ Add <$> resize nL arbitrary <*> resize nR arbitrary 
-                 , Sub <$> resize nL arbitrary <*> resize nR arbitrary ]
+           oneof  
+             [ Inc <$> resize (n-1) arbitrary
+             , Dec <$> resize (n-1) arbitrary
+             , Add <$> resize nL arbitrary <*> resize nR arbitrary 
+             , Sub <$> resize nL arbitrary <*> resize nR arbitrary 
+             ] 
     in sized go 
 
          
+       
   shrink (Add x y) 
     =  [x,y] 
     ++ (Add <$> shrink x <*> [y]) 
@@ -49,6 +56,8 @@ instance Arbitrary Expr where
     =  [x,y] 
     ++ (Sub <$> shrink x <*> [y]) 
     ++ (Sub <$> [x] <*> shrink y)
+  shrink (Inc x) = [x]
+  shrink (Dec x) = [x]
   shrink (Val n) = Val <$> shrink n
   shrink _ = []
 
@@ -56,6 +65,8 @@ eval :: Expr -> Integer
 eval PZ = 0
 eval NZ = 0
 eval (Val x) = x
+eval (Inc x) = succ $ eval x
+eval (Dec x) = pred $ eval x
 eval (Add x y) = eval x + eval y
 eval (Sub x y) = eval x - eval y
 
@@ -66,6 +77,8 @@ expr2Type NZ = "(Nega 0)"
 expr2Type (Val x) 
   | x >= 0    = printf "(Posi %d)" x
   | otherwise = printf "(Nega %d)" (negate x)
+expr2Type (Inc x) = printf "(Succ %s)" (expr2Type x)
+expr2Type (Dec x) = printf "(Pred %s)" (expr2Type x)
 expr2Type (Add x y) = printf "(%s + %s)" (expr2Type x) (expr2Type y)
 expr2Type (Sub x y) = printf "(%s - %s)" (expr2Type x) (expr2Type y)
 
@@ -86,7 +99,6 @@ typeLevelEval expr = unsafePerformIO $ do
   hClose hIn
   msg <- hGetContents hOut
   return $ read msg
-
 
 
 spec :: Spec
