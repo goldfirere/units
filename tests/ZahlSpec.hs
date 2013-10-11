@@ -23,6 +23,7 @@ data Expr
   | Val Integer
   | Inc Expr
   | Dec Expr
+  | Negation Expr
   | Add Expr Expr
   | Sub Expr Expr
     deriving (Eq, Show)
@@ -41,6 +42,7 @@ instance Arbitrary Expr where
            oneof  
              [ Inc <$> resize (n-1) arbitrary
              , Dec <$> resize (n-1) arbitrary
+             , Negation <$> resize (n-1) arbitrary
              , Add <$> resize nL arbitrary <*> resize nR arbitrary 
              , Sub <$> resize nL arbitrary <*> resize nR arbitrary 
              ] 
@@ -58,6 +60,7 @@ instance Arbitrary Expr where
     ++ (Sub <$> [x] <*> shrink y)
   shrink (Inc x) = [x]
   shrink (Dec x) = [x]
+  shrink (Negation x) = [x]
   shrink (Val n) = Val <$> shrink n
   shrink _ = []
 
@@ -67,6 +70,7 @@ eval NZ = 0
 eval (Val x) = x
 eval (Inc x) = succ $ eval x
 eval (Dec x) = pred $ eval x
+eval (Negation x) = negate $ eval x
 eval (Add x y) = eval x + eval y
 eval (Sub x y) = eval x - eval y
 
@@ -79,6 +83,7 @@ expr2Type (Val x)
   | otherwise = printf "(Nega %d)" (negate x)
 expr2Type (Inc x) = printf "(Succ %s)" (expr2Type x)
 expr2Type (Dec x) = printf "(Pred %s)" (expr2Type x)
+expr2Type (Negation x) = printf "(Negate %s)" (expr2Type x)
 expr2Type (Add x y) = printf "(%s + %s)" (expr2Type x) (expr2Type y)
 expr2Type (Sub x y) = printf "(%s - %s)" (expr2Type x) (expr2Type y)
 
