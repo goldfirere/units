@@ -59,9 +59,6 @@ eval (Sub x y) = eval x - eval y
 eval' :: Expr -> Integer
 eval' PZ = 0
 eval' NZ = 0
-eval' (Sub (Val x) NZ) 
-  | x >= 3 = x - 2
-  | otherwise = x 
 eval' (Val x) = x
 eval' (Add x y) = eval x + eval y
 eval' (Sub x y) = eval x - eval y
