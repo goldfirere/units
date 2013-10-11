@@ -65,14 +65,17 @@ type family Negate (z :: Zahl) :: Zahl where
 type family (a :: Zahl) + (b :: Zahl) :: Zahl where
   Posi n + Posi m = Posi (n Nat.+ m)
   Nega n + Nega m = Nega (n Nat.+ m)
+  Nega n + Posi m = Posi m + Nega n
+  Posi 0 + Nega 0 = Posi 0
+  Posi 0 + Nega n = Nega n
+  Posi n + Nega 0 = Posi n
   Posi n + Nega m = If (m <=? n) (Posi (n Nat.- m)) (Nega (m Nat.- n))
-  Nega m + Posi n = If (m <=? n) (Posi (n Nat.- m)) (Nega (m Nat.- n))
   
 type family (a :: Zahl) - (b :: Zahl) :: Zahl where
   Posi n - Nega m = Posi (n Nat.+ m)
   Nega n - Posi m = Nega (n Nat.+ m)
-  Posi n - Posi m = If (m <=? n) (Posi (n Nat.- m)) (Nega (m Nat.- n))
-  Nega m - Nega n = If (m <=? n) (Posi (n Nat.- m)) (Nega (m Nat.- n))
+  Posi n - Posi m = Posi n + Nega m
+  Nega n - Nega m = Posi m + Nega n
 
 type family (a :: Zahl) == (b :: Zahl) :: Bool where
   Posi a == Posi a = True
