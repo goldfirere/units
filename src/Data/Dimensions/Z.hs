@@ -9,7 +9,7 @@
 -}
 
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances,
-             GADTs, PolyKinds #-}
+             GADTs, PolyKinds, TemplateHaskell #-}
 
 -- | This module defines a datatype and operations to represent type-level
 -- integers. Though it's defined as part of the unitss package, it may be
@@ -19,10 +19,10 @@
 
 module Data.Dimensions.Z where
 
-import GHC.TypeLits ( Sing, SingI(..), SingE(..), KindIs(..) )
+import Data.Singletons.TH
 
 -- | The datatype for type-level integers.
-data Z = Zero | S Z | P Z
+$(singletons [d| data Z = Zero | S Z | P Z |])
 
 -- | Convert a 'Z' to an 'Int'
 zToInt :: Z -> Int
@@ -113,25 +113,6 @@ type MTwo   = P MOne
 type MThree = P MTwo
 type MFour  = P MThree
 type MFive  = P MFour
-
----- Singleton for Z
-data instance Sing (z :: Z) where
-  SZero :: Sing Zero
-  SS    :: Sing z -> Sing (S z)
-  SP    :: Sing z -> Sing (P z)
-
-instance SingI Zero where
-  sing = SZero
-instance SingI z => SingI (S z) where
-  sing = SS sing
-instance SingI z => SingI (P z) where
-  sing = SP sing
-
-instance SingE (KindParam :: KindIs Z) where
-  type DemoteRep (KindParam :: KindIs Z) = Z
-  fromSing SZero  = Zero
-  fromSing (SS z) = S (fromSing z)
-  fromSing (SP z) = P (fromSing z)
 
 -- | This is the singleton value representing @Zero@ at the term level and
 -- at the type level, simultaneously. Used for raising units to powers.

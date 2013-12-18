@@ -13,8 +13,7 @@
 
 module Data.Dimensions.Dim where
 
-import GHC.TypeLits ( Sing )
-
+import Data.Singletons ( Sing )
 import Data.Dimensions.DimSpec
 import Data.Dimensions.Z
 

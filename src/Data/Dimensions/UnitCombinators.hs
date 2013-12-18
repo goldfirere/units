@@ -12,11 +12,12 @@
 
 module Data.Dimensions.UnitCombinators where
 
-import GHC.TypeLits ( Sing, SingI, sing )
+import Data.Singletons ( Sing, SingI, sing )
 
 import Data.Dimensions.Units
 import Data.Dimensions.DimSpec
 import Data.Dimensions.Z
+import Data.Type.Bool
 
 infixl 7 :*
 -- | Multiply two units to get another unit.

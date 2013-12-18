@@ -1,9 +1,12 @@
 {-# LANGUAGE TypeOperators, TypeFamilies #-}
 
-module Simulator where
+module Test.Simulator where
 
 import Data.Dimensions
-import SI
+import Data.Dimensions.SI
+import Data.Dimensions.SI.Types
+import Data.Dimensions.SI.Prefixes
+import Data.Dimensions.Show
 
 type Position = Length
 
@@ -26,15 +29,8 @@ type Universe = [Object]
 g :: Acceleration
 g = (-9.8)%(Meter :/ (Second :^ pTwo))
 
-data Newton = Newton
-instance Unit Newton where
-  type BaseUnit Newton = Kg :* Meter :/ Second :/ Second
-  conversionRatio _ = 1
-instance Show Newton where
-  show _ = "N"
-
 --g_universe :: MkDim (Newton :* Meter :^ Two :/ (Kg :^ Two))
-g_universe = 6.67e-11 % (Newton :* Meter :^ pTwo :/ (Kg :^ pTwo))
+g_universe = 6.67e-11 % (Newton :* Meter :^ pTwo :/ (Kilo :@ Gram :^ pTwo))
 
 update :: Time -> Universe -> Universe
 update dt objs
@@ -50,7 +46,6 @@ updateNoColls dt univ obj@(Object { mass = m, pos = (x, y), vel = (dx, dy) })
         v2 = v1 !+ dt !* a
     in obj { pos = new_pos, vel = v2 }
 
-type Force = MkDim Newton
 gravityAt :: Universe -> (Position, Position) -> Mass -> (Force, Force)
 gravityAt univ pos m = sum (map gravity_at_1 univ)
   where

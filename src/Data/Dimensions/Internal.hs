@@ -29,7 +29,7 @@ module Data.Dimensions.Internal (
   type (@+), type (@-), NegDim, NegList, type (@*), type (@/),
 
   -- * Generally-useful type operations
-  Fst, Snd, If, (:&&:), (:||:), (:=:)
+  Fst, Snd
 
   ) where
 

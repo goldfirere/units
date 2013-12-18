@@ -21,25 +21,4 @@ type instance Fst '(a,b) = a
 type family Snd (x :: (a,b)) :: b
 type instance Snd '(a,b) = b
 
--- | Type-level conditional
-type family If (switch :: Bool) (true :: k) (false :: k) :: k where
-  If True  t f = t
-  If False t f = f
 
-infixr 3 :&&:
--- | Type-level "and"
-type family (a :: Bool) :&&: (b :: Bool) :: Bool where
-  False :&&: a = False
-  True  :&&: a = a
-
-infixr 2 :||:
--- | Type-level "or"
-type family (a :: Bool) :||: (b :: Bool) :: Bool where
-  False :||: a = a
-  True  :||: a = True
-
-infix 4 :=:
--- | Type-level equality over @*@.
-type family (a :: *) :=: (b :: *) :: Bool where
-  (a :: *) :=: (a :: *) = True
-  (a :: *) :=: (b :: *) = False

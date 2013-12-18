@@ -14,6 +14,8 @@ module Data.Dimensions.DimSpec where
 import GHC.Exts (Constraint)
 import Data.Dimensions.TypePrelude
 import Data.Dimensions.Z
+import Data.Type.Equality
+import Data.Type.Bool
 
 -- | This will only be used at the kind level.
 -- It either holds a dimension with its exponent, or the special constant DAny,
@@ -52,7 +54,7 @@ reorder x (h:t) =
 infix 4 $=
 -- | Do these DimSpecs represent the same dimension?
 type family (a :: DimSpec *) $= (b :: DimSpec *) :: Bool where
-  (D n1 z1) $= (D n2 z2) = n1 :=: n2
+  (D n1 z1) $= (D n2 z2) = n1 == n2
   DAny      $= DAny      = True
   a         $= b         = False
 
@@ -105,7 +107,7 @@ type family HasAny (lst :: [DimSpec *]) :: Bool where
 infix 4 @~
 -- | Check if two @[DimSpec *]@s should be considered to be equal
 type family (a :: [DimSpec *]) @~ (b :: [DimSpec *]) :: Constraint where
-  a @~ b = If (HasAny a :||: HasAny b)
+  a @~ b = If (HasAny a || HasAny b)
               (() :: Constraint)
               (Normalize (Reorder a b) ~ Normalize b)
 

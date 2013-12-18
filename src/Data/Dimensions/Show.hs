@@ -16,9 +16,9 @@
 
 module Data.Dimensions.Show () where
 
-import Data.Typeable (Proxy(..))
+import Data.Proxy (Proxy(..))
 import Data.List
-import GHC.TypeLits (Sing, sing, SingI)
+import Data.Singletons (Sing, sing, SingI)
 
 import Data.Dimensions.DimSpec
 import Data.Dimensions.Dim
