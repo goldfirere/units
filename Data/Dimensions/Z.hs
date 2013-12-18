@@ -9,7 +9,8 @@
 -}
 
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances,
-             GADTs, PolyKinds, TemplateHaskell #-}
+             GADTs, PolyKinds, TemplateHaskell, ScopedTypeVariables,
+             EmptyCase #-}
 
 -- | This module defines a datatype and operations to represent type-level
 -- integers. Though it's defined as part of the unitss package, it may be
@@ -22,7 +23,7 @@ module Data.Dimensions.Z where
 import Data.Singletons.TH
 
 -- | The datatype for type-level integers.
-$(singletons [d| data Z = Zero | S Z | P Z |])
+$(singletons [d| data Z = Zero | S Z | P Z deriving Eq |])
 
 -- | Convert a 'Z' to an 'Int'
 zToInt :: Z -> Int
