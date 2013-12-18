@@ -23,16 +23,11 @@ module Data.Dimensions.Internal (
   Dim(..),
 
   -- * Manipulating dimension specifications
-  DimSpec(..), type ($=), Extract, Reorder, HasAny, type (@~),
-  Normalize, ChooseFrom,
+  DimSpec(..), type ($=), Extract, Reorder, type (@~), Normalize,
 
   type (@+), type (@-), NegDim, NegList, type (@*), type (@/),
-
-  -- * Generally-useful type operations
-  Fst, Snd
 
   ) where
 
 import Data.Dimensions.Dim
-import Data.Dimensions.TypePrelude
 import Data.Dimensions.DimSpec

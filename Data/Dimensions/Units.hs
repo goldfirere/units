@@ -17,7 +17,6 @@ module Data.Dimensions.Units where
 import Data.Dimensions.Z
 import Data.Dimensions.DimSpec
 import Data.Dimensions.Dim
-import Data.Dimensions.TypePrelude
 import Data.Type.Bool
 
 -- | Dummy type use just to label canonical units. It does /not/ have a

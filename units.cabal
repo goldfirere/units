@@ -36,8 +36,8 @@ library
   exposed-modules:    Data.Dimensions, Data.Dimensions.Show,
                       Data.Dimensions.Internal,
                       Data.Dimensions.SI, Data.Dimensions.SI.Prefixes,
-                      Data.Dimensions.SI.Types
+                      Data.Dimensions.SI.Types, Data.Dimensions.SI.Units
   other-modules:      Data.Dimensions.Dim, Data.Dimensions.DimSpec,
                       Data.Dimensions.Units, Data.Dimensions.UnitCombinators,
-                      Data.Dimensions.TypePrelude, Data.Dimensions.Z
+                      Data.Dimensions.Z
   default-language:   Haskell2010

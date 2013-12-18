@@ -56,7 +56,7 @@ instance (Unit unit, SingI power) => Unit (unit :^ power) where
   type DimSpecsOf (unit :^ power) = (DimSpecsOf unit) @* power
   canonicalConvRatio _ = canonicalConvRatio (undefined :: unit) ^^ (szToInt (sing :: Sing power))
 
-infix 9 :@
+infixr 9 :@
 -- | Multiply a conversion ratio by some constant. Used for defining prefixes.
 data prefix :@ unit = prefix :@ unit
 

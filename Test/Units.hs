@@ -1,5 +1,7 @@
 {-# LANGUAGE DataKinds, TypeFamilies, TypeOperators #-}
 
+module Test.Units where
+
 import Data.Dimensions
 
 data Meter = Meters

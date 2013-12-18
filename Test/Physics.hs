@@ -23,9 +23,7 @@ g_earth = dim $ 9.8 % (Meter :/ (Second :^ pTwo))
 distance :: Velocity -> Acceleration -> Time -> Length
 distance v a t = dim $ v .* t .+ (0.5 *. a .* t .* t)
 
--- doesn't work, with any type and any insertions of "dim" (the dimension-safe cast
--- operator) that I've come up with:
--- sum = foldr (.+) zero
+sum :: [Dim dims] -> Dim dims
+sum = foldr (.+) zero
 
-sumLength :: [Length] -> Length
-sumLength = foldr (.+) (dim zero)
+squareAll = map (.^ pTwo)

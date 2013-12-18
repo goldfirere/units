@@ -31,12 +31,12 @@ newtype Dim (a :: [DimSpec *]) = Dim Double
 
 infixl 6 .+
 -- | Add two compatible dimensioned quantities
-(.+) :: (d1 @~ d2) => Dim d1 -> Dim d2 -> Dim (ChooseFrom d1 d2)
+(.+) :: (d1 @~ d2) => Dim d1 -> Dim d2 -> Dim d1
 (Dim a) .+ (Dim b) = Dim (a + b)
 
 infixl 6 .-
 -- | Subtract two compatible dimensioned quantities
-(.-) :: (d1 @~ d2) => Dim d1 -> Dim d2 -> Dim (ChooseFrom d1 d2)
+(.-) :: (d1 @~ d2) => Dim d1 -> Dim d2 -> Dim d1
 (Dim a) .- (Dim b) = Dim (a - b)
 
 infixl 7 .*

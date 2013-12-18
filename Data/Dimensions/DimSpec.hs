@@ -12,16 +12,15 @@
 module Data.Dimensions.DimSpec where
 
 import GHC.Exts (Constraint)
-import Data.Dimensions.TypePrelude
 import Data.Dimensions.Z
 import Data.Type.Equality
 import Data.Type.Bool
 
--- | This will only be used at the kind level.
--- It either holds a dimension with its exponent, or the special constant DAny,
--- which can be any combination of dimensions at any exponents. It is used to
--- represent multiplying by 0 somewhere.
-data DimSpec star = D star Z | DAny
+import Data.Singletons.Tuple (Fst, Snd)
+
+-- | This will only be used at the kind level. It holds a dimension with its
+-- exponent.
+data DimSpec star = D star Z
 
 ----------------------------------------------------------
 --- Set-like operations ----------------------------------
@@ -55,7 +54,6 @@ infix 4 $=
 -- | Do these DimSpecs represent the same dimension?
 type family (a :: DimSpec *) $= (b :: DimSpec *) :: Bool where
   (D n1 z1) $= (D n2 z2) = n1 == n2
-  DAny      $= DAny      = True
   a         $= b         = False
 
 -- | @(Extract s lst)@ pulls the DimSpec that matches s out of lst, returning a
@@ -88,6 +86,7 @@ type family Extract (s :: DimSpec *)
 -- Reorder [] x ==> []
 -- @
 type family Reorder (a :: [DimSpec *]) (b :: [DimSpec *]) :: [DimSpec *] where
+  Reorder x x = x
   Reorder x '[] = x
   Reorder x (h ': t) = Reorder' (Extract h x) t
 
@@ -98,40 +97,20 @@ type family Reorder' (scrut :: ([DimSpec *], Maybe (DimSpec *)))
   Reorder' '(lst, Nothing) t = Reorder lst t
   Reorder' '(lst, Just elt) t = elt ': (Reorder lst t)
 
--- | Check if a @[DimSpec *]@ has a 'DAny' inside it
-type family HasAny (lst :: [DimSpec *]) :: Bool where
-  HasAny '[]         = False
-  HasAny (DAny ': t) = True
-  HasAny (h ': t)    = HasAny t
-
 infix 4 @~
 -- | Check if two @[DimSpec *]@s should be considered to be equal
 type family (a :: [DimSpec *]) @~ (b :: [DimSpec *]) :: Constraint where
-  a @~ b = If (HasAny a || HasAny b)
-              (() :: Constraint)
-              (Normalize (Reorder a b) ~ Normalize b)
+  a @~ b = (Normalize (Reorder a b) ~ Normalize b)
 
 ----------------------------------------------------------
 --- Normalization ----------------------------------------
 ----------------------------------------------------------
 
 -- | Take a @[DimSpec *]@ and remove any @DimSpec@s with an exponent of 0
-type family Normalize' (d :: [DimSpec *]) :: [DimSpec *] where
-  Normalize' '[] = '[]
-  Normalize' ((D n Zero) ': t) = Normalize' t
-  Normalize' (h ': t) = h ': Normalize' t
-
--- | If a @[DimSpec *]@ has a 'DAny', collapse the whole list to one 'DAny'.
--- Otherwise, normalize the list by removing exponents of 0.
 type family Normalize (d :: [DimSpec *]) :: [DimSpec *] where
-  Normalize d = If (HasAny d) '[DAny] (Normalize' d)
-
--- | Given two @[DimSpec *]@s, return the one that lacks a 'DAny', if there is one.
-type family ChooseFrom (d1 :: [DimSpec *]) (d2 :: [DimSpec *]) :: [DimSpec *] where
-  ChooseFrom d d        = Normalize d
-  ChooseFrom '[DAny] d2 = Normalize d2  -- common cases
-  ChooseFrom d1 '[DAny] = Normalize d1
-  ChooseFrom d1 d2      = Normalize (If (HasAny d1) d2 d1)
+  Normalize '[] = '[]
+  Normalize ((D n Zero) ': t) = Normalize t
+  Normalize (h ': t) = h ': Normalize t
 
 ----------------------------------------------------------
 --- Arithmetic -------------------------------------------
@@ -143,8 +122,6 @@ infixl 6 @@+
 type family (a :: [DimSpec *]) @@+ (b :: [DimSpec *]) :: [DimSpec *] where
   '[]                 @@+ b                   = b
   a                   @@+ '[]                 = a
-  (DAny ': t1)        @@+ b                   = '[DAny]
-  a                   @@+ (DAny ': t2)        = '[DAny]
   ((D name z1) ': t1) @@+ ((D name z2) ': t2) = (D name (z1 #+ z2)) ': (t1 @@+ t2)
   a                   @@+ (h ': t)            = h ': (a @@+ t)
 
@@ -159,8 +136,6 @@ infixl 6 @@-
 type family (a :: [DimSpec *]) @@- (b :: [DimSpec *]) :: [DimSpec *] where
   '[]                 @@- b                   = NegList b
   a                   @@- '[]                 = a
-  (DAny ': t1)        @@- b                   = '[DAny]
-  a                   @@- (DAny ': t2)        = '[DAny]
   ((D name z1) ': t1) @@- ((D name z2) ': t2) = (D name (z1 #- z2)) ': (t1 @@- t2)
   a                   @@- (h ': t)            = (NegDim h) ': (a @@- t)
 
@@ -172,7 +147,6 @@ type family (a :: [DimSpec *]) @- (b :: [DimSpec *]) :: [DimSpec *] where
 -- | negate a single @DimSpec@
 type family NegDim (a :: DimSpec *) :: DimSpec * where
   NegDim (D n z) = D n (NegZ z)
-  NegDim DAny    = DAny
 
 -- | negate a list of @DimSpec@s
 type family NegList (a :: [DimSpec *]) :: [DimSpec *] where
@@ -184,11 +158,9 @@ infixl 7 @*
 type family (base :: [DimSpec *]) @* (power :: Z) :: [DimSpec *] where
   '[]                 @* power = '[]
   ((D name num) ': t) @* power = (D name (num #* power)) ': (t @* power)
-  (DAny ': t)         @* power = DAny ': (t @* power)
 
 infixl 7 @/
 -- | Division of the exponents in a dimension by a scalar
 type family (dims :: [DimSpec *]) @/ (z :: Z) :: [DimSpec *] where
   '[]                 @/ z = '[]
   ((D name num) ': t) @/ z = (D name (num #/ z)) ': (t @/ z)
-  (DAny ': t)         @/ z = DAny ': (t @/ z)

@@ -12,7 +12,7 @@
 module Data.Dimensions.SI.Types where
 
 import Data.Dimensions
-import Data.Dimensions.SI
+import Data.Dimensions.SI.Units
 
 type Length              = MkDim Meter
 type Mass                = MkDim Gram

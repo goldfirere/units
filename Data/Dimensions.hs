@@ -58,7 +58,7 @@ module Data.Dimensions (
   type (%*), type (%/), type (%^),
 
   -- * Creating new units
-  Unit(type BaseUnit, conversionRatio), MkDim, Canonical,
+  Unit(type BaseUnit, conversionRatio), MkDim, Canonical, Dim,
 
   -- * Scalars, the only built-in unit
   Number(..), Scalar, scalar,
@@ -111,10 +111,9 @@ infix 9 %
 unity :: Dim '[]
 unity = Dim 1
 
--- | The number 0, expressed as a polymorphic dimensioned quantity.
--- The polymorphism allows it to be added to any dimensioned quantity
--- without fuss.
-zero :: Dim '[DAny]
+-- | The number 0, polymorphic in its dimension. Use of this will
+-- often require a type annotation.
+zero :: Dim dimspec
 zero = Dim 0
 
 -- | Dimension-safe cast. See the README for more info.
