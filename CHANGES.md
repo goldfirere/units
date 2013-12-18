@@ -5,6 +5,10 @@ Version 1.1
 
 * Brought up to date with changes for GHC 7.8
 
+* Generalized numerical representation
+
+* Improved Haddock headers
+
 Version 1.0.1
 -------------
 

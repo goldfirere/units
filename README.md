@@ -9,18 +9,6 @@ unit: Scalar. The package supports defining multiple inter-convertible units,
 such as Meter and Foot. When extracting a number from a dimensioned quantity,
 the desired unit must be specified, and the value is converted into that unit.
 
-Limitations:
-- The _units_ package does not easily allow users to write code polymorphic
-  in the chosen units. For example, a `sum` function that adds together a
-  homogeneous list of dimensioned quantities is not straightforward. The
-  package exports its internals to allow clients to try to get these working,
-  but it is generally hard to do. However, monomorphic functions are easy.
-
-- The _units_ package is not generalized over number representation: it forces
-  client code to use `Double`. It wouldn't be hard to generalize, though, but
-  it would add a fair amount of extra cruft here and there. Shout (to
-  `eir@cis.upenn.edu`) if this is important to you.
-
 User contributions
 ------------------
 
@@ -47,6 +35,19 @@ grows over time.
     for you to build your own set of units and operate with them. All modules
     implicitly depend on this one.
 
+ -  __`Data.Dimensions.Poly`__
+
+    This module exports some more definitions that may be useful when writing
+    functions polymorphic over the choice of dimension. These functions are
+    sometimes challenging (or perhaps impossible) to write, as the system is
+    designed more with _monomorphic_ use than polymorphic use.
+
+ -  __`Data.Dimensions.Unsafe`__
+
+    This module exports the constructor for the central datatype that stores
+    dimensioned quantities. With this constructor, you can arbitrarily change
+    units! Use at your peril.
+
  -  __`Data.Dimensions.Show`__
 
     This module defines a `Show` instance for dimensioned quantities, printing
@@ -55,21 +56,27 @@ grows over time.
 
  -  __`Data.Dimensions.SI`__
 
-    This module exports unit definitions for the [SI][] system of units.
+    This module exports unit definitions for the [SI][] system of units,
+    re-exporting the three modules below.
 
 [SI]: http://en.wikipedia.org/wiki/International_System_of_Units
+ 
+ -  __`Data.Dimensions.SI.Units`__
 
- -  __`Data.Dimensions.SI.Prefixes`__
-
-    This module exports the SI prefixes. Note that this does *not* depend
-    on `Data.Dimensions.SI` -- you can use these prefixes with any system of
-    units.
+    This module exports only the SI units, such as `Meter` and `Ampere`.
 
  -  __`Data.Dimensions.SI.Types`__
 
-    This module exports several useful types for use with the SI package,
+    This module exports several useful types for use with the SI.Units module,
     which it depends on. For example, `Length` is the type of dimensioned
     quantities made with `Meter`s.
+
+ -  __`Data.Dimensions.SI.Prefixes`__
+
+    This module exports the SI prefixes. Note that this does *not* depend on
+    any of the other SI modules -- you can use these prefixes with any system
+    of units.
+
 
 Examples
 ========
@@ -212,9 +219,6 @@ with a `p` (mnemonic: "power"). For example:
     roomSize' :: Area1
     roomSize' = 100 % (Meter :* Meter)
     
-These operations have no defined inverses, though I don't think they would be
-hard to define. Shout if you need that functionality.
-
 Note that addition and subtraction on units does not make physical sense, so
 those operations are not provided.
 
@@ -230,12 +234,13 @@ abbreviations like `Length` and `Time`) for your functions. However, it may
 happen that the inferred type of your expression and the given type of your
 function may not exactly match up. This is because dimensioned quantities have
 a looser notion of type equality than Haskell does. For example, "meter *
-second" should be the same as "second * meter", even those these are in
+second" should be the same as "second * meter", even though these are in
 different order. The `dim` function checks (at compile time) to make sure its
 input type and output type represent the same underlying dimension and then
-performs a cast from one to the other. When providing type annotations, it is
-good practice to start your function with a `dim $` to prevent the possibility
-of type errors. For example, say we redefine velocity a different way:
+performs a cast from one to the other. This cast is completely free at
+runtime. When providing type annotations, it is good practice to start your
+function with a `dim $` to prevent the possibility of type errors. For
+example, say we redefine velocity a different way:
 
     type Velocity3 = Scalar %/ Time %* Length
     addVels :: Velocity1 -> Velocity1 -> Velocity3

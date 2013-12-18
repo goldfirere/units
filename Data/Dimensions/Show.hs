@@ -1,5 +1,6 @@
 {-# LANGUAGE PolyKinds, DataKinds, TypeOperators, FlexibleInstances,
              ScopedTypeVariables #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -----------------------------------------------------------------------------
 -- |

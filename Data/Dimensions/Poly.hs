@@ -22,8 +22,8 @@
 --
 -- A technical detail: because 'DimSpec' is used only at the type level
 -- and needs to store types of kind @*@, it must be parameterized, as we
--- can't specify @*@ in its declaration. (See "The Right Kind of Generic
--- Programming", by José Pedro Magalhães, published at WGP'12, for more
+-- can't specify @*@ in its declaration. (See \"The Right Kind of Generic
+-- Programming\", by José Pedro Magalhães, published at WGP'12, for more
 -- explanation.) So, we always work with @(DimSpec *)@s.
 ----------------------------------------------------------------------------
 

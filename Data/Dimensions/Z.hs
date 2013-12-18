@@ -11,9 +11,10 @@
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances,
              GADTs, PolyKinds, TemplateHaskell, ScopedTypeVariables,
              EmptyCase #-}
+{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 
 -- | This module defines a datatype and operations to represent type-level
--- integers. Though it's defined as part of the unitss package, it may be
+-- integers. Though it's defined as part of the units package, it may be
 -- useful beyond dimensional analysis. If you have a compelling non-units
 -- use of this package, please let me (Richard, @eir@ at @cis.upenn.edu@)
 -- know.
