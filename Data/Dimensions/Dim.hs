@@ -21,9 +21,9 @@ import Data.Dimensions.Z
 --- Internal ------------------------------------------------
 -------------------------------------------------------------
 
--- | Dim adds a dimensional annotation to a Double. This is the
+-- | Dim adds a dimensional annotation to its base type @n@. This is the
 -- representation for all dimensioned quantities.
-newtype Dim (a :: [DimSpec *]) = Dim Double
+newtype Dim (n :: *) (a :: [DimSpec *]) = Dim n
 
 -------------------------------------------------------------
 --- User-facing ---------------------------------------------
@@ -31,97 +31,99 @@ newtype Dim (a :: [DimSpec *]) = Dim Double
 
 infixl 6 .+
 -- | Add two compatible dimensioned quantities
-(.+) :: (d1 @~ d2) => Dim d1 -> Dim d2 -> Dim d1
+(.+) :: (d1 @~ d2, Num n) => Dim n d1 -> Dim n d2 -> Dim n d1
 (Dim a) .+ (Dim b) = Dim (a + b)
 
 infixl 6 .-
 -- | Subtract two compatible dimensioned quantities
-(.-) :: (d1 @~ d2) => Dim d1 -> Dim d2 -> Dim d1
+(.-) :: (d1 @~ d2, Num n) => Dim n d1 -> Dim n d2 -> Dim n d1
 (Dim a) .- (Dim b) = Dim (a - b)
 
 infixl 7 .*
 -- | Multiply two dimensioned quantities
-(.*) :: Dim a -> Dim b -> Dim (Normalize (a @+ b))
+(.*) :: Num n => Dim n a -> Dim n b -> Dim n (Normalize (a @+ b))
 (Dim a) .* (Dim b) = Dim (a * b)
 
 infixl 7 ./
 -- | Divide two dimensioned quantities
-(./) :: Dim a -> Dim b -> Dim (Normalize (a @- b))
+(./) :: Fractional n => Dim n a -> Dim n b -> Dim n (Normalize (a @- b))
 (Dim a) ./ (Dim b) = Dim (a / b)
 
 infixr 8 .^
 -- | Raise a dimensioned quantity to a power known at compile time
-(.^) :: Dim a -> Sing z -> Dim (a @* z)
+(.^) :: Fractional n => Dim n a -> Sing z -> Dim n (a @* z)
 (Dim a) .^ sz = Dim (a ^^ szToInt sz)
 
 -- | Take the n'th root of a dimensioned quantity, where n is known at compile
 -- time
-nthRoot :: (Zero < z) ~ True => Sing z -> Dim a -> Dim (a @/ z)
+nthRoot :: ((Zero < z) ~ True, Floating n) => Sing z -> Dim n a -> Dim n (a @/ z)
 nthRoot sz (Dim a) = Dim (a ** (1.0 / (fromIntegral $ szToInt sz)))
 
 infix 4 .<
 -- | Check if one dimensioned quantity is less than a compatible one
-(.<) :: (d1 @~ d2) => Dim d1 -> Dim d2 -> Bool
+(.<) :: (d1 @~ d2, Ord n) => Dim n d1 -> Dim n d2 -> Bool
 (Dim a) .< (Dim b) = a < b
 
 infix 4 .>
 -- | Check if one dimensioned quantity is greater than a compatible one
-(.>) :: (d1 @~ d2) => Dim d1 -> Dim d2 -> Bool
+(.>) :: (d1 @~ d2, Ord n) => Dim n d1 -> Dim n d2 -> Bool
 (Dim a) .> (Dim b) = a > b
 
 infix 4 .<=
 -- | Check if one dimensioned quantity is less than or equal to a compatible one
-(.<=) :: (d1 @~ d2) => Dim d1 -> Dim d2 -> Bool
+(.<=) :: (d1 @~ d2, Ord n) => Dim n d1 -> Dim n d2 -> Bool
 (Dim a) .<= (Dim b) = a <= b
 
 infix 4 .>=
 -- | Check if one dimensioned quantity is greater than or equal to a compatible one
-(.>=) :: (d1 @~ d2) => Dim d1 -> Dim d2 -> Bool
+(.>=) :: (d1 @~ d2, Ord n) => Dim n d1 -> Dim n d2 -> Bool
 (Dim a) .>= (Dim b) = a >= b
 
 -- | Compare two compatible dimensioned quantities for equality
-dimEq :: (d0 @~ d1, d0 @~ d2) => Dim d0  -- ^ If the difference between the next
-                                         -- two arguments are less  than this 
-                                         -- amount, they are considered equal
-      -> Dim d1 -> Dim d2 -> Bool
+dimEq :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
+      => Dim n d0  -- ^ If the difference between the next
+                   -- two arguments are less  than this 
+                   -- amount, they are considered equal
+      -> Dim n d1 -> Dim n d2 -> Bool
 dimEq (Dim epsilon) (Dim a) (Dim b) = abs(a-b) < epsilon
 
 -- | Compare two compatible dimensioned quantities for inequality
-dimNeq :: (d0 @~ d1, d0 @~ d2) => Dim d0 -- ^ If the difference between the next
-                                         -- two arguments are less  than this 
-                                         -- amount, they are considered equal
-       -> Dim d1 -> Dim d2 -> Bool
+dimNeq :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
+       => Dim n d0 -- ^ If the difference between the next
+                   -- two arguments are less  than this 
+                   -- amount, they are considered equal
+       -> Dim n d1 -> Dim n d2 -> Bool
 dimNeq (Dim epsilon) (Dim a) (Dim b) = abs(a-b) >= epsilon
 
 -- | Square a dimensioned quantity
-dimSqr :: Dim a -> Dim (Normalize (a @+ a))
+dimSqr :: Num n => Dim n a -> Dim n (Normalize (a @+ a))
 dimSqr x = x .* x
 
 -- | Take the square root of a dimensioned quantity
-dimSqrt :: Dim a -> Dim (a @/ Two)
+dimSqrt :: Floating n => Dim n a -> Dim n (a @/ Two)
 dimSqrt = nthRoot pTwo
 
 -- | Take the cube root of a dimensioned quantity
-dimCubeRoot :: Dim a -> Dim (a @/ Three)
+dimCubeRoot :: Floating n => Dim n a -> Dim n (a @/ Three)
 dimCubeRoot = nthRoot pThree
 
 infixl 7 *.
--- | Multiply a dimensioned quantity by a scalar @Double@
-(*.) :: Double -> Dim a -> Dim a
+-- | Multiply a dimensioned quantity by a scalar
+(*.) :: Num n => n -> Dim n a -> Dim n a
 a *. (Dim b) = Dim (a * b)
 
 -------------------------------------------------------------
 --- Instances -----------------------------------------------
 -------------------------------------------------------------
 
-deriving instance Eq (Dim '[])
-deriving instance Ord (Dim '[])
-deriving instance Num (Dim '[])
-deriving instance Real (Dim '[])
-deriving instance Fractional (Dim '[])
-deriving instance Floating (Dim '[])
-deriving instance RealFrac (Dim '[])
-deriving instance RealFloat (Dim '[])
+deriving instance Eq n => Eq (Dim n '[])
+deriving instance Ord n => Ord (Dim n '[])
+deriving instance Num n => Num (Dim n '[])
+deriving instance Real n => Real (Dim n '[])
+deriving instance Fractional n => Fractional (Dim n '[])
+deriving instance Floating n => Floating (Dim n '[])
+deriving instance RealFrac n => RealFrac (Dim n '[])
+deriving instance RealFloat n => RealFloat (Dim n '[])
 
 -------------------------------------------------------------
 --- Combinators ---------------------------------------------
@@ -132,16 +134,16 @@ infixl 7 %*
 --
 -- > type Velocity = Length %/ Time
 type family (d1 :: *) %* (d2 :: *) :: *
-type instance (Dim d1) %* (Dim d2) = Dim (d1 @+ d2)
+type instance (Dim n d1) %* (Dim n d2) = Dim n (d1 @+ d2)
 
 infixl 7 %/
 -- | Divide two dimension types to produce a new one
 type family (d1 :: *) %/ (d2 :: *) :: *
-type instance (Dim d1) %/ (Dim d2) = Dim (d1 @- d2)
+type instance (Dim n d1) %/ (Dim n d2) = Dim n (d1 @- d2)
 
 infixr 8 %^
 -- | Exponentiate a dimension type to an integer
 type family (d :: *) %^ (z :: Z) :: *
-type instance (Dim d) %^ z = Dim (d @* z)
+type instance (Dim n d) %^ z = Dim n (d @* z)
 
 

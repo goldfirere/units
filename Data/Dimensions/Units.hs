@@ -60,11 +60,15 @@ class Unit unit where
   canonicalConvRatio u = conversionRatio u * baseUnitRatio u
 
 -- Abbreviation for creating a Dim (defined here to avoid a module cycle)
--- | Make a dimensioned quantity capable of storing a value of a given unit.
--- For example:
+
+-- | Make a dimensioned quantity type capable of storing a value of a given
+-- unit. This uses a 'Double' for storage of the value. For example:
 --
 -- > type Length = MkDim Meter
-type MkDim unit = Dim (DimSpecsOf unit)
+type MkDim unit = Dim Double (DimSpecsOf unit)
+
+-- | Make a dimensioned quantity with a custom numerical type.
+type MkGenDim n unit = Dim n (DimSpecsOf unit)
 
 -- | Is this unit a canonical unit?
 type IsCanonical (unit :: *) = CheckCanonical (BaseUnit unit)

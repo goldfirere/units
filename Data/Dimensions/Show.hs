@@ -68,5 +68,5 @@ showDimSpec p
     build_string_helper [s] = s
     build_string_helper (h:t) = h ++ " * " ++ build_string_helper t
 
-instance ShowDimSpec dims => Show (Dim dims) where
+instance (ShowDimSpec dims, Show n) => Show (Dim n dims) where
   show (Dim d) = (show d ++ showDimSpec (Proxy :: Proxy dims))

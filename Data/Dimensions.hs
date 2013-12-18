@@ -67,7 +67,7 @@ module Data.Dimensions (
   type (%*), type (%/), type (%^),
 
   -- * Creating new units
-  Unit(type BaseUnit, conversionRatio), MkDim, Canonical, Dim,
+  Unit(type BaseUnit, conversionRatio), MkDim, MkGenDim, Canonical, 
 
   -- * Scalars, the only built-in unit
   Number(..), Scalar, scalar,
@@ -117,16 +117,16 @@ infix 9 %
 (%) = dimOf
 
 -- | The number 1, expressed as a unitless dimensioned quantity.
-unity :: Dim '[]
+unity :: Num n => Dim n '[]
 unity = Dim 1
 
 -- | The number 0, polymorphic in its dimension. Use of this will
 -- often require a type annotation.
-zero :: Dim dimspec
+zero :: Num n => Dim n dimspec
 zero = Dim 0
 
 -- | Dimension-safe cast. See the README for more info.
-dim :: (d @~ e) => Dim d -> Dim e
+dim :: (d @~ e) => Dim n d -> Dim n e
 dim (Dim x) = Dim x
 
 -------------------------------------------------------------
@@ -143,6 +143,6 @@ instance Unit Number where
 -- This is an instance of @Num@, though Haddock doesn't show it.
 type Scalar = MkDim Number
 
--- | Convert a Double into a unitless dimensioned quantity
-scalar :: Double -> Dim '[]
+-- | Convert a raw number into a unitless dimensioned quantity
+scalar :: n -> Dim n '[]
 scalar = Dim
