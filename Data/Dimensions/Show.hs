@@ -1,18 +1,19 @@
-{- Data/Dimensions/Show.hs
-
-   The units Package
-   Copyright (c) 2013 Richard Eisenberg
-   eir@cis.upenn.edu
-
-   This file defines Show instances for dimensioned quantities.
--}
-
 {-# LANGUAGE PolyKinds, DataKinds, TypeOperators, FlexibleInstances,
              ScopedTypeVariables #-}
 
--- | This module defines only a @Show@ instance for dimensioned quantities.
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  Data.Dimensions.Show
+-- Copyright   :  (C) 2013 Richard Eisenberg
+-- License     :  BSD-style (see LICENSE)
+-- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Stability   :  experimental
+-- Portability :  non-portable
+--
+-- This module defines only a 'Show' instance for dimensioned quantities.
 -- The Show instance prints out the number stored internally with its canonical
 -- units.
+-----------------------------------------------------------------------------
 
 module Data.Dimensions.Show () where
 

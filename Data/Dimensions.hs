@@ -24,23 +24,32 @@
 {-# LANGUAGE ExplicitNamespaces, DataKinds, FlexibleInstances, TypeFamilies,
              TypeOperators, ConstraintKinds #-}
 
-{-| The units package is a framework for strongly-typed dimensional analysis.
-    This haddock documentation is generally /not/ enough to be able to use this
-    package effectively. Please see the readme at
-    <https://github.com/goldfirere/units/blob/master/README.md>.
-
-    Some of the types below refer to declarations that are not exported and
-    not documented here. This is because Haddock does not allow finely-tuned
-    abstraction in documentation. (In particular, right-hand sides of type 
-    synonym declarations are always included.) If a symbol is not exported,
-    you do /not/ need to know anything about it to use this package.
-
-    The type @Dim@, which is not exported, is the type used internally to
-    represent dimensioned quantities.
-
-    Though it doesn't appear here, @Scalar@ is an instance of @Num@, and
-    generally has all the numeric instances that @Double@ has.
--}
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  Data.Dimensions
+-- Copyright   :  (C) 2013 Richard Eisenberg
+-- License     :  BSD-style (see LICENSE)
+-- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Stability   :  experimental
+-- Portability :  non-portable
+--
+-- The units package is a framework for strongly-typed dimensional analysis.
+-- This haddock documentation is generally /not/ enough to be able to use this
+-- package effectively. Please see the readme at
+-- <https://github.com/goldfirere/units/blob/master/README.md>.
+--
+-- Some of the types below refer to declarations that are not exported and
+-- not documented here. This is because Haddock does not allow finely-tuned
+-- abstraction in documentation. (In particular, right-hand sides of type 
+-- synonym declarations are always included.) If a symbol is not exported,
+-- you do /not/ need to know anything about it to use this package.
+--
+-- The type @Dim@, which is not exported, is the type used internally to
+-- represent dimensioned quantities.
+--
+-- Though it doesn't appear here, @Scalar@ is an instance of @Num@, and
+-- generally has all the numeric instances that @Double@ has.
+-----------------------------------------------------------------------------
 
 module Data.Dimensions (
   -- * Term-level combinators

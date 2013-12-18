@@ -1,13 +1,16 @@
-{- Data/Dimensions/SI/Types.hs
-
-   The units Package
-   Copyright (c) 2013 Richard Eisenberg
-   eir@cis.upenn.edu
--}
-
 {-# LANGUAGE TypeOperators #-}
 
--- | This module defines type synonyms for SI units.
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  Data.Dimensions.SI.Types
+-- Copyright   :  (C) 2013 Richard Eisenberg
+-- License     :  BSD-style (see LICENSE)
+-- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Stability   :  experimental
+-- Portability :  non-portable
+--
+-- This module defines type synonyms for SI units.
+-----------------------------------------------------------------------------
 
 module Data.Dimensions.SI.Types where
 

@@ -34,7 +34,7 @@ library
       base >= 4.7 && < 5,
       singletons >= 0.9
   exposed-modules:    Data.Dimensions, Data.Dimensions.Show,
-                      Data.Dimensions.Internal,
+                      Data.Dimensions.Poly, Data.Dimensions.Unsafe,
                       Data.Dimensions.SI, Data.Dimensions.SI.Prefixes,
                       Data.Dimensions.SI.Types, Data.Dimensions.SI.Units
   other-modules:      Data.Dimensions.Dim, Data.Dimensions.DimSpec,

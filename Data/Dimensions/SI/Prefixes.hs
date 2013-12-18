@@ -1,16 +1,16 @@
-{- Data/Dimensions/SI/Prefixes.hs
-
-   The units Package
-   Copyright (c) 2013 Richard Eisenberg
-   eir@cis.upenn.edu
-
-   This module defines the prefixes from the SI system, as put forth here:
-   http://www.bipm.org/en/si/
--}
-
 {-# LANGUAGE TypeOperators #-}
 
--- | Defines prefixes from the SI standard at <http://www.bipm.org/en/si/>
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  Data.Dimensions.SI.Prefixes
+-- Copyright   :  (C) 2013 Richard Eisenberg
+-- License     :  BSD-style (see LICENSE)
+-- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Stability   :  experimental
+-- Portability :  non-portable
+--
+-- Defines prefixes from the SI standard at <http://www.bipm.org/en/si/>
+-----------------------------------------------------------------------------
 
 module Data.Dimensions.SI.Prefixes where
 
