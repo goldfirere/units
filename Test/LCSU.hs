@@ -181,8 +181,11 @@ lawOfTravel :: (Fractional val)
   => Qu csu (CoherentDerivedUnit csu LengthDim) val 
   -> Qu csu (CoherentDerivedUnit csu SpeedDim) val
   -> Qu csu (CoherentDerivedUnit csu TimeDim) val
+  
 lawOfTravel (Qu x) (Qu v) = Qu (x/v)
-
+-- -- at the moment I resort to numerical value computations, but we should use the typesystem
+-- -- to check for the unit consistency in the future.
+-- lawOfTravel x v = x |/| v
 
 
 main :: IO ()
