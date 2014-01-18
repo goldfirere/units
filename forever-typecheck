@@ -1,0 +1,7 @@
+#!/bin/sh
+
+while :
+do
+    runhaskell Test/LCSU.hs
+    inotifywait -e modify  ./Test/LCSU.hs
+done
