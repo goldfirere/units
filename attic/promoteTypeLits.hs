@@ -35,6 +35,7 @@ $( promoteOnly [d|
    isElem :: Eq a => a -> [a] -> Bool
    isElem x [] = False
    isElem x (y:ys) = (x==y) || isElem x ys
+
  |] )
 
 type ListBBI = '[Bool, Bool, Int]
