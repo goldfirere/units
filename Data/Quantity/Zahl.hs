@@ -1,22 +1,18 @@
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances #-}
 {-# LANGUAGE GADTs, PolyKinds, KindSignatures, ScopedTypeVariables #-}
 
-module Data.Dimensions.Zahl where
+module Data.Quantity.Zahl where
 
 import GHC.TypeLits hiding ((+)(..),(-)(..))
 import qualified GHC.TypeLits as Nat
-import Data.Quantity.Zahl
+import Data.Singletons 
+import Data.Singletons.Bool
+
 import Prelude hiding ((==))
-
--- RAE: This seems wrong: there seems to be 2 representations for 0.
--- No time to fix right now.
-
--- TM: Thank you for the comment. I documented my approach, and I will
--- experiment if it works out.
 
 -- | The datatype for type-level integers.
 --   In order to produce most readable error messages, we use
---   typelevel natural numbers from 'GHC.TypeLits' and extend it 
+--   typelevel natural numbers from 'GHC.TyqpeLits' and extend it 
 --   to integers.
 --   .
 --   The drawback of this approch is having duplicated definitions of zero
@@ -28,7 +24,8 @@ import Prelude hiding ((==))
 -- | The datatype for type-level integers
 data Zahl = Posi Nat | Nega Nat
 
--- | Singleton for Zahl
+{-
+-- | Singleton type for Zahl
 data instance Sing (z :: Zahl) where
   SPosi :: Sing n -> Sing (Posi n) 
   SNega :: Sing n -> Sing (Nega n)
@@ -43,7 +40,7 @@ instance SingE (KindParam :: KindIs Zahl) where
   type DemoteRep (KindParam :: KindIs Zahl) = Integer
   fromSing (SPosi n) = fromSing n
   fromSing (SNega n) = negate $ fromSing n
-
+-}
 
 
 type family Succ (z :: Zahl) :: Zahl where
