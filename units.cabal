@@ -42,8 +42,10 @@ library
                       Data.Dimensions.Z
 
                       Data.Quantity.Dimension
+                      Data.Quantity.Dimension.SI
                       Data.Quantity.Map
                       Data.Quantity.Quantity
                       Data.Quantity.Unit
+                      Data.Quantity.Unit.SI
                       Data.Quantity.Zahl
   default-language:   Haskell2010
