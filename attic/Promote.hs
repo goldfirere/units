@@ -11,9 +11,6 @@ $(singletons [d|
   data Nat = Zero | Succ Nat
     deriving Eq
 
-  |] )
-
-$( promote [d| 
 
   plus :: Nat -> Nat -> Nat
   plus Zero     n = n

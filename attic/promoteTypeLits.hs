@@ -1,3 +1,8 @@
+-- run this by following command
+-- 
+-- runhaskell -i../  promoteTypeLits.hs 
+
+
 {-# LANGUAGE EmptyCase, TemplateHaskell, PolyKinds, DataKinds, TypeFamilies,
              ScopedTypeVariables, GADTs, StandaloneDeriving, RankNTypes,
              TypeOperators, UndecidableInstances #-}
