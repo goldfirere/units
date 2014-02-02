@@ -1,0 +1,12 @@
+language: haskell
+
+before_install:
+  - make ghc-head
+
+script:
+  - cabal configure --enable-tests
+  - cabal build
+  - cabal test --test-options='-a 1000'
+
+after_script:
+  - cat dist/test/units-*-spec.log 
