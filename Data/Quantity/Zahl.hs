@@ -7,6 +7,7 @@ import GHC.TypeLits hiding ((+)(..),(-)(..))
 import qualified GHC.TypeLits as Nat
 import Data.Singletons 
 import Data.Singletons.Bool
+import Data.Singletons.Eq
 
 import Prelude hiding ((==))
 
@@ -74,11 +75,15 @@ type family (a :: Zahl) - (b :: Zahl) :: Zahl where
   Posi n - Posi m = Posi n + Nega m
   Nega n - Nega m = Posi m + Nega n
 
-type family (a :: Zahl) == (b :: Zahl) :: Bool where
-  Posi a == Posi a = True
-  Nega a == Nega a = True
-  Posi 0 == Nega 0 = True
-  Nega 0 == Posi 0 = True
-  a == b           = False
+
+type family EqZahl a b where
+  EqZahl (Posi a) (Posi a) = True
+  EqZahl (Nega a) (Nega a) = True
+  EqZahl (Posi 0) (Nega 0) = True
+  EqZahl (Nega 0) (Posi 0) = True
+  EqZahl a        b        = False
+
+type instance a == b = EqZahl a b
+
 
 
