@@ -8,7 +8,7 @@ import Text.Printf
 data ZahlK a = Plus a | Minus a
 
 -- kind annotation for base dimensions
-data BaseDimK star = BaseDim star
+data DimK star = Dim star
 
 -- kind annotation for base units
 data BaseUnitK star = BaseUnit star
@@ -30,12 +30,12 @@ type TMap a b = [( a , b )]
    in the LCSU, not in terms of the units.
    Units are used whenever we try to view the actual value.
 
-   I thought we wanted one more argument to Qu, namely (dim :: [(BaseDimK *, ZahlK Nat)]),
+   I thought we wanted one more argument to Qu, namely (dim :: [(DimK *, ZahlK Nat)]),
    But since the dim is always uniquely determined from the unit, I'm thinking we might not need it.
 
 -}
 
-newtype Qu (lcsu :: [(BaseDimK *, BaseUnitK *)]) (unit :: [(BaseUnitK *, ZahlK Nat)])  (value :: *) = Qu value
+newtype Qu (lcsu :: [(DimK *, BaseUnitK *)]) (unit :: [(BaseUnitK *, ZahlK Nat)])  (value :: *) = Qu value
   deriving (Eq, Show)
 
 
@@ -45,8 +45,8 @@ newtype Qu (lcsu :: [(BaseDimK *, BaseUnitK *)]) (unit :: [(BaseUnitK *, ZahlK N
   given LCSU, convents the given dimension to the coherent derived unit under the LCSU.
 -}
 type family CoherentDerivedUnit 
-     (lcsu    :: [(BaseDimK *, BaseUnitK *)]) 
-     (dim     :: [(BaseDimK *, ZahlK Nat)])
+     (lcsu    :: [(DimK *, BaseUnitK *)]) 
+     (dim     :: [(DimK *, ZahlK Nat)])
      :: ([(BaseUnitK *, ZahlK Nat)]) where
   CoherentDerivedUnit SI LengthDim = '[ '( BaseUnit Meter , Plus 1) ]
   CoherentDerivedUnit SI SpeedDim = '[ '( BaseUnit Meter , Plus 1), '(BaseUnit Second, Minus 1) ]
@@ -63,9 +63,9 @@ data Time = Time
 data Current = Current
 
 -- dimensions are monominals of the base dimension
-type LengthDim = '[ '( BaseDim Length , Plus 1) ] 
-type SpeedDim = '[ '( BaseDim Length , Plus 1) ,  '( BaseDim Time , Minus 1) ] 
-type TimeDim = '[ '( BaseDim Time , Plus 1) ]  
+type LengthDim = '[ '( Dim Length , Plus 1) ] 
+type SpeedDim = '[ '( Dim Length , Plus 1) ,  '( Dim Time , Minus 1) ] 
+type TimeDim = '[ '( Dim Time , Plus 1) ]  
 
 -- some units
 data Parsec = Parsec
@@ -77,9 +77,9 @@ data Nano u = Nano u
 data Ampere = Ampere
 
 -- some LCSUs
-type SI = '[ '( BaseDim Length, BaseUnit Meter),'( BaseDim Time, BaseUnit Second)  ]
-type CGS = '[ '( BaseDim Length, BaseUnit (Centi Meter)),'( BaseDim Time, BaseUnit Second)  ]
-type CGSA = '[ '( BaseDim Length, BaseUnit (Centi Meter)),'( BaseDim Time, BaseUnit Second), '(BaseDim Current, BaseUnit Ampere)  ]
+type SI = '[ '( Dim Length, BaseUnit Meter),'( Dim Time, BaseUnit Second)  ]
+type CGS = '[ '( Dim Length, BaseUnit (Centi Meter)),'( Dim Time, BaseUnit Second)  ]
+type CGSA = '[ '( Dim Length, BaseUnit (Centi Meter)),'( Dim Time, BaseUnit Second), '(Dim Current, BaseUnit Ampere)  ]
 
 
 {- several different representations of marathon track distance, 42.195km . -}

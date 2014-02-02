@@ -15,11 +15,11 @@ import Test.Hspec
 
 
 
-type LengthDim =  '[ '( BaseDim Length , Posi 1) ] 
-type SpeedDim =  '[ '( BaseDim Length , Posi 1) ,  '( BaseDim Time , Nega 1) ] 
-type TimeDim =  '[ '( BaseDim Time , Posi 1) ]  
+type LengthDim =  '[ '( Dim Length , Posi 1) ] 
+type SpeedDim =  '[ '( Dim Length , Posi 1) ,  '( Dim Time , Nega 1) ] 
+type TimeDim =  '[ '( Dim Time , Posi 1) ]  
 
-type SpeedDim2 =  '[  '( BaseDim Time , Nega 1),  '( BaseDim Length , Posi 1) ,  '( BaseDim Current , Nega 0) ] 
+type SpeedDim2 =  '[  '( Dim Time , Nega 1),  '( Dim Length , Posi 1) ,  '( Dim Current , Nega 0) ] 
 
 type Fib = '[ Posi 1, Posi 1, Posi 2, Posi 3, Posi 5 ]
 
@@ -27,9 +27,9 @@ spec :: Spec
 spec = do
   describe "Type level Map library" $ do
     it "can lookup typelevel map correctly" $
-      fromSing (sing :: Sing ((Lookup (BaseDim Length) SpeedDim) :== ('Just (Posi 1))))  
+      fromSing (sing :: Sing ((Lookup (Dim Length) SpeedDim) :== ('Just (Posi 1))))  
     it "detects absence correctly" $                         
-      fromSing (sing :: Sing ((Lookup (BaseDim Length) TimeDim) :== ('Nothing)))
+      fromSing (sing :: Sing ((Lookup (Dim Length) TimeDim) :== ('Nothing)))
 
     it "uniqs correctly" $                         
       fromSing (sing :: Sing (Uniq '[Posi 1, Posi 2, Posi 1] :== '[Posi 1, Posi 2]))
