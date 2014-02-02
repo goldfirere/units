@@ -18,7 +18,7 @@ $( promote [d|
   delete :: Eq a => a -> [a] -> [a]
   delete x [] = []
   delete x (y:ys) =
-    if x==y then delete x ys else y:delete x ys                              
+    if x==y then delete x ys else y:delete x ys     
 
   uniq :: Eq a => [a] -> [a]
   uniq [] = []
