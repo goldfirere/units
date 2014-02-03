@@ -23,8 +23,7 @@ type TimeDim = FromList '[ '( BaseDim Time , Posi 1) ]
 spec :: Spec 
 spec = do
   describe "Type level Map library" $ do
-    it "can lookup typelevel map correctly" $ do
+    it "can lookup typelevel map correctly" $
       fromSing (sing :: Sing ((Lookup (BaseDim Length) SpeedDim) :== ('Just (Posi 1))))  
-        `shouldBe` True
+    it "detects absence correctly" $                         
       fromSing (sing :: Sing ((Lookup (BaseDim Length) TimeDim) :== ('Nothing)))
-        `shouldBe` True        
