@@ -78,5 +78,4 @@ $( promote [d|
   maybeEq Nothing  (Just y2) = y2 == zero
   maybeEq Nothing  Nothing  = True
 
-             
  |] )
