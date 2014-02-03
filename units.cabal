@@ -37,9 +37,6 @@ library
                       Data.Dimensions.Poly, Data.Dimensions.Unsafe,
                       Data.Dimensions.SI, Data.Dimensions.SI.Prefixes,
                       Data.Dimensions.SI.Types, Data.Dimensions.SI.Units
-  other-modules:      Data.Dimensions.Dim, Data.Dimensions.DimSpec,
-                      Data.Dimensions.Units, Data.Dimensions.UnitCombinators,
-                      Data.Dimensions.Z
 
                       Data.Quantity.Dimension
                       Data.Quantity.Dimension.SI
@@ -48,6 +45,12 @@ library
                       Data.Quantity.Unit
                       Data.Quantity.Unit.SI
                       Data.Quantity.Zahl
+
+
+  other-modules:      Data.Dimensions.Dim, Data.Dimensions.DimSpec,
+                      Data.Dimensions.Units, Data.Dimensions.UnitCombinators,
+                      Data.Dimensions.Z
+
   default-language:   Haskell2010
 
 Test-Suite spec
@@ -61,6 +64,7 @@ Test-Suite spec
       base
     , hspec >= 1.3
     , QuickCheck
+    , singletons
 
-    , units
+    , units >= 1.1
   default-language:   Haskell2010
