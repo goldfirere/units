@@ -12,8 +12,6 @@ import Data.Singletons.TH
 import Data.Quantity.Zahl
 import Prelude hiding (lookup)
 
-zero :: Num a => a
-zero = 0
 
 $( promote [d|
   
@@ -47,19 +45,38 @@ $( promote [d|
     if x==x1 then Just y1 else lookup x xys
                 
                 
-  unionWithAdd :: (Eq a, Num b) => [(a,b)] -> [(a,b)] -> [(a,b)]
-  unionWithAdd m1 m2 = unionWithAdd_aux 
-    (uniq (keys m1 ++ keys m2)) m1 m2
+  addMap :: (Eq a, Eq b, Num b) => [(a,b)] -> [(a,b)] -> [(a,b)]
+  addMap m1 m2 = deleteZeroElems 
+    (addMap_aux (uniq (keys m1 ++ keys m2)) m1 m2)
      
-  unionWithAdd_aux :: (Eq a, Num b) => [a] -> [(a,b)] -> [(a,b)] -> [(a,b)]
-  unionWithAdd_aux [] _ _ = []
-  unionWithAdd_aux (x:xs) m1 m2 = (x, maybeAdd (lookup x m1)  (lookup x m2)) : unionWithAdd_aux xs m1 m2
+  addMap_aux :: (Eq a, Num b) => [a] -> [(a,b)] -> [(a,b)] -> [(a,b)]
+  addMap_aux [] _ _ = []
+  addMap_aux (x:xs) m1 m2 = (x, maybeAdd (lookup x m1)  (lookup x m2)) : addMap_aux xs m1 m2
 
-  maybeAdd :: Num a => Maybe a -> Maybe a ->  a 
+  maybeAdd :: Num b => Maybe b -> Maybe b ->  b
   maybeAdd (Just y1) (Just y2) = y1 + y2
   maybeAdd (Just y1) Nothing  = y1
   maybeAdd Nothing  (Just y2) = y2
   maybeAdd Nothing  Nothing  = zero
+
+  deleteZeroElems :: (Eq b, Num b) => [(a,b)] -> [(a,b)]
+  deleteZeroElems [] = []
+  deleteZeroElems ((x,y) : xys) =
+    if y==zero then deleteZeroElems xys else (x,y) : deleteZeroElems xys
+
+  eqMap :: (Eq a, Eq b, Num b) => [(a,b)] -> [(a,b)] -> Bool
+  eqMap m1 m2 = 
+    (eqMap_aux (uniq (keys m1 ++ keys m2)) m1 m2)
+
+  eqMap_aux :: (Eq a, Eq b, Num b) => [a] -> [(a,b)] -> [(a,b)] -> Bool
+  eqMap_aux [] _ _ = True
+  eqMap_aux (x:xs) m1 m2 = maybeEq (lookup x m1) (lookup x m2) && eqMap_aux xs m1 m2
+
+  maybeEq :: (Eq b, Num b) => Maybe b -> Maybe b ->  Bool
+  maybeEq (Just y1) (Just y2) = y1 == y2
+  maybeEq (Just y1) Nothing  = y1 == zero
+  maybeEq Nothing  (Just y2) = y2 == zero
+  maybeEq Nothing  Nothing  = True
 
              
  |] )

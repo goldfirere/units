@@ -26,6 +26,12 @@ import Prelude hiding ((==))
 -- | The datatype for type-level integers
 data Zahl = Posi Nat | Nega Nat
 
+
+-- | Value-level zero
+zero :: Num a => a
+zero = 0
+
+-- | Type-level zero that corresponds to the above value.
 type Zero = Posi 0
 
 
@@ -53,7 +59,7 @@ type family (a :: Zahl) :+ (b :: Zahl) :: Zahl where
   Posi 0 :+ Nega n = Nega n
   Posi n :+ Nega 0 = Posi n
   Posi n :+ Nega m = If (m <=? n) (Posi (n Nat.- m)) (Nega (m Nat.- n))
-  
+
 type family (a :: Zahl) :- (b :: Zahl) :: Zahl where
   Posi n :- Nega m = Posi n :+ Posi m
   Nega n :- Posi m = Nega n :+ Nega m
@@ -73,11 +79,11 @@ type instance a == b = EqZahl a b
 
 
 $( promoteOnly [d| 
-  
+
                 isZero :: Zahl -> Bool             
                 isZero (Posi 0) = True           
                 isZero (Nega 0) = True           
                 isZero _        = False
-               
+
  |] )
 

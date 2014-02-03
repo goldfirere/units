@@ -19,6 +19,8 @@ type LengthDim =  '[ '( BaseDim Length , Posi 1) ]
 type SpeedDim =  '[ '( BaseDim Length , Posi 1) ,  '( BaseDim Time , Nega 1) ] 
 type TimeDim =  '[ '( BaseDim Time , Posi 1) ]  
 
+type SpeedDim2 =  '[  '( BaseDim Time , Nega 1),  '( BaseDim Length , Posi 1) ,  '( BaseDim Current , Nega 0) ] 
+
 type Fib = '[ Posi 1, Posi 1, Posi 2, Posi 3, Posi 5 ]
 
 spec :: Spec 
@@ -31,3 +33,6 @@ spec = do
 
     it "uniqs correctly" $                         
       fromSing (sing :: Sing (Uniq '[Posi 1, Posi 2, Posi 1] :== '[Posi 1, Posi 2]))
+
+    it "equates correctly" $                         
+      fromSing (sing :: Sing (EqMap SpeedDim SpeedDim2))
