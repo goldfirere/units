@@ -43,22 +43,22 @@ $( promote [d|
 
   lookup :: Eq a => a -> [(a,b)] -> Maybe b
   lookup x [] = Nothing
-  lookup x ((yk,yv):ys) = 
-    if x==yk then Just yv else lookup x ys
+  lookup x ((x1,y1): xys) = 
+    if x==x1 then Just y1 else lookup x xys
                 
                 
   unionWithAdd :: (Eq a, Num b) => [(a,b)] -> [(a,b)] -> [(a,b)]
-  unionWithAdd x y = unionWithAdd_aux 
-    (uniq (keys x ++ keys y)) x y
+  unionWithAdd m1 m2 = unionWithAdd_aux 
+    (uniq (keys m1 ++ keys m2)) m1 m2
      
   unionWithAdd_aux :: (Eq a, Num b) => [a] -> [(a,b)] -> [(a,b)] -> [(a,b)]
   unionWithAdd_aux [] _ _ = []
   unionWithAdd_aux (x:xs) m1 m2 = (x, maybeAdd (lookup x m1)  (lookup x m2)) : unionWithAdd_aux xs m1 m2
 
   maybeAdd :: Num a => Maybe a -> Maybe a ->  a 
-  maybeAdd (Just x) (Just y) = x + y
-  maybeAdd (Just x) Nothing  = x
-  maybeAdd Nothing  (Just y) = y
+  maybeAdd (Just y1) (Just y2) = y1 + y2
+  maybeAdd (Just y1) Nothing  = y1
+  maybeAdd Nothing  (Just y2) = y2
   maybeAdd Nothing  Nothing  = zero
 
              
