@@ -1,4 +1,7 @@
+{-# LANGUAGE DataKinds, TypeOperators, TypeFamilies, UndecidableInstances #-}
 module Data.Quantity.Unit where
+
+import Data.Singletons.Eq
 
 -- kind annotation for base units
 data BaseUnitK star = BaseUnit star
