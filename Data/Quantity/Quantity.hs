@@ -11,7 +11,7 @@ newtype Qu (lcsu :: [(DimK *, UniK *)]) (unit :: [(UniK *, Zahl)])  (value :: *)
   deriving (Eq, Show)
 
 type family CoherentUnit q :: [(UniK *, Zahl)]where
-  CoherentUnit (Qu l u v) = LookupLCSU l u
+  CoherentUnit (Qu l u v) = LookupCSU l u
 
 
 (|+|) :: (Num val, EqMap (DimOf unit) (DimOf unit') ~ True) => Qu lcsu unit val -> Qu lcsu unit' val -> Qu lcsu unit val 

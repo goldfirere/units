@@ -36,10 +36,14 @@ marathonLength = Qu 42195
 marathonLengthInKm :: Qu SI '[ '(Uni (Kilo Meter), Posi 1) ] Rational
 marathonLengthInKm = convertUnit $ marathonLength
 
-waterDensity :: Qu CGS '[ '(Uni Gram, Posi 1) , '(Uni (Centi Meter), Nega 3) ] Rational
+type DensityIn l = Qu l (LookupCSUWithDim l '[ '(Dim Mass, Posi 1) , '(Dim Length, Nega 3) ] )
+
+-- waterDensity :: Qu CGS '[ '(Uni Gram, Posi 1) , '(Uni (Centi Meter), Nega 3) ] Rational
+waterDensity :: DensityIn CGS Rational
 waterDensity = Qu 1
 
-waterDensityInSI :: Qu SI '[ '(Uni (Kilo Gram), Posi 1) , '(Uni Meter, Nega 3) ] Rational
+-- waterDensityInSI :: Qu SI '[ '(Uni (Kilo Gram), Posi 1) , '(Uni Meter, Nega 3) ] Rational
+waterDensityInSI :: DensityIn SI Rational
 waterDensityInSI = convertCSU waterDensity
 
 

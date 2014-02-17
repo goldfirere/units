@@ -84,13 +84,13 @@ instance (IsUnit uh, IsUnit ut) => IsUnit (uh ': ut) where
   conversionFactor _ = conversionFactor (error "IsUnit/List" :: Sing uh) * conversionFactor (undefined :: Sing ut)
 
 $( promoteOnly [d|
-  lookupLCSU :: [(DimK a, UniK a)] -> [(UniK a, Zahl)] -> [(UniK a, Zahl)] 
-  lookupLCSU duMap uzMap = lookupLCSU_aux duMap (dimOfUnit uzMap)
+  lookupCSU :: [(DimK a, UniK a)] -> [(UniK a, Zahl)] -> [(UniK a, Zahl)] 
+  lookupCSU duMap uzMap = lookupCSUWithDim duMap (dimOfUnit uzMap)
 
-  lookupLCSU_aux :: [(DimK a, UniK a)] -> [(DimK a, Zahl)] -> [(UniK a, Zahl)] 
-  lookupLCSU_aux duMap [] = []
-  lookupLCSU_aux duMap ((d,z):ts) = lookupLCSU_aux2 duMap z ts (lookup d duMap)
+  lookupCSUWithDim :: [(DimK a, UniK a)] -> [(DimK a, Zahl)] -> [(UniK a, Zahl)] 
+  lookupCSUWithDim duMap [] = []
+  lookupCSUWithDim duMap ((d,z):ts) = lookupCSU_aux duMap z ts (lookup d duMap)
 
-  lookupLCSU_aux2 :: [(DimK a, UniK a)] -> Zahl  -> [(DimK a, Zahl)] -> Maybe (UniK a) -> [(UniK a, Zahl)] 
-  lookupLCSU_aux2 duMap z ts (Just u) = (u,z) : lookupLCSU_aux duMap ts
+  lookupCSU_aux :: [(DimK a, UniK a)] -> Zahl  -> [(DimK a, Zahl)] -> Maybe (UniK a) -> [(UniK a, Zahl)] 
+  lookupCSU_aux duMap z ts (Just u) = (u,z) : lookupCSUWithDim duMap ts
   |] )
