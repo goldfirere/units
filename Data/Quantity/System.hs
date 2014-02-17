@@ -14,6 +14,11 @@ type instance a == b = EqDim a b
 
 type family DimOf (a::k) :: [(DimK *, Zahl)]
      
+class IsDimName d where
+  type GlobalBaseUnit d :: (UnitK *)
+
+
+
 -- kind annotation for unit names
 data UnitK star = Unit star
 
