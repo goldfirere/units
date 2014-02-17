@@ -43,7 +43,7 @@ class IsUnitName u where
   conversionFactorOfName :: u -> Rational
 
 
-class SingI u => IsUnit u where
+class SingI u => IsUnit (u :: k) where
   type DimOfUnit u :: [(DimK *, Zahl)]
   -- | conversion factor to @u@ from the global base unit of the same dimension as @u@.
   --   for example, conversion factor of centimeter in SI is 0.01 .       
@@ -59,9 +59,9 @@ instance IsUnit ('[] :: [(UniK *, Zahl)]  ) where
 dimOfUnit :: [(UniK a, Zahl)] -> [(DimK a, Zahl)] 
 dimOfUnit = undefined
 
-instance (IsUnitName u, SingI (UniK u, Zahl)) => IsUnit (UniK u, Zahl)  where
-  type DimOfUnit (UniK u, Zahl)  = DimOfUnitName u
-  conversionFactor _ = conversionFactorOfName (undefined :: u)
+instance (IsUnitName u, SingI '( 'Uni u, n), SingI n) => IsUnit ( '( 'Uni u, n) :: (UniK *, Zahl))  where
+  type DimOfUnit '( 'Uni u, n)  = DimOfUnitName u
+  conversionFactor _ = conversionFactorOfName (undefined :: u) ^ (fromSing (sing :: Sing n))
 
                  
 instance (IsUnit uh, IsUnit ut) => IsUnit (uh ': ut) where
@@ -78,4 +78,4 @@ $( promoteOnly [d|
 
   lookupLCSU_aux2 :: [(DimK a, UniK a)] -> Zahl  -> [(DimK a, Zahl)] -> Maybe (UniK a) -> [(UniK a, Zahl)] 
   lookupLCSU_aux2 duMap z ts (Just u) = (u,z) : lookupLCSU_aux duMap ts
-   |] )
+  |] )
