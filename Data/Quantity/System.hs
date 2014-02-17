@@ -1,11 +1,22 @@
-{-# LANGUAGE DataKinds, TypeOperators, TypeFamilies, PolyKinds, UndecidableInstances #-}
+{-# LANGUAGE DataKinds, GADTs, TemplateHaskell, TypeOperators, TypeFamilies, PolyKinds, ScopedTypeVariables, UndecidableInstances #-}
 module Data.Quantity.System where
 
-import Data.Singletons.Eq
 import Data.Quantity.Zahl
+import Data.Ratio
+import Data.Singletons.Eq
+import Data.Singletons.TH
+
 
 -- | kind annotation for dimension names
-data DimK star = Dim star
+$(singletons [d|
+  data DimK star = Dim star
+  |] )
+
+-- | kind annotation for unit names
+$(singletons [d|
+  data UniK star = Uni star
+  |] )
+
 
 type family EqDim a b where
   EqDim (Dim a) (Dim b) = a == b
@@ -14,20 +25,20 @@ type instance a == b = EqDim a b
 
 type family DimOf (a::k) :: [(DimK *, Zahl)]
      
-class IsDimName d where
-  type GlobalBaseUnit d :: (UnitK *)
+
+class IsDimensionName d where
+  type GlobalBaseUnit d :: (UniK *)
 
 
-
--- | kind annotation for unit names
-data UnitK star = Unit star
 
 type family EqUnit a b where
-  EqUnit (Unit a) (Unit b) = a == b
+  EqUnit (Uni a) (Uni b) = a == b
 
 type instance a == b = EqUnit a b
 
-class IsUnitName u where
-  type DimOfUnitName u :: [(DimK *, Zahl)]
+class IsUnit u where
+  type DimOfUnit u :: [(DimK *, Zahl)]
+  conversionFactor :: u -> Rational
 
-type instance DimOf (Unit u) = DimOfUnitName u     
+type instance DimOf (Uni u) = DimOfUnit u     
+
