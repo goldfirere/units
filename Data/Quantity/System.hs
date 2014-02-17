@@ -4,7 +4,7 @@ module Data.Quantity.System where
 import Data.Singletons.Eq
 import Data.Quantity.Zahl
 
--- kind annotation for dimension names
+-- | kind annotation for dimension names
 data DimK star = Dim star
 
 type family EqDim a b where
@@ -19,7 +19,7 @@ class IsDimName d where
 
 
 
--- kind annotation for unit names
+-- | kind annotation for unit names
 data UnitK star = Unit star
 
 type family EqUnit a b where
