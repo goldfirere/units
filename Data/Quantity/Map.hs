@@ -14,37 +14,38 @@ import Prelude hiding (lookup)
 
 
 $( promote [d|
-  
   delete :: Eq a => a -> [a] -> [a]
   delete x [] = []
   delete x (y:ys) =
     if x==y then delete x ys else y:delete x ys     
+  |] )
 
+$( promote [d|
   uniq :: Eq a => [a] -> [a]
   uniq [] = []
   uniq (x:xs) = x:uniq (delete x xs)
-    
+  |] )
 
+$( promote [d|
   keys :: [(a,b)] -> [a]
   keys [] = []
   keys ((x,y):xys) = x : keys xys
+  |] )
 
+$( promote [d|
   elems :: [(a,b)] -> [b]
   elems [] = []
   elems ((x,y):xys) = y : elems xys
-
-
-
  |] )
 
 $( promote [d|
-
   lookup :: Eq a => a -> [(a,b)] -> Maybe b
   lookup x [] = Nothing
   lookup x ((x1,y1): xys) = 
     if x==x1 then Just y1 else lookup x xys
-                
-                
+ |] )
+
+$( promote [d|
   addMap :: (Eq a, Eq b, Num b) => [(a,b)] -> [(a,b)] -> [(a,b)]
   addMap m1 m2 = deleteZeroElems 
     (addMap_aux (uniq (keys m1 ++ keys m2)) m1 m2)
@@ -63,7 +64,9 @@ $( promote [d|
   deleteZeroElems [] = []
   deleteZeroElems ((x,y) : xys) =
     if y==zero then deleteZeroElems xys else (x,y) : deleteZeroElems xys
+ |] )
 
+$( promote [d|
   eqMap :: (Eq a, Eq b, Num b) => [(a,b)] -> [(a,b)] -> Bool
   eqMap m1 m2 = 
     (eqMap_aux (uniq (keys m1 ++ keys m2)) m1 m2)
@@ -77,5 +80,4 @@ $( promote [d|
   maybeEq (Just y1) Nothing  = y1 == zero
   maybeEq Nothing  (Just y2) = y2 == zero
   maybeEq Nothing  Nothing  = True
-
  |] )
