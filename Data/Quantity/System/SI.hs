@@ -17,27 +17,48 @@ instance IsDimensionName Length where
 instance IsDimensionName Time where
   type GlobalBaseUnit Time = Uni Second
 
+instance IsDimensionName Mass where
+  type GlobalBaseUnit Mass = Uni (Kilo Gram)
+
+
 data Meter = Meter
 data Second = Second
-data KiloMeter = KiloMeter
+data Gram = Gram
 newtype Kilo a = Kilo a
+newtype Centi a = Centi a
 
 
 data instance Sing Meter = SMeter
 instance SingI Meter where sing = SMeter
+                           
+data instance Sing Second = SSecond
+instance SingI Second where sing = SSecond                           
+                           
+data instance Sing Gram = SGram
+instance SingI Gram where sing = SGram                           
 
 instance IsUnitName Meter where
   type DimOfUnitName Meter = '[ '(Dim Length, Posi 1) ]
   conversionFactorOfName _ = 1
   
 
-data instance Sing KiloMeter = SKiloMeter
-instance SingI KiloMeter where sing = SKiloMeter
+instance IsUnitName Second where
+  type DimOfUnitName Second = '[ '(Dim Time, Posi 1) ]
+  conversionFactorOfName _ = 1
 
-instance IsUnitName KiloMeter where
-  type DimOfUnitName KiloMeter = '[ '(Dim Length, Posi 1) ]
-  conversionFactorOfName _ = 1000
 
+instance IsUnitName Gram where
+  type DimOfUnitName Gram = '[ '(Dim Mass, Posi 1) ]
+  conversionFactorOfName _ = 1
+
+
+data instance Sing (Centi a) = SCenti (Sing a)
+instance SingI a => SingI (Centi a) where sing = SCenti sing
+
+instance IsUnitName a => IsUnitName (Centi a) where
+  type DimOfUnitName (Centi a) = DimOfUnitName a
+  conversionFactorOfName (Centi x) = 0.01
+    * conversionFactorOfName x
 
 data instance Sing (Kilo a) = SKilo (Sing a)
 instance SingI a => SingI (Kilo a) where sing = SKilo sing
@@ -49,7 +70,4 @@ instance IsUnitName a => IsUnitName (Kilo a) where
 
 
 
-instance IsUnitName Second where
-  type DimOfUnitName Second = '[ '(Dim Time, Posi 1) ]
-  conversionFactorOfName _ = 1
 
