@@ -33,6 +33,8 @@ type CGS =
 marathonLength :: Qu SI '[ '(Uni Meter, Posi 1) ] Rational
 marathonLength = Qu 42195
 
+
+
 marathonLengthInKm :: Qu SI '[ '(Uni (Kilo Meter), Posi 1) ] Rational
 marathonLengthInKm = convertUnit $ marathonLength
 
