@@ -55,3 +55,18 @@ spec = do
       
     it "can convert between CSU correctly" $
       (toNumerical $ waterDensityInSI) `shouldBe` 1000
+
+
+{-
+-- type L1 = Sing (DimOfUnit '[ '(Uni Gram, Posi 1) , '(Uni (Centi Meter), Nega 3) ]) 
+-- type L2 = Sing ('[  '(Dim Mass, Posi 1) ,  '(Dim Length, Posi 1) ]) 
+
+type L1 = Sing (DimOfUnit '[ '(Uni (Meter), Nega 3) ]) 
+type L1x = Sing (DimOfUnitName Meter)
+type L1x2 = Sing (ZahlPowerOfDim (Nega 3) (DimOfUnitName Meter))
+type L2 = Sing ('[  '(Dim Length, Posi 1) ]) 
+
+
+type L3 = Sing (ZahlPowerOfDim (Posi 2) '[ '(Dim Mass, Posi 3)])
+type L4 = Sing ('[ '(Dim Mass, Posi 6)]                         )             
+-}
