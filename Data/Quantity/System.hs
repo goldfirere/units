@@ -14,6 +14,8 @@ $(singletons [d|
   data DimK star = Dim star
   |] )
 
+type family DimOf (a::k) :: [(DimK *, Zahl)]
+
 type family EqDim a b where
   EqDim (Dim a) (Dim b) = a == b
 type instance a == b = EqDim a b
@@ -23,13 +25,12 @@ $(singletons [d|
   data UniK star = Uni star
   |] )
 
+type family UniOf (a::k) :: [(UniK *, Zahl)]
+     
 type family EqUnit a b where
   EqUnit (Uni a) (Uni b) = a == b
 type instance a == b = EqUnit a b
 
-
-type family DimOf (a::k) :: [(DimK *, Zahl)]
-type family UniOf (a::k) :: [(UniK *, Zahl)]     
 
      
 class IsDimensionName d where
@@ -49,11 +50,12 @@ class SingI u => IsUnit (u :: k) where
   --   for example, conversion factor of centimeter in SI is 0.01 .       
   conversionFactor :: Sing u -> Rational
 
-type instance DimOf (Uni u) = DimOfUnit u     
-
 instance IsUnit ('[] :: [(UniK *, Zahl)]  ) where
   type DimOfUnit ('[] :: [(UniK *, Zahl)]  )  = '[]
   conversionFactor _ = 1
+
+type instance DimOf (a :: [(UniK *, Zahl)]) = DimOfUnit a
+  
 
 -- dummy function for the invocation of the TH
 dimOfUnit :: [(UniK a, Zahl)] -> [(DimK a, Zahl)] 

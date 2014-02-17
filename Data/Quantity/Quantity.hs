@@ -24,7 +24,7 @@ type family CoherentUnit q :: [(UniK *, Zahl)]where
 (Qu x) |*| (Qu y) = Qu (x*y)
 
 
-convertUnit :: (EqMap (DimOfUnit unit) (DimOfUnit unit') ~ True) => Qu lcsu unit val -> Qu lcsu unit' val 
+convertUnit :: (EqMap (DimOf unit) (DimOf unit') ~ True) => Qu lcsu unit val -> Qu lcsu unit' val 
 convertUnit (Qu x) = Qu x
 
 

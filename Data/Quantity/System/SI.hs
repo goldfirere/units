@@ -21,6 +21,7 @@ data Meter = Meter
 data Second = Second
 data KiloMeter = KiloMeter
 
+
 data instance Sing Meter = SMeter
 instance SingI Meter where sing = sing
 
