@@ -36,7 +36,14 @@ class IsDimensionName d where
   type GlobalBaseUnit d :: (UniK *)
 
 
-class (SingI u) => IsUnit u where
+class IsUnitName u where
+  type DimOfUnitName u :: [(DimK *, Zahl)]
+  -- | conversion factor to @u@ from the global base unit of the same dimension as @u@.
+  --   for example, conversion factor of centimeter in SI is 0.01 .       
+  conversionFactorOfName :: u -> Rational
+
+
+class SingI u => IsUnit u where
   type DimOfUnit u :: [(DimK *, Zahl)]
   -- | conversion factor to @u@ from the global base unit of the same dimension as @u@.
   --   for example, conversion factor of centimeter in SI is 0.01 .       
@@ -52,10 +59,9 @@ instance IsUnit ('[] :: [(UniK *, Zahl)]  ) where
 dimOfUnit :: [(UniK a, Zahl)] -> [(DimK a, Zahl)] 
 dimOfUnit = undefined
 
-
-instance (IsUnit u, SingI (UniK u, Zahl)) => IsUnit (UniK u, Zahl)  where
-  type DimOfUnit (UniK u, Zahl)  = DimOfUnit u
-  conversionFactor _ = conversionFactor (undefined :: Sing u)
+instance (IsUnitName u, SingI (UniK u, Zahl)) => IsUnit (UniK u, Zahl)  where
+  type DimOfUnit (UniK u, Zahl)  = DimOfUnitName u
+  conversionFactor _ = conversionFactorOfName (undefined :: u)
 
                  
 instance (IsUnit uh, IsUnit ut) => IsUnit (uh ': ut) where
