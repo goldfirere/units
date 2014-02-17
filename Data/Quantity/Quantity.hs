@@ -27,6 +27,13 @@ type family CoherentUnit q :: [(UniK *, Zahl)]where
 convertUnit :: (EqMap (DimOf unit) (DimOf unit') ~ True) => Qu lcsu unit val -> Qu lcsu unit' val 
 convertUnit (Qu x) = Qu x
 
+convertCSU :: forall l u v l' u' . (EqMap (DimOf u) (DimOf u') ~ True,  IsUnit (CoherentUnit (Qu l u v)),  IsUnit (CoherentUnit (Qu l' u' v)), Fractional v) => Qu l u v -> Qu l' u' v
+convertCSU (Qu x) = Qu (fromRational cf * x)
+  where
+    cf = conversionFactor (undefined :: Sing (CoherentUnit (Qu l u v)))
+       / conversionFactor (undefined :: Sing (CoherentUnit (Qu l' u' v)))
+
+
 
 
 toNumerical :: forall l u v. (Fractional v, IsUnit u, IsUnit (CoherentUnit (Qu l u v))) => Qu l u v -> v
