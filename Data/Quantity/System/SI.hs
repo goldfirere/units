@@ -25,3 +25,7 @@ instance IsUnitName Meter where
   conversionFactorOfName _ = 1
   
 
+instance IsUnitName Second where
+  type DimOfUnitName Second = '[ '(Dim Time, Posi 1) ]
+  conversionFactorOfName _ = 1
+
