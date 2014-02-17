@@ -63,12 +63,12 @@ dimOfUnit = undefined
 
 instance (IsUnitName u, SingI '( 'Uni u, n), SingI n) => IsUnit ( '( 'Uni u, n) :: (UniK *, Zahl))  where
   type DimOfUnit '( 'Uni u, n)  = DimOfUnitName u
-  conversionFactor _ = conversionFactorOfName (undefined :: u) ^ (fromSing (sing :: Sing n))
+  conversionFactor _ = (conversionFactorOfName (error "IsUnit/Term" :: u)) ^ (fromSing (sing :: Sing n))
 
                  
 instance (IsUnit uh, IsUnit ut) => IsUnit (uh ': ut) where
   type DimOfUnit (uh ': ut) = AddMap (DimOfUnit uh) (DimOfUnit ut)
-  conversionFactor _ = conversionFactor (undefined :: Sing uh) * conversionFactor (undefined :: Sing ut)
+  conversionFactor _ = conversionFactor (error "IsUnit/List" :: Sing uh) * conversionFactor (undefined :: Sing ut)
 
 $( promoteOnly [d|
   lookupLCSU :: [(DimK a, UniK a)] -> [(UniK a, Zahl)] -> [(UniK a, Zahl)] 
