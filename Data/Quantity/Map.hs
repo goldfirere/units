@@ -46,10 +46,17 @@ $( promote [d|
  |] )
 
 $( promote [d|
+  deleteZeroElems :: (Eq b, Num b) => [(a,b)] -> [(a,b)]
+  deleteZeroElems [] = []
+  deleteZeroElems ((x,y) : xys) =
+    if y==zero then deleteZeroElems xys else (x,y) : deleteZeroElems xys
+ |] )
+
+$( promote [d|
   addMap :: (Eq a, Eq b, Num b) => [(a,b)] -> [(a,b)] -> [(a,b)]
   addMap m1 m2 = deleteZeroElems 
     (addMap_aux (uniq (keys m1 ++ keys m2)) m1 m2)
-     
+
   addMap_aux :: (Eq a, Num b) => [a] -> [(a,b)] -> [(a,b)] -> [(a,b)]
   addMap_aux [] _ _ = []
   addMap_aux (x:xs) m1 m2 = (x, maybeAdd (lookup x m1)  (lookup x m2)) : addMap_aux xs m1 m2
@@ -59,12 +66,32 @@ $( promote [d|
   maybeAdd (Just y1) Nothing  = y1
   maybeAdd Nothing  (Just y2) = y2
   maybeAdd Nothing  Nothing  = zero
-
-  deleteZeroElems :: (Eq b, Num b) => [(a,b)] -> [(a,b)]
-  deleteZeroElems [] = []
-  deleteZeroElems ((x,y) : xys) =
-    if y==zero then deleteZeroElems xys else (x,y) : deleteZeroElems xys
  |] )
+
+$( promote [d|
+  subMap :: (Eq a, Eq b, Num b) => [(a,b)] -> [(a,b)] -> [(a,b)]
+  subMap m1 m2 = deleteZeroElems 
+    (subMap_aux (uniq (keys m1 ++ keys m2)) m1 m2)
+
+  subMap_aux :: (Eq a, Num b) => [a] -> [(a,b)] -> [(a,b)] -> [(a,b)]
+  subMap_aux [] _ _ = []
+  subMap_aux (x:xs) m1 m2 = (x, maybeSub (lookup x m1)  (lookup x m2)) : subMap_aux xs m1 m2
+
+  maybeSub :: Num b => Maybe b -> Maybe b ->  b
+  maybeSub (Just y1) (Just y2) = y1 - y2
+  maybeSub (Just y1) Nothing  = y1
+  maybeSub Nothing  (Just y2) = y2
+  maybeSub Nothing  Nothing  = zero
+ |] )
+
+
+$( promote [d|
+  negateMap :: (Eq a, Eq b, Num b) => [(a,b)] -> [(a,b)]
+  negateMap [] = []
+  negateMap ((x,y):xys) = (x, negate y):negateMap xys
+ |] )
+
+
 
 $( promote [d|
   eqMap :: (Eq a, Eq b, Num b) => [(a,b)] -> [(a,b)] -> Bool

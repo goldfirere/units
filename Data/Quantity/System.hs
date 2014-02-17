@@ -61,9 +61,22 @@ type instance DimOf (a :: [(UniK *, Zahl)]) = DimOfUnit a
 dimOfUnit :: [(UniK a, Zahl)] -> [(DimK a, Zahl)] 
 dimOfUnit = undefined
 
+$( promoteOnly [d|
+  zahlPowerOfDim :: Zahl -> [(DimK a, Zahl)] -> [(DimK a, Zahl)]    
+  zahlPowerOfDim (Posi 0) d = []              
+  zahlPowerOfDim (Nega 0) d = []              
+  zahlPowerOfDim (Posi 1) d = d
+  zahlPowerOfDim (Nega 1) d = negateMap d              
+  zahlPowerOfDim (Posi n) d = addMap d (zahlPowerOfDim (pred (Posi n)) d)
+  zahlPowerOfDim (Nega n) d = subMap (zahlPowerOfDim (succ (Nega n)) d) d
+  |] )
+
+
 instance (IsUnitName u, SingI '( 'Uni u, n), SingI n) => IsUnit ( '( 'Uni u, n) :: (UniK *, Zahl))  where
-  type DimOfUnit '( 'Uni u, n)  = DimOfUnitName u
+  type DimOfUnit '( 'Uni u, n)  = ZahlPowerOfDim n (DimOfUnitName u) --- BUG: to be ^^n
   conversionFactor _ = (conversionFactorOfName (error "IsUnit/Term" :: u)) ^^ (fromSing (sing :: Sing n))
+
+
 
                  
 instance (IsUnit uh, IsUnit ut) => IsUnit (uh ': ut) where

@@ -27,6 +27,9 @@ type CGS =
   , '(Dim Mass, Uni Gram)] 
 
 
+
+                                           
+
 marathonLength :: Qu SI '[ '(Uni Meter, Posi 1) ] Rational
 marathonLength = Qu 42195
 
@@ -41,6 +44,7 @@ waterDensityInSI = convertCSU waterDensity
 
 
 
+
 spec :: Spec 
 spec = do
   describe "Quantity calculus library" $ do
@@ -51,11 +55,3 @@ spec = do
       
     it "can convert between CSU correctly" $
       (toNumerical $ waterDensityInSI) `shouldBe` 1000
-{-
-    - can convert between CSU correctly FAILED [1]
-
-1) SI, Quantity calculus library, can convert between CSU correctly
-expected: 1000 % 1
- but got: 1 % 100000
-
--}      
