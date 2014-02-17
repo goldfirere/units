@@ -6,8 +6,8 @@ import Data.Singletons
 import Data.Singletons.Bool
 import Data.Singletons.Tuple
 import Data.Singletons.TH
-import Data.Quantity.Dimension
-import Data.Quantity.Dimension.SI
+import Data.Quantity.System
+import Data.Quantity.System.SI
 import Data.Quantity.Map
 import Data.Quantity.Zahl
 

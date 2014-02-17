@@ -38,12 +38,10 @@ library
                       Data.Dimensions.SI, Data.Dimensions.SI.Prefixes,
                       Data.Dimensions.SI.Types, Data.Dimensions.SI.Units
 
-                      Data.Quantity.Dimension
-                      Data.Quantity.Dimension.SI
+                      Data.Quantity.System
+                      Data.Quantity.System.SI
                       Data.Quantity.Map
                       Data.Quantity.Quantity
-                      Data.Quantity.Unit
-                      Data.Quantity.Unit.SI
                       Data.Quantity.Zahl
 
 
