@@ -1,9 +1,11 @@
-{-# LANGUAGE DataKinds, TypeFamilies #-}
+{-# LANGUAGE DataKinds, EmptyCase, GADTs, TemplateHaskell, TypeFamilies #-}
 module Data.Quantity.System.SI where
+
+import Data.Singletons
+import Data.Singletons.TH
 
 import Data.Quantity.System
 import Data.Quantity.Zahl
-import Data.Singletons
 
 data Length = Length
 data instance Sing Length = SLength
@@ -17,6 +19,9 @@ instance SingI Mass where sing = SMass
 data Current = Current
 data Temperature = Temperature
 
+
+-- $( singletons [d| data Gram = Gram |]  )
+
 instance IsDimensionName Length where
   type GlobalBaseUnit Length = Uni Meter
 
@@ -29,16 +34,29 @@ instance IsDimensionName Mass where
 
 data Meter = Meter
 data Second = Second
+
+
+   
 data Gram = Gram
 newtype Kilo a = Kilo a
 newtype Centi a = Centi a
 
+{- Here, we need a Sing Meter instance 
+   (Sing instance for type Meter)
+
+   but the singleton library TH generates a Sing (a::Meter) instance 
+   (Sing instance for types of kind Meter)
+
+   so we cannot use the singleton library here.
+-}
 
 data instance Sing Meter = SMeter
 instance SingI Meter where sing = SMeter
 
 data instance Sing Second = SSecond
 instance SingI Second where sing = SSecond                           
+
+
 
 data instance Sing Gram = SGram
 instance SingI Gram where sing = SGram                           
