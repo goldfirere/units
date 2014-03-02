@@ -7,6 +7,7 @@ import Data.Dimensions.SI
 import Data.Dimensions.SI.Types
 import Data.Dimensions.SI.Prefixes
 import Data.Dimensions.Show
+import Data.Dimensions.Poly
 
 type Position = Length
 
@@ -29,7 +30,7 @@ type Universe = [Object]
 g :: Acceleration
 g = (-9.8)%(Meter :/ (Second :^ pTwo))
 
-g_universe :: MkDim (Newton :* Meter :^ Two :/ (Kilo :@ Gram :^ Two))
+g_universe :: Force %* Length %^ Two %/ (Mass %^ Two)
 g_universe = 6.67e-11 % (Newton :* Meter :^ pTwo :/ (Kilo :@ Gram :^ pTwo))
 
 update :: Time -> Universe -> Universe

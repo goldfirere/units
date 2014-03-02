@@ -22,7 +22,8 @@
 -}
 
 {-# LANGUAGE ExplicitNamespaces, DataKinds, FlexibleInstances, TypeFamilies,
-             TypeOperators, ConstraintKinds #-}
+             TypeOperators, ConstraintKinds, ScopedTypeVariables,
+             FlexibleContexts #-}
 
 -----------------------------------------------------------------------------
 -- |
@@ -63,8 +64,12 @@ module Data.Dimensions (
   -- * Type-level dimensioned-quantity combinators
   type (%*), type (%/), type (%^),
 
+  -- * Creating new dimensions
+  Dimension, MkLCSU,
+
   -- * Creating new units
-  Unit(type BaseUnit, conversionRatio), MkDim, MkGenDim, Canonical, 
+  Unit(type BaseUnit, conversionRatio), MkDim, MkGenDim, 
+  Canonical, Compatible,
 
   -- * Scalars, the only built-in unit
   Number(..), Scalar, scalar,
@@ -87,43 +92,65 @@ import Data.Dimensions.Dim
 import Data.Dimensions.DimSpec
 import Data.Dimensions.Units
 import Data.Dimensions.UnitCombinators
+import Data.Dimensions.Map
+import Data.Proxy
 
 -- | Extracts a @Double@ from a dimensioned quantity, expressed in
 --   the given unit. For example:
 --
 --   > inMeters :: Length -> Double
 --   > inMeters x = dimIn x Meter
-dimIn :: Unit unit => MkDim (CanonicalUnit unit) -> unit -> Double
-dimIn (Dim val) u = val / canonicalConvRatio u
+dimIn :: forall unit dim lcsu n.
+         ( Unit unit
+         , UnitSpec (LookupList dim lcsu)
+         , UnitSpecsOf unit *~ LookupList dim lcsu
+         , Fractional n )
+      => Dim n dim lcsu -> unit -> n
+dimIn (Dim val) u = val * canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))
+                        / canonicalConvRatio u
 
 infix 5 #
 -- | Infix synonym for 'dimIn'
-(#) :: Unit unit => MkDim (CanonicalUnit unit) -> unit -> Double
+(#) :: ( Unit unit
+       , UnitSpec (LookupList dim lcsu)
+       , UnitSpecsOf unit *~ LookupList dim lcsu
+       , Fractional n )
+    => Dim n dim lcsu -> unit -> n
 (#) = dimIn
 
 -- | Creates a dimensioned quantity in the given unit. For example:
 --
 --   > height :: Length
 --   > height = dimOf 2.0 Meter
-dimOf :: Unit unit => Double -> unit -> MkDim (CanonicalUnit unit)
-dimOf d u = Dim (d * canonicalConvRatio u)
+dimOf :: forall unit dim lcsu n.
+         ( Unit unit
+         , UnitSpec (LookupList dim lcsu)
+         , UnitSpecsOf unit *~ LookupList dim lcsu
+         , Fractional n )
+      => n -> unit -> Dim n dim lcsu
+dimOf d u = Dim (d * canonicalConvRatio u
+                   / canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu)))
 
-infix 9 %
+infixr 9 %
 -- | Infix synonym for 'dimOf'
-(%) :: Unit unit => Double -> unit -> MkDim (CanonicalUnit unit)
+(%) :: ( Unit unit
+       , UnitSpec (LookupList dim lcsu)
+       , UnitSpecsOf unit *~ LookupList dim lcsu
+       , Fractional n )
+    => n -> unit -> Dim n dim lcsu
 (%) = dimOf
 
 -- | The number 1, expressed as a unitless dimensioned quantity.
-unity :: Num n => Dim n '[]
+unity :: Num n => Dim n '[] l
 unity = Dim 1
 
 -- | The number 0, polymorphic in its dimension. Use of this will
 -- often require a type annotation.
-zero :: Num n => Dim n dimspec
+zero :: Num n => Dim n dimspec l
 zero = Dim 0
 
 -- | Dimension-safe cast. See the README for more info.
-dim :: (d @~ e) => Dim n d -> Dim n e
+dim :: (d @~ e) => Dim n d l -> Dim n e l
 dim (Dim x) = Dim x
 
 -------------------------------------------------------------
@@ -134,12 +161,12 @@ dim (Dim x) = Dim x
 data Number = Number -- the unit for unadorned numbers
 instance Unit Number where
   type BaseUnit Number = Canonical
-  type DimSpecsOf Number = '[]
+  type UnitSpecsOf Number = '[]
 
 -- | The type of unitless dimensioned quantities
 -- This is an instance of @Num@, though Haddock doesn't show it.
-type Scalar = MkDim Number
+type Scalar l = MkDim Number l
 
 -- | Convert a raw number into a unitless dimensioned quantity
-scalar :: n -> Dim n '[]
+scalar :: n -> Dim n '[] l
 scalar = Dim

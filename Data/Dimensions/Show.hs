@@ -1,5 +1,5 @@
 {-# LANGUAGE PolyKinds, DataKinds, TypeOperators, FlexibleInstances,
-             ScopedTypeVariables #-}
+             ScopedTypeVariables, FlexibleContexts #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -----------------------------------------------------------------------------
@@ -25,15 +25,17 @@ import Data.Singletons (Sing, sing, SingI)
 import Data.Dimensions.DimSpec
 import Data.Dimensions.Dim
 import Data.Dimensions.Z
+import Data.Dimensions.Map
+import Data.Dimensions.UnitCombinators ( (:@) )
 
-class ShowDimSpec (dims :: [DimSpec *]) where
+class ShowUnitSpec (dims :: [DimSpec *]) where
   showDims :: Proxy dims -> ([String], [String])
 
-instance ShowDimSpec '[] where
+instance ShowUnitSpec '[] where
   showDims _ = ([], [])
 
-instance (ShowDimSpec rest, Show unit, SingI z)
-         => ShowDimSpec (D unit z ': rest) where
+instance (ShowUnitSpec rest, Show unit, SingI z)
+         => ShowUnitSpec (D unit z ': rest) where
   showDims _ =
     let (nums, denoms) = showDims (Proxy :: Proxy rest)
         baseStr        = show (undefined :: unit)
@@ -47,7 +49,7 @@ instance (ShowDimSpec rest, Show unit, SingI z)
       EQ -> (nums, denoms)
       GT -> (str : nums, denoms)
 
-showDimSpec :: ShowDimSpec dimspec => Proxy dimspec -> String
+showDimSpec :: ShowUnitSpec dimspec => Proxy dimspec -> String
 showDimSpec p
   = let (nums, denoms) = mapPair (build_string . sort) $ showDims p in
     case (length nums, length denoms) of
@@ -69,5 +71,10 @@ showDimSpec p
     build_string_helper [s] = s
     build_string_helper (h:t) = h ++ " * " ++ build_string_helper t
 
-instance (ShowDimSpec dims, Show n) => Show (Dim n dims) where
-  show (Dim d) = (show d ++ showDimSpec (Proxy :: Proxy dims))
+-- enable showing of units with prefixes:
+instance (Show prefix, Show unit) => Show (prefix :@ unit) where
+  show _ = show (undefined :: prefix) ++ show (undefined :: unit)
+
+instance (ShowUnitSpec (LookupList dims lcsu), Show n)
+           => Show (Dim n dims lcsu) where
+  show (Dim d) = (show d ++ showDimSpec (Proxy :: Proxy (LookupList dims lcsu)))

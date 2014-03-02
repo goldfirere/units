@@ -10,19 +10,28 @@
 
 {-# LANGUAGE TypeFamilies, DataKinds, DefaultSignatures, MultiParamTypeClasses,
              ConstraintKinds, UndecidableInstances, FlexibleContexts,
-             FlexibleInstances, ScopedTypeVariables #-}
+             FlexibleInstances, ScopedTypeVariables, TypeOperators #-}
 
 module Data.Dimensions.Units where
 
 import Data.Dimensions.Z
 import Data.Dimensions.DimSpec
 import Data.Dimensions.Dim
+import Data.Dimensions.Map
 import Data.Type.Bool
+import Data.Proxy
+import Data.Singletons
 
 -- | Dummy type use just to label canonical units. It does /not/ have a
 -- 'Unit' instance.
 data Canonical
 
+-- | TODO
+class Dimension dim where
+  -- | TODO
+  type DimSpecsOf dim :: [DimSpec *]
+  type DimSpecsOf dim = '[D dim One]
+  
 -- | Class of units. Make an instance of this class to define a new unit.
 class Unit unit where
   -- | The base unit of this unit: what this unit is defined in terms of.
@@ -40,23 +49,21 @@ class Unit unit where
   -- >   conversionRatio _ = 0.3048
   --
   -- Implementations should /never/ examine their argument!
-  conversionRatio :: unit -> Double
+  conversionRatio :: Fractional f => unit -> f
+  conversionRatio _ = 1  -- if unspecified, assume a conversion ratio of 1
 
-  -- | The internal list of dimensions for a dimensioned quantity built from
-  -- this unit.
-  type DimSpecsOf unit :: [DimSpec *]
-  type DimSpecsOf unit = If (IsCanonical unit)
-                          '[D unit One]
-                          (DimSpecsOf (BaseUnit unit))
-
-  -- if unspecified, assume a conversion ratio of 1
-  conversionRatio _ = 1
+  -- | The internal list of canonical units corresponding to this unit.
+  type UnitSpecsOf unit :: [DimSpec *]
+  type UnitSpecsOf unit = If (IsCanonical unit)
+                            '[D unit One]
+                            (UnitSpecsOf (BaseUnit unit))
 
   -- | Compute the conversion from the underlying canonical unit to
   -- this one. A default is provided that multiplies together the ratios
   -- of all units between this one and the canonical one.
-  canonicalConvRatio :: unit -> Double
-  default canonicalConvRatio :: BaseHasConvRatio unit => unit -> Double
+  canonicalConvRatio :: Fractional f => unit -> f
+  default canonicalConvRatio :: (BaseHasConvRatio unit, Fractional f)
+                             => unit -> f
   canonicalConvRatio u = conversionRatio u * baseUnitRatio u
 
 -- Abbreviation for creating a Dim (defined here to avoid a module cycle)
@@ -65,10 +72,10 @@ class Unit unit where
 -- unit. This uses a 'Double' for storage of the value. For example:
 --
 -- > type Length = MkDim Meter
-type MkDim unit = Dim Double (DimSpecsOf unit)
+type MkDim dim lcsu = Dim Double (DimSpecsOf dim) lcsu
 
 -- | Make a dimensioned quantity with a custom numerical type.
-type MkGenDim n unit = Dim n (DimSpecsOf unit)
+type MkGenDim n dim lcsu = Dim n (DimSpecsOf dim) lcsu
 
 -- | Is this unit a canonical unit?
 type IsCanonical (unit :: *) = CheckCanonical (BaseUnit unit)
@@ -102,7 +109,7 @@ type BaseHasConvRatio unit = HasConvRatio (IsCanonical unit) unit
 -- to be able to define 'canonicalConvRatio' in the right way.
 class is_canonical ~ IsCanonical unit
       => HasConvRatio (is_canonical :: Bool) (unit :: *) where
-  baseUnitRatio :: unit -> Double
+  baseUnitRatio :: Fractional f => unit -> f
 instance True ~ IsCanonical canonical_unit
          => HasConvRatio True canonical_unit where
   baseUnitRatio _ = 1
@@ -110,3 +117,27 @@ instance ( False ~ IsCanonical noncanonical_unit
          , Unit (BaseUnit noncanonical_unit) )
          => HasConvRatio False noncanonical_unit where
   baseUnitRatio _ = canonicalConvRatio (undefined :: BaseUnit noncanonical_unit)
+
+class UnitSpec (units :: [DimSpec *]) where
+  canonicalConvRatioSpec :: Fractional f => Proxy units -> f
+
+instance UnitSpec '[] where
+  canonicalConvRatioSpec _ = 1
+
+instance (UnitSpec rest, Unit unit, SingI n) => UnitSpec (D unit n ': rest) where
+  canonicalConvRatioSpec _ =
+    (canonicalConvRatio (undefined :: unit) ^^ szToInt (sing :: Sing n)) *
+    canonicalConvRatioSpec (Proxy :: Proxy rest)
+
+infix 4 *~
+-- | Check if two @[DimSpec *]@s, representing /units/, should be
+-- considered to be equal
+type units1 *~ units2 = (Canonicalize units1 @~ Canonicalize units2)
+
+type family Canonicalize (units :: [DimSpec *]) :: [DimSpec *] where
+  Canonicalize '[] = '[]
+  Canonicalize (D unit n ': rest) = D (CanonicalUnit unit) n ': Canonicalize rest
+
+type Compatible (dim :: *) (lcsu :: Map *) (unit :: *) =
+  ( CanonicalUnit (Lookup dim lcsu) ~ CanonicalUnit unit
+  , Unit (Lookup dim lcsu))
