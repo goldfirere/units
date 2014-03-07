@@ -35,8 +35,9 @@ m2 :: Qu SI '[ '(Uni Second, Posi 1) ] Rational
 m2 = Qu 2
 
 
-combined :: Qu SI '[ '(Uni Meter, Posi 1) ] Rational
-combined = m1 |+| m2
+-- The following is a compile error
+-- combined :: Qu SI '[ '(Uni Meter, Posi 1) ] Rational
+-- combined = m1 |+| m2
 
 
 marathonLength :: Qu SI '[ '(Uni Meter, Posi 1) ] Rational
