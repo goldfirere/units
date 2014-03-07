@@ -88,6 +88,7 @@ type family EqZahl a b where
   EqZahl (Posi a) (Posi a) = True
   EqZahl (Nega a) (Nega a) = True
   EqZahl (Posi 0) (Nega 0) = True
+  EqZahl (Nega 0) (Posi 0) = True
   EqZahl a        b        = False
 
 type instance a == b = EqZahl a b
