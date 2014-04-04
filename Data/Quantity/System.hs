@@ -73,7 +73,7 @@ $( promoteOnly [d|
 
 
 instance (IsUnitName u, SingI '( 'Uni u, n), SingI n) => IsUnit ( '( 'Uni u, n) :: (UniK *, Zahl))  where
-  type DimOfUnit '( 'Uni u, n)  = ZahlPowerOfDim n (DimOfUnitName u) --- BUG: to be ^^n
+  type DimOfUnit '( 'Uni u, n)  = ZahlPowerOfDim n (DimOfUnitName u) 
   conversionFactor _ = (conversionFactorOfName (error "IsUnit/Term" :: u)) ^^ (fromSing (sing :: Sing n))
 
 
