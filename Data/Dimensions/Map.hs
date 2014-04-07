@@ -11,7 +11,7 @@
 
 module Data.Dimensions.Map (
   Map,
-  Lookup, LookupList, MkLCSU
+  Lookup, LookupList, RevMap, MkLCSU
   ) where
 
 import Data.Dimensions.DimSpec
@@ -27,6 +27,13 @@ type family Lookup (key :: *) (map :: Map *) :: * where
 type family LookupList (keys :: [DimSpec *]) (map :: Map *) :: [DimSpec *] where
   LookupList '[] lcsu = '[]
   LookupList (D dim z ': rest) lcsu = D (Lookup dim lcsu) z ': LookupList rest lcsu
+
+type family RevMap (map :: Map *) :: Map * where
+  RevMap (MkM list) = MkM (RevMapList list)
+
+type family RevMapList (ls :: [*]) :: [*] where
+  RevMapList '[] = '[]
+  RevMapList ((key, value) ': rest) = (value, key) ': RevMapList rest
 
 -- use type family to prevent pattern-matching
 type family MkLCSU pairs where

@@ -77,6 +77,10 @@ type MkDim dim lcsu = Dim Double (DimSpecsOf dim) lcsu
 -- | Make a dimensioned quantity with a custom numerical type.
 type MkGenDim n dim lcsu = Dim n (DimSpecsOf dim) lcsu
 
+-- extracting a dimension from a unit
+type family DimSpecsOfUnit (unit :: *) (lcsu :: Map *) :: [DimSpec *] where
+  DimSpecsOfUnit unit lcsu = LookupList (UnitSpecsOf unit) (RevMap lcsu)
+
 -- | Is this unit a canonical unit?
 type IsCanonical (unit :: *) = CheckCanonical (BaseUnit unit)
 

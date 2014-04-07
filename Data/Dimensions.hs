@@ -123,7 +123,8 @@ infix 5 #
 --   > height :: Length
 --   > height = dimOf 2.0 Meter
 dimOf :: forall unit dim lcsu n.
-         ( Unit unit
+         ( dim ~ DimSpecsOfUnit unit lcsu
+         , Unit unit
          , UnitSpec (LookupList dim lcsu)
          , UnitSpecsOf unit *~ LookupList dim lcsu
          , Fractional n )
@@ -133,7 +134,8 @@ dimOf d u = Dim (d * canonicalConvRatio u
 
 infixr 9 %
 -- | Infix synonym for 'dimOf'
-(%) :: ( Unit unit
+(%) :: ( dim ~ DimSpecsOfUnit unit lcsu
+       , Unit unit
        , UnitSpec (LookupList dim lcsu)
        , UnitSpecsOf unit *~ LookupList dim lcsu
        , Fractional n )
