@@ -1,5 +1,5 @@
 {-# LANGUAGE TypeOperators, ConstraintKinds, ScopedTypeVariables, TypeFamilies,
-             FlexibleContexts #-}
+             FlexibleContexts, DataKinds #-}
 
 module Test.Physics where
 
@@ -64,8 +64,7 @@ momentum :: MkDim Mass l
          -> MkDim Momentum l
 momentum m v = dim $ m .* v
 
-g_earth :: ( Compatible Time lcsu Second
-           , Compatible Length lcsu Meter )
+g_earth :: Compatible lcsu (Meter :/ (Second :^ Two))
         => MkDim Acceleration lcsu
 g_earth = 9.8 % (Meter :/ (Second :^ pTwo))
 

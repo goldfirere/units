@@ -10,31 +10,30 @@
 {-# LANGUAGE DataKinds, PolyKinds, TypeFamilies, TypeOperators, UndecidableInstances #-}
 
 module Data.Dimensions.Map (
-  Map,
-  Lookup, LookupList, RevMap, MkLCSU
+  LCSU(DefaultLCSU), DefaultLCSUUnit,
+  Lookup, LookupList, MkLCSU
   ) where
 
 import Data.Dimensions.DimSpec
+import Data.Dimensions.Z
 
 import Data.Singletons.Maybe
 
-data Map star = MkM [star]
+data LCSU star = MkLCSU_ [star]
+               | DefaultLCSU
 
-type family Lookup (key :: *) (map :: Map *) :: * where
-  Lookup key (MkM ((key, value) ': rest)) =  value
-  Lookup key (MkM (other ': rest))         = Lookup key (MkM rest)
+data DefaultLCSUUnit
 
-type family LookupList (keys :: [DimSpec *]) (map :: Map *) :: [DimSpec *] where
+type family Lookup (key :: *) (map :: [*]) :: * where
+  Lookup key ((key, value) ': rest) =  value
+  Lookup key (other ': rest)        = Lookup key rest
+
+type family LookupList (keys :: [DimSpec *]) (map :: LCSU *) :: [DimSpec *] where
   LookupList '[] lcsu = '[]
-  LookupList (D dim z ': rest) lcsu = D (Lookup dim lcsu) z ': LookupList rest lcsu
-
-type family RevMap (map :: Map *) :: Map * where
-  RevMap (MkM list) = MkM (RevMapList list)
-
-type family RevMapList (ls :: [*]) :: [*] where
-  RevMapList '[] = '[]
-  RevMapList ((key, value) ': rest) = (value, key) ': RevMapList rest
+  LookupList (D dim z ': rest) (MkLCSU_ lcsu)
+    = D (Lookup dim lcsu) z ': LookupList rest (MkLCSU_ lcsu)
+  LookupList dims DefaultLCSU = '[D DefaultLCSUUnit Zero]
 
 -- use type family to prevent pattern-matching
 type family MkLCSU pairs where
-  MkLCSU pairs = MkM pairs
+  MkLCSU pairs = MkLCSU_ pairs

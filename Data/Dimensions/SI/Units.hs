@@ -19,46 +19,54 @@
 module Data.Dimensions.SI.Units where
 
 import Data.Dimensions
+import Data.Dimensions.SI.Dims
 
 data Meter = Meter
 instance Unit Meter where
   type BaseUnit Meter = Canonical
+  type DimOfUnit Meter = Length
 instance Show Meter where
   show _ = "m"
 
 data Gram = Gram
 instance Unit Gram where
   type BaseUnit Gram = Canonical
+  type DimOfUnit Gram = Mass
 instance Show Gram where
   show _ = "g"
 
 data Second = Second
 instance Unit Second where
   type BaseUnit Second = Canonical
+  type DimOfUnit Second = Time
 instance Show Second where
   show _ = "s"
 
 data Ampere = Ampere
 instance Unit Ampere where
   type BaseUnit Ampere = Canonical
+  type DimOfUnit Ampere = Current
 instance Show Ampere where
   show _ = "A"
 
 data Kelvin = Kelvin
 instance Unit Kelvin where
   type BaseUnit Kelvin = Canonical
+  type DimOfUnit Kelvin = Temperature
 instance Show Kelvin where
   show _ = "K"
 
 data Mole = Mole
 instance Unit Mole where
   type BaseUnit Mole = Canonical
+  type DimOfUnit Mole = Quantity
 instance Show Mole where
   show _ = "mol"
 
 data Candela = Candela
 instance Unit Candela where
   type BaseUnit Candela = Canonical
+  type DimOfUnit Candela = Luminosity
 instance Show Candela where
   show _ = "cd"
 

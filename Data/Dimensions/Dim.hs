@@ -24,7 +24,7 @@ import Data.Dimensions.Map
 
 -- | Dim adds a dimensional annotation to its base type @n@. This is the
 -- representation for all dimensioned quantities.
-newtype Dim (n :: *) (a :: [DimSpec *]) (lcsu :: Map *) = Dim n
+newtype Dim (n :: *) (a :: [DimSpec *]) (lcsu :: LCSU *) = Dim n
 type role Dim representational nominal nominal
 
 -------------------------------------------------------------

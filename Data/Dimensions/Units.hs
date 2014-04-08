@@ -19,8 +19,10 @@ import Data.Dimensions.DimSpec
 import Data.Dimensions.Dim
 import Data.Dimensions.Map
 import Data.Type.Bool
+import Data.Type.Equality
 import Data.Proxy
 import Data.Singletons
+import GHC.Exts
 
 -- | Dummy type use just to label canonical units. It does /not/ have a
 -- 'Unit' instance.
@@ -33,11 +35,17 @@ class Dimension dim where
   type DimSpecsOf dim = '[D dim One]
   
 -- | Class of units. Make an instance of this class to define a new unit.
-class Unit unit where
+class DimOfUnitIsConsistent unit => Unit unit where
   -- | The base unit of this unit: what this unit is defined in terms of.
   -- For units that are not defined in terms of anything else, the base unit
   -- should be 'Canonical'.
   type BaseUnit unit :: *
+
+  -- | The dimension that this unit is associated with. This needs to be
+  -- defined only for canonical units; other units are necessarily of the
+  -- same dimension as their base.
+  type DimOfUnit unit :: *
+  type DimOfUnit unit = DimOfUnit (BaseUnit unit)
 
   -- | The conversion ratio /from/ the base unit /to/ this unit.
   -- If left out, a conversion ratio of 1 is assumed.
@@ -66,28 +74,30 @@ class Unit unit where
                              => unit -> f
   canonicalConvRatio u = conversionRatio u * baseUnitRatio u
 
+-- | Check to make sure that a unit has the same dimension as its base unit,
+-- if any.
+type family DimOfUnitIsConsistent unit :: Constraint where
+  DimOfUnitIsConsistent unit = ( Dimension (DimOfUnit unit)
+                               , If (BaseUnit unit == Canonical)
+                                    (() :: Constraint)
+                                    (DimOfUnit unit ~ DimOfUnit (BaseUnit unit)) )
+  -- This definition does not use || so that we get better error messages.
+
 -- Abbreviation for creating a Dim (defined here to avoid a module cycle)
 
 -- | Make a dimensioned quantity type capable of storing a value of a given
 -- unit. This uses a 'Double' for storage of the value. For example:
 --
--- > type Length = MkDim Meter
-type MkDim dim lcsu = Dim Double (DimSpecsOf dim) lcsu
+-- > data LengthDim = LengthDim
+-- > instance Dimension LengthDim
+-- > type Length = MkDim LengthDim
+type MkDim dim lcsu = Dim Double (DimSpecsOf dim) DefaultLCSU
 
--- | Make a dimensioned quantity with a custom numerical type.
+-- | Make a dimensioned quantity with a custom numerical type and LCSU.
 type MkGenDim n dim lcsu = Dim n (DimSpecsOf dim) lcsu
 
--- extracting a dimension from a unit
-type family DimSpecsOfUnit (unit :: *) (lcsu :: Map *) :: [DimSpec *] where
-  DimSpecsOfUnit unit lcsu = LookupList (UnitSpecsOf unit) (RevMap lcsu)
-
 -- | Is this unit a canonical unit?
-type IsCanonical (unit :: *) = CheckCanonical (BaseUnit unit)
-
--- | Is the argument the special datatype 'Canonical'?
-type family CheckCanonical (base_unit :: *) :: Bool where
-  CheckCanonical Canonical = True
-  CheckCanonical unit      = False
+type IsCanonical (unit :: *) = (BaseUnit unit == Canonical)
 
 {- I want to say this. But type families are *eager* so I have to write
    it another way.
@@ -128,20 +138,36 @@ class UnitSpec (units :: [DimSpec *]) where
 instance UnitSpec '[] where
   canonicalConvRatioSpec _ = 1
 
-instance (UnitSpec rest, Unit unit, SingI n) => UnitSpec (D unit n ': rest) where
+-- the instances for S n and P n must be separate to allow for the Zero case,
+-- which comes up for a DefaultLCSU
+instance (UnitSpec rest, Unit unit, SingI n) => UnitSpec (D unit (S n) ': rest) where
   canonicalConvRatioSpec _ =
-    (canonicalConvRatio (undefined :: unit) ^^ szToInt (sing :: Sing n)) *
+    (canonicalConvRatio (undefined :: unit) ^^ szToInt (sing :: Sing (S n))) *
     canonicalConvRatioSpec (Proxy :: Proxy rest)
 
+instance (UnitSpec rest, Unit unit, SingI n) => UnitSpec (D unit (P n) ': rest) where
+  canonicalConvRatioSpec _ =
+    (canonicalConvRatio (undefined :: unit) ^^ szToInt (sing :: Sing (P n))) *
+    canonicalConvRatioSpec (Proxy :: Proxy rest)
+
+instance UnitSpec '[D DefaultLCSUUnit Zero] where
+  canonicalConvRatioSpec _ = 1
+                                                          
 infix 4 *~
 -- | Check if two @[DimSpec *]@s, representing /units/, should be
 -- considered to be equal
-type units1 *~ units2 = (Canonicalize units1 @~ Canonicalize units2)
+type family units1 *~ units2 where
+  '[D DefaultLCSUUnit Zero] *~ units2 = (() :: Constraint)
+  units1 *~ '[D DefaultLCSUUnit Zero] = (() :: Constraint)
+  units1 *~ units2 = (Canonicalize units1 @~ Canonicalize units2)
 
+-- | Given a unit specification, get the canonical units of each component.
 type family Canonicalize (units :: [DimSpec *]) :: [DimSpec *] where
   Canonicalize '[] = '[]
   Canonicalize (D unit n ': rest) = D (CanonicalUnit unit) n ': Canonicalize rest
 
-type Compatible (dim :: *) (lcsu :: Map *) (unit :: *) =
-  ( CanonicalUnit (Lookup dim lcsu) ~ CanonicalUnit unit
-  , Unit (Lookup dim lcsu))
+-- | Check if an LCSU has consistent entries for the given unit.
+type family Compatible (lcsu :: LCSU *) (unit :: *) :: Constraint where
+  Compatible lcsu unit
+   = ( UnitSpecsOf unit *~ LookupList (DimSpecsOf (DimOfUnit unit)) lcsu
+     , UnitSpec (LookupList (DimSpecsOf (DimOfUnit unit)) lcsu) )

@@ -43,6 +43,5 @@ len12InM = (len1 .+ len2) # Meter
 
 -- The following expression does not typecheck,
 -- because the system is not designed to infer the dimension from the unit.
--- RAE added the len2 just to fix the LCSU. We need a better way to do this.
 len12InM' :: Double
-len12InM' = (len2 .+ (1 % Meter) .+ (3 % Foot)) # Meter
+len12InM' = (defaultLCSU $ (1 % Meter) .+ (3 % Foot)) # Meter

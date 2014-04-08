@@ -55,7 +55,7 @@ module Data.Dimensions (
   (.<), (.>), (.<=), (.>=), dimEq, dimNeq,
   nthRoot, dimSqrt, dimCubeRoot,
   unity, zero, dim,
-  dimIn, (#), dimOf, (%),
+  dimIn, (#), dimOf, (%), defaultLCSU,
 
   -- * Type-level unit combinators
   (:*)(..), (:/)(..), (:^)(..), (:@)(..),
@@ -65,14 +65,14 @@ module Data.Dimensions (
   type (%*), type (%/), type (%^),
 
   -- * Creating new dimensions
-  Dimension, MkLCSU,
+  Dimension, MkLCSU, LCSU(DefaultLCSU),
 
   -- * Creating new units
-  Unit(type BaseUnit, conversionRatio), MkDim, MkGenDim, 
-  Canonical, Compatible,
+  Unit(type BaseUnit, type DimOfUnit, conversionRatio), MkDim, MkGenDim, 
+  Canonical,
 
   -- * Scalars, the only built-in unit
-  Number(..), Scalar, scalar,
+  Dimensionless(..), Number(..), Scalar, scalar,
 
   -- * Type-level integers
   Z(..), Succ, Pred, type (#+), type (#-), type (#*), type (#/), NegZ,
@@ -123,7 +123,7 @@ infix 5 #
 --   > height :: Length
 --   > height = dimOf 2.0 Meter
 dimOf :: forall unit dim lcsu n.
-         ( dim ~ DimSpecsOfUnit unit lcsu
+         ( dim ~ DimSpecsOf (DimOfUnit unit)
          , Unit unit
          , UnitSpec (LookupList dim lcsu)
          , UnitSpecsOf unit *~ LookupList dim lcsu
@@ -134,13 +134,16 @@ dimOf d u = Dim (d * canonicalConvRatio u
 
 infixr 9 %
 -- | Infix synonym for 'dimOf'
-(%) :: ( dim ~ DimSpecsOfUnit unit lcsu
+(%) :: ( dim ~ DimSpecsOf (DimOfUnit unit)
        , Unit unit
        , UnitSpec (LookupList dim lcsu)
        , UnitSpecsOf unit *~ LookupList dim lcsu
        , Fractional n )
     => n -> unit -> Dim n dim lcsu
 (%) = dimOf
+
+defaultLCSU :: Dim n dim DefaultLCSU -> Dim n dim DefaultLCSU
+defaultLCSU = id
 
 -- | The number 1, expressed as a unitless dimensioned quantity.
 unity :: Num n => Dim n '[] l
@@ -159,10 +162,18 @@ dim (Dim x) = Dim x
 --- "Number" unit -------------------------------------------
 -------------------------------------------------------------
 
+-- | The dimension for the dimensionless quantities.
+-- It is also called "quantities of dimension one", but
+-- @One@ is confusing with the type-level integer One.
+data Dimensionless = Dimensionless
+instance Dimension Dimensionless where
+  type DimSpecsOf Dimensionless = '[]
+
 -- | The unit for unitless dimensioned quantities
 data Number = Number -- the unit for unadorned numbers
 instance Unit Number where
   type BaseUnit Number = Canonical
+  type DimOfUnit Number = Dimensionless
   type UnitSpecsOf Number = '[]
 
 -- | The type of unitless dimensioned quantities

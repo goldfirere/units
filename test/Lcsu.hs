@@ -4,7 +4,6 @@ module Test.Lcsu where
 
 import Data.Dimensions
 import Data.Dimensions.Units
-import Data.Dimensions.Map
 import Data.Dimensions.Dim
 import Data.Dimensions.DimSpec
 import Data.Dimensions.Z
@@ -22,8 +21,10 @@ instance Dimension Time
 
 instance Unit Meter where
   type BaseUnit Meter = Canonical
+  type DimOfUnit Meter = Length
 instance Unit Second where
   type BaseUnit Second = Canonical
+  type DimOfUnit Second = Time
 
 instance Unit Centi where
   type BaseUnit Centi = Meter

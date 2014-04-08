@@ -18,6 +18,7 @@ import Data.Singletons ( Sing, SingI, sing )
 import Data.Dimensions.Units
 import Data.Dimensions.DimSpec
 import Data.Dimensions.Z
+import Data.Type.Equality
 
 infixl 7 :*
 -- | Multiply two units to get another unit.
@@ -31,6 +32,7 @@ instance (Unit u1, Unit u2) => Unit (u1 :* u2) where
 
   -- we override the default conversion lookup behavior
   type BaseUnit (u1 :* u2) = Canonical
+  type DimOfUnit (u1 :* u2) = DimOfUnit u1 :* DimOfUnit u2
   conversionRatio _ = undefined -- this should never be called
 
   type UnitSpecsOf (u1 :* u2) = (UnitSpecsOf u1) @+ (UnitSpecsOf u2)
@@ -46,6 +48,7 @@ instance (Dimension d1, Dimension d2) => Dimension (d1 :/ d2) where
 
 instance (Unit u1, Unit u2) => Unit (u1 :/ u2) where
   type BaseUnit (u1 :/ u2) = Canonical
+  type DimOfUnit (u1 :/ u2) = DimOfUnit u1 :/ DimOfUnit u2
   conversionRatio _ = undefined -- this should never be called
   type UnitSpecsOf (u1 :/ u2) = (UnitSpecsOf u1) @- (UnitSpecsOf u2)
   canonicalConvRatio _ = canonicalConvRatio (undefined :: u1) /
@@ -60,6 +63,7 @@ instance Dimension dim => Dimension (dim :^ power) where
 
 instance (Unit unit, SingI power) => Unit (unit :^ power) where
   type BaseUnit (unit :^ power) = Canonical
+  type DimOfUnit (unit :^ power) = DimOfUnit unit :^ power
   conversionRatio _ = undefined
 
   type UnitSpecsOf (unit :^ power) = (UnitSpecsOf unit) @* power
@@ -75,7 +79,7 @@ class UnitPrefix prefix where
   -- This function must /not/ inspect its argument.
   multiplier :: Fractional f => prefix -> f
 
-instance ( CheckCanonical unit ~ False
+instance ( (unit == Canonical) ~ False
          , Unit unit
          , UnitPrefix prefix ) => Unit (prefix :@ unit) where
   type BaseUnit (prefix :@ unit) = unit

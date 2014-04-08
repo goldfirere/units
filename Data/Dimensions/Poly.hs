@@ -31,11 +31,21 @@ module Data.Dimensions.Poly (
   -- * The 'Dim' type
   Dim,
 
+  -- * LCSUs (locally consistent sets of units)
+  LCSU, LookupList, Compatible,
+
+  -- * Manipulating units and dimensions
+  Dimension(..), Unit(..), DimOfUnitIsConsistent, IsCanonical,
+  CanonicalUnit, type (*~),
+
   -- * Maniuplating dimension specifications
   DimSpec(..), type ($=), Extract, Reorder, type (@~), Normalize,
-  type (@+), type (@-), NegDim, NegList, type (@*), type (@/)
+  type (@+), type (@-), NegDim, NegList, type (@*), type (@/),
+  Canonicalize
 
   ) where
 
 import Data.Dimensions.Dim
 import Data.Dimensions.DimSpec
+import Data.Dimensions.Map
+import Data.Dimensions.Units
