@@ -54,7 +54,7 @@ module Data.Dimensions (
   (.+), (.-), (.*), (./), (.^), (*.),
   (.<), (.>), (.<=), (.>=), dimEq, dimNeq,
   nthRoot, dimSqrt, dimCubeRoot,
-  unity, zero, dim,
+  unity, zero, dim, convert,
   dimIn, (#), dimOf, (%), defaultLCSU,
 
   -- * Type-level unit combinators
@@ -106,8 +106,10 @@ dimIn :: forall unit dim lcsu n.
          , UnitSpecsOf unit *~ LookupList dim lcsu
          , Fractional n )
       => Dim dim lcsu n -> unit -> n
-dimIn (Dim val) u = val * canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))
-                        / canonicalConvRatio u
+dimIn (Dim val) u
+  = val * fromRational
+            (canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))
+             / canonicalConvRatio u)
 
 infix 5 #
 -- | Infix synonym for 'dimIn'
@@ -129,8 +131,10 @@ dimOf :: forall unit dim lcsu n.
          , UnitSpecsOf unit *~ LookupList dim lcsu
          , Fractional n )
       => n -> unit -> Dim dim lcsu n
-dimOf d u = Dim (d * canonicalConvRatio u
-                   / canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu)))
+dimOf d u
+  = Dim (d * fromRational
+               (canonicalConvRatio u
+                / canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))))
 
 infixr 9 %
 -- | Infix synonym for 'dimOf'
@@ -157,6 +161,16 @@ zero = Dim 0
 -- | Dimension-safe cast. See the README for more info.
 dim :: (d @~ e) => Dim d l n -> Dim e l n
 dim (Dim x) = Dim x
+
+-- | Dimension-safe cast between different CSUs.
+convert :: forall d l1 l2 n. 
+  ( UnitSpec (LookupList d l1)
+  , UnitSpec (LookupList d l2)  
+  , Fractional n) 
+  => Dim d l1 n -> Dim d l2 n
+convert (Dim x) = Dim $ x * fromRational (
+  canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l1))
+  / canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l2)))
 
 -------------------------------------------------------------
 --- "Number" unit -------------------------------------------

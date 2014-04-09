@@ -28,13 +28,30 @@ import GHC.Exts
 -- 'Unit' instance.
 data Canonical
 
--- | TODO
+-- | This class is used to mark abstract dimensions, such as @Length@, or
+-- @Mass@.
 class Dimension dim where
-  -- | TODO
+  -- | Retrieve a list of @DimSpec@s representing the given dimension. Overriding
+  -- the default of this type family should not be necessary in user code.
   type DimSpecsOf dim :: [DimSpec *]
   type DimSpecsOf dim = '[D dim One]
   
 -- | Class of units. Make an instance of this class to define a new unit.
+-- A minimal complete definition is either
+--
+-- @
+-- instance Unit Foo where
+--   type BaseUnit Foo = Canonical
+--   type DimOfUnit Foo = Bar     -- where we have instance Dimension Bar
+-- @
+--
+-- OR
+--
+-- @
+-- instance Unit Foo where
+--   type BaseUnit Foo = Baz
+--   conversionRatio _ = 3.14   -- here, Foo is a /bigger/ unit than Baz
+-- @
 class DimOfUnitIsConsistent unit => Unit unit where
   -- | The base unit of this unit: what this unit is defined in terms of.
   -- For units that are not defined in terms of anything else, the base unit
@@ -57,10 +74,11 @@ class DimOfUnitIsConsistent unit => Unit unit where
   -- >   conversionRatio _ = 0.3048
   --
   -- Implementations should /never/ examine their argument!
-  conversionRatio :: Fractional f => unit -> f
+  conversionRatio :: unit -> Rational
   conversionRatio _ = 1  -- if unspecified, assume a conversion ratio of 1
 
   -- | The internal list of canonical units corresponding to this unit.
+  -- Overriding the default should not be necessary in user code.
   type UnitSpecsOf unit :: [DimSpec *]
   type UnitSpecsOf unit = If (IsCanonical unit)
                             '[D unit One]
@@ -69,9 +87,8 @@ class DimOfUnitIsConsistent unit => Unit unit where
   -- | Compute the conversion from the underlying canonical unit to
   -- this one. A default is provided that multiplies together the ratios
   -- of all units between this one and the canonical one.
-  canonicalConvRatio :: Fractional f => unit -> f
-  default canonicalConvRatio :: (BaseHasConvRatio unit, Fractional f)
-                             => unit -> f
+  canonicalConvRatio :: unit -> Rational
+  default canonicalConvRatio :: BaseHasConvRatio unit => unit -> Rational
   canonicalConvRatio u = conversionRatio u * baseUnitRatio u
 
 -- | Check to make sure that a unit has the same dimension as its base unit,
@@ -123,7 +140,7 @@ type BaseHasConvRatio unit = HasConvRatio (IsCanonical unit) unit
 -- to be able to define 'canonicalConvRatio' in the right way.
 class is_canonical ~ IsCanonical unit
       => HasConvRatio (is_canonical :: Bool) (unit :: *) where
-  baseUnitRatio :: Fractional f => unit -> f
+  baseUnitRatio :: unit -> Rational
 instance True ~ IsCanonical canonical_unit
          => HasConvRatio True canonical_unit where
   baseUnitRatio _ = 1
@@ -133,7 +150,7 @@ instance ( False ~ IsCanonical noncanonical_unit
   baseUnitRatio _ = canonicalConvRatio (undefined :: BaseUnit noncanonical_unit)
 
 class UnitSpec (units :: [DimSpec *]) where
-  canonicalConvRatioSpec :: Fractional f => Proxy units -> f
+  canonicalConvRatioSpec :: Proxy units -> Rational
 
 instance UnitSpec '[] where
   canonicalConvRatioSpec _ = 1

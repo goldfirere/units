@@ -1,6 +1,6 @@
 {-# LANGUAGE TypeOperators, DataKinds, TypeFamilies #-}
 
-module Test.OffSystem where
+module Test.OffSystemCSU where
 
 import Data.Dimensions
 import Data.Dimensions.SI
@@ -9,7 +9,7 @@ import qualified Data.Dimensions.SI.Dims as D
 
 type YardPond = MkLCSU '[ (D.Length, Foot)]
 
-type LengthYP = MkDim D.Length YardPond
+type LengthYP = MkGenDim D.Length YardPond Double
 
 data Foot = Foot
 instance Unit Foot where

@@ -20,6 +20,7 @@ module Data.Dimensions.SI.Units where
 
 import Data.Dimensions
 import Data.Dimensions.SI.Dims
+import Data.Dimensions.SI.Prefixes ( Centi )
 
 data Meter = Meter
 instance Unit Meter where
@@ -75,6 +76,14 @@ instance Unit Hertz where
   type BaseUnit Hertz = Number :/ Second
 instance Show Hertz where
   show _ = "Hz"
+
+-- | This is not in the SI standard, but is used widely.
+data Liter = Liter
+instance Unit Liter where
+  type BaseUnit Liter = (Centi :@ Meter) :^ Three
+  conversionRatio _ = 1000
+instance Show Liter where
+  show _ = "l"
 
 data Newton = Newton
 instance Unit Newton where

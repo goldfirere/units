@@ -1,5 +1,5 @@
 {-# LANGUAGE PolyKinds, DataKinds, TypeOperators, FlexibleInstances,
-             ScopedTypeVariables, FlexibleContexts #-}
+             ScopedTypeVariables, FlexibleContexts, ConstraintKinds #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -----------------------------------------------------------------------------
@@ -16,7 +16,7 @@
 -- units.
 -----------------------------------------------------------------------------
 
-module Data.Dimensions.Show () where
+module Data.Dimensions.Show (showIn) where
 
 import Data.Proxy (Proxy(..))
 import Data.List
@@ -26,7 +26,9 @@ import Data.Dimensions.DimSpec
 import Data.Dimensions.Dim
 import Data.Dimensions.Z
 import Data.Dimensions.LCSU
-import Data.Dimensions.UnitCombinators ( (:@) )
+import Data.Dimensions.UnitCombinators
+import Data.Dimensions.Units
+import Data.Dimensions
 
 class ShowUnitSpec (dims :: [DimSpec *]) where
   showDims :: Proxy dims -> ([String], [String])
@@ -71,6 +73,16 @@ showDimSpec p
     build_string_helper [s] = s
     build_string_helper (h:t) = h ++ " * " ++ build_string_helper t
 
+-- enable showing of compound units:
+instance (Show u1, Show u2) => Show (u1 :* u2) where
+  show _ = show (undefined :: u1) ++ " " ++ show (undefined :: u2)
+
+instance (Show u1, Show u2) => Show (u1 :/ u2) where
+  show _ = show (undefined :: u1) ++ "/" ++ show (undefined :: u2)
+
+instance (Show u1, SingI power) => Show (u1 :^ (power :: Z)) where
+  show _ = show (undefined :: u1) ++ "^" ++ show (szToInt (sing :: Sing power))
+
 -- enable showing of units with prefixes:
 instance (Show prefix, Show unit) => Show (prefix :@ unit) where
   show _ = show (undefined :: prefix) ++ show (undefined :: unit)
@@ -78,3 +90,15 @@ instance (Show prefix, Show unit) => Show (prefix :@ unit) where
 instance (ShowUnitSpec (LookupList dims lcsu), Show n)
            => Show (Dim dims lcsu n) where
   show (Dim d) = (show d ++ showDimSpec (Proxy :: Proxy (LookupList dims lcsu)))
+
+infix 1 `showIn`
+-- | Show a dimensioned quantity in a given unit. (The default @Show@
+-- instance always uses canonical units.)
+showIn :: ( Unit unit
+          , UnitSpec (LookupList dim lcsu)      
+          , UnitSpecsOf unit *~ LookupList dim lcsu
+          , Fractional n
+          , Show unit
+          , Show n )
+       => Dim dim lcsu n -> unit -> String
+showIn x u = show (x # u) ++ " " ++ show u
