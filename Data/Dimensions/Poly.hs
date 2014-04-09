@@ -47,5 +47,5 @@ module Data.Dimensions.Poly (
 
 import Data.Dimensions.Dim
 import Data.Dimensions.DimSpec
-import Data.Dimensions.Map
+import Data.Dimensions.LCSU
 import Data.Dimensions.Units

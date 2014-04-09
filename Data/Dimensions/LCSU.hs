@@ -1,15 +1,16 @@
-{- Data/Dimensions/Map.hs
+{- Data/Dimensions/LCSU.hs
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
    eir@cis.upenn.edu
 
-   Defines a type-level Map, implemented as an association list.
+   Defines a locally-consistent system of units,
+   implemented as an association list.
 -}
 
 {-# LANGUAGE DataKinds, PolyKinds, TypeFamilies, TypeOperators, UndecidableInstances #-}
 
-module Data.Dimensions.Map (
+module Data.Dimensions.LCSU (
   LCSU(DefaultLCSU), DefaultLCSUUnit,
   Lookup, LookupList, MkLCSU
   ) where

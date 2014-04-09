@@ -9,7 +9,8 @@
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
--- This module defines type synonyms for SI units.
+-- This module defines type synonyms for SI units, using a Double as the
+-- internal representation.
 -----------------------------------------------------------------------------
 
 module Data.Dimensions.SI.Types where
@@ -29,41 +30,41 @@ type SI = MkLCSU '[ (D.Length, Meter)
                   , (D.Luminosity, Lumen)
                   ]
 
-type Length              = MkDim D.Length              SI
-type Mass                = MkDim D.Mass                SI
-type Time                = MkDim D.Time                SI
-type Current             = MkDim D.Current             SI
-type Temperature         = MkDim D.Temperature         SI
-type Quantity            = MkDim D.Quantity            SI
-type Luminosity          = MkDim D.Luminosity          SI
+type Length              = MkGenDim D.Length              SI Double
+type Mass                = MkGenDim D.Mass                SI Double
+type Time                = MkGenDim D.Time                SI Double
+type Current             = MkGenDim D.Current             SI Double
+type Temperature         = MkGenDim D.Temperature         SI Double
+type Quantity            = MkGenDim D.Quantity            SI Double
+type Luminosity          = MkGenDim D.Luminosity          SI Double
 
-type Area                = MkDim D.Area                SI
-type Volume              = MkDim D.Volume              SI
-type Velocity            = MkDim D.Velocity            SI
-type Acceleration        = MkDim D.Acceleration        SI
-type Wavenumber          = MkDim D.Wavenumber          SI
-type Density             = MkDim D.Density             SI
-type SurfaceDensity      = MkDim D.SurfaceDensity      SI
-type SpecificVolume      = MkDim D.SpecificVolume      SI
-type CurrentDensity      = MkDim D.CurrentDensity      SI
-type MagneticStrength    = MkDim D.MagneticStrength    SI
-type Concentration       = MkDim D.Concentration       SI
-type Luminance           = MkDim D.Luminance           SI
-type Frequency           = MkDim D.Frequency           SI
-type Force               = MkDim D.Force               SI
-type Pressure            = MkDim D.Pressure            SI
-type Energy              = MkDim D.Energy              SI
-type Power               = MkDim D.Power               SI
-type Charge              = MkDim D.Charge              SI
-type ElectricPotential   = MkDim D.ElectricPotential   SI
-type Capacitance         = MkDim D.Capacitance         SI
-type Resistance          = MkDim D.Resistance          SI
-type Conductance         = MkDim D.Conductance         SI
-type MagneticFlux        = MkDim D.MagneticFlux        SI
-type MagneticFluxDensity = MkDim D.MagneticFluxDensity SI
-type Inductance          = MkDim D.Inductance          SI
-type LuminousFlux        = MkDim D.LuminousFlux        SI
-type Illuminance         = MkDim D.Illuminance         SI
-type Kerma               = MkDim D.Kerma               SI
-type CatalyticActivity   = MkDim D.CatalyticActivity   SI
-type Momentum            = MkDim D.Momentum            SI
+type Area                = MkGenDim D.Area                SI Double
+type Volume              = MkGenDim D.Volume              SI Double
+type Velocity            = MkGenDim D.Velocity            SI Double
+type Acceleration        = MkGenDim D.Acceleration        SI Double
+type Wavenumber          = MkGenDim D.Wavenumber          SI Double
+type Density             = MkGenDim D.Density             SI Double
+type SurfaceDensity      = MkGenDim D.SurfaceDensity      SI Double
+type SpecificVolume      = MkGenDim D.SpecificVolume      SI Double
+type CurrentDensity      = MkGenDim D.CurrentDensity      SI Double
+type MagneticStrength    = MkGenDim D.MagneticStrength    SI Double
+type Concentration       = MkGenDim D.Concentration       SI Double
+type Luminance           = MkGenDim D.Luminance           SI Double
+type Frequency           = MkGenDim D.Frequency           SI Double
+type Force               = MkGenDim D.Force               SI Double
+type Pressure            = MkGenDim D.Pressure            SI Double
+type Energy              = MkGenDim D.Energy              SI Double
+type Power               = MkGenDim D.Power               SI Double
+type Charge              = MkGenDim D.Charge              SI Double
+type ElectricPotential   = MkGenDim D.ElectricPotential   SI Double
+type Capacitance         = MkGenDim D.Capacitance         SI Double
+type Resistance          = MkGenDim D.Resistance          SI Double
+type Conductance         = MkGenDim D.Conductance         SI Double
+type MagneticFlux        = MkGenDim D.MagneticFlux        SI Double
+type MagneticFluxDensity = MkGenDim D.MagneticFluxDensity SI Double
+type Inductance          = MkGenDim D.Inductance          SI Double
+type LuminousFlux        = MkGenDim D.LuminousFlux        SI Double
+type Illuminance         = MkGenDim D.Illuminance         SI Double
+type Kerma               = MkGenDim D.Kerma               SI Double
+type CatalyticActivity   = MkGenDim D.CatalyticActivity   SI Double
+type Momentum            = MkGenDim D.Momentum            SI Double

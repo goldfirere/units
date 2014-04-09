@@ -17,7 +17,7 @@ module Data.Dimensions.Units where
 import Data.Dimensions.Z
 import Data.Dimensions.DimSpec
 import Data.Dimensions.Dim
-import Data.Dimensions.Map
+import Data.Dimensions.LCSU
 import Data.Type.Bool
 import Data.Type.Equality
 import Data.Proxy
@@ -91,10 +91,10 @@ type family DimOfUnitIsConsistent unit :: Constraint where
 -- > data LengthDim = LengthDim
 -- > instance Dimension LengthDim
 -- > type Length = MkDim LengthDim
-type MkDim dim lcsu = Dim Double (DimSpecsOf dim) DefaultLCSU
+type MkDim dim = Dim (DimSpecsOf dim) DefaultLCSU Double
 
 -- | Make a dimensioned quantity with a custom numerical type and LCSU.
-type MkGenDim n dim lcsu = Dim n (DimSpecsOf dim) lcsu
+type MkGenDim dim lcsu n = Dim (DimSpecsOf dim) lcsu n
 
 -- | Is this unit a canonical unit?
 type IsCanonical (unit :: *) = (BaseUnit unit == Canonical)

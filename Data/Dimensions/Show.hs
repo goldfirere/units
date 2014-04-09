@@ -25,7 +25,7 @@ import Data.Singletons (Sing, sing, SingI)
 import Data.Dimensions.DimSpec
 import Data.Dimensions.Dim
 import Data.Dimensions.Z
-import Data.Dimensions.Map
+import Data.Dimensions.LCSU
 import Data.Dimensions.UnitCombinators ( (:@) )
 
 class ShowUnitSpec (dims :: [DimSpec *]) where
@@ -76,5 +76,5 @@ instance (Show prefix, Show unit) => Show (prefix :@ unit) where
   show _ = show (undefined :: prefix) ++ show (undefined :: unit)
 
 instance (ShowUnitSpec (LookupList dims lcsu), Show n)
-           => Show (Dim n dims lcsu) where
+           => Show (Dim dims lcsu n) where
   show (Dim d) = (show d ++ showDimSpec (Proxy :: Proxy (LookupList dims lcsu)))
