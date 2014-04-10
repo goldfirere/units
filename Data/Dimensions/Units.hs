@@ -114,7 +114,9 @@ type MkDim dim = Dim (DimSpecsOf dim) DefaultLCSU Double
 type MkGenDim dim lcsu n = Dim (DimSpecsOf dim) lcsu n
 
 -- | Is this unit a canonical unit?
-type IsCanonical (unit :: *) = (BaseUnit unit == Canonical)
+type family IsCanonical (unit :: *) where
+  IsCanonical unit = (BaseUnit unit == Canonical)
+  -- this is a type family because of GHC #8978
 
 {- I want to say this. But type families are *eager* so I have to write
    it another way.
@@ -134,7 +136,9 @@ type family CanonicalUnit' (base_unit :: *) (unit :: *) :: * where
 
 -- | Essentially, a constraint that checks if a conversion ratio can be
 -- calculated for a @BaseUnit@ of a unit.
-type BaseHasConvRatio unit = HasConvRatio (IsCanonical unit) unit
+type family BaseHasConvRatio unit where
+  BaseHasConvRatio unit = HasConvRatio (IsCanonical unit) unit
+  -- this is a type family because of GHC #8978
 
 -- | This is like 'Unit', but deals with 'Canonical'. It is necessary
 -- to be able to define 'canonicalConvRatio' in the right way.
