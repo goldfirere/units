@@ -88,7 +88,7 @@ class DimOfUnitIsConsistent unit => Unit unit where
   -- this one. A default is provided that multiplies together the ratios
   -- of all units between this one and the canonical one.
   canonicalConvRatio :: unit -> Rational
-  default canonicalConvRatio :: BaseHasConvRatio unit => unit -> Rational
+  default canonicalConvRatio :: (HasConvRatio (BaseUnit unit == Canonical) unit) => unit -> Rational
   canonicalConvRatio u = conversionRatio u * baseUnitRatio u
 
 -- | Check to make sure that a unit has the same dimension as its base unit,
