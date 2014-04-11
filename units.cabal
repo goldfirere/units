@@ -46,10 +46,11 @@ library
   default-language:   Haskell2010
 
 Test-Suite spec
-  Type:                 exitcode-stdio-1.0
-  Hs-Source-Dirs:       test
-  Ghc-Options:          -Wall
-  Main-Is:              Spec.hs
+  Buildable:          False           
+  Type:               exitcode-stdio-1.0
+  Hs-Source-Dirs:     test
+  Ghc-Options:        -Wall
+  Main-Is:            Spec.hs
   Other-Modules:        
                         
   Build-Depends:        
