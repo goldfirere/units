@@ -35,6 +35,7 @@ library
       singletons >= 0.9
   exposed-modules:    
     Data.Metrology, 
+    Data.Metrology.Dimensions,
     Data.Metrology.Show,
     Data.Metrology.Poly,
     Data.Metrology.SI,

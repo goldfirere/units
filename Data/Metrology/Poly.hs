@@ -46,6 +46,7 @@ module Data.Metrology.Poly (
   ) where
 
 import Data.Metrology.Quantity
+import Data.Metrology.Dimensions
 import Data.Metrology.DimSpec
 import Data.Metrology.LCSU
 import Data.Metrology.Units

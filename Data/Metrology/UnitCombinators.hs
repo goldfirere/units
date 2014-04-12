@@ -15,6 +15,7 @@ module Data.Metrology.UnitCombinators where
 
 import Data.Singletons ( Sing, SingI, sing )
 
+import Data.Metrology.Dimensions
 import Data.Metrology.Units
 import Data.Metrology.DimSpec
 import Data.Metrology.Z

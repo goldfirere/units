@@ -16,7 +16,7 @@ module Data.Metrology.Units where
 
 import Data.Metrology.Z
 import Data.Metrology.DimSpec
-import Data.Metrology.Quantity
+import Data.Metrology.Dimensions
 import Data.Metrology.LCSU
 import Data.Type.Bool
 import Data.Type.Equality
@@ -24,34 +24,6 @@ import Data.Proxy
 import Data.Singletons
 import GHC.Exts
 
--- | Dummy type use just to label canonical units. It does /not/ have a
--- 'Unit' instance.
-data Canonical
-
--- | This class is used to mark abstract dimensions, such as @Length@, or
--- @Mass@.
-class Dimension dim where
-  -- | Retrieve a list of @DimSpec@s representing the given dimension. Overriding
-  -- the default of this type family should not be necessary in user code.
-  type DimSpecsOf dim :: [DimSpec *]
-  type DimSpecsOf dim = '[D dim One]
-  
--- | Class of units. Make an instance of this class to define a new unit.
--- A minimal complete definition is either
---
--- @
--- instance Unit Foo where
---   type BaseUnit Foo = Canonical
---   type DimOfUnit Foo = Bar     -- where we have instance Dimension Bar
--- @
---
--- OR
---
--- @
--- instance Unit Foo where
---   type BaseUnit Foo = Baz
---   conversionRatio _ = 3.14   -- here, Foo is a /bigger/ unit than Baz
--- @
 class DimOfUnitIsConsistent unit => Unit unit where
   -- | The base unit of this unit: what this unit is defined in terms of.
   -- For units that are not defined in terms of anything else, the base unit
@@ -100,18 +72,6 @@ type family DimOfUnitIsConsistent unit :: Constraint where
                                     (DimOfUnit unit ~ DimOfUnit (BaseUnit unit)) )
   -- This definition does not use || so that we get better error messages.
 
--- Abbreviation for creating a Qu (defined here to avoid a module cycle)
-
--- | Make a dimensioned quantity type capable of storing a value of a given
--- unit. This uses a 'Double' for storage of the value. For example:
---
--- > data LengthDim = LengthDim
--- > instance Dimension LengthDim
--- > type Length = MkQu LengthDim
-type MkQu dim = Qu (DimSpecsOf dim) DefaultLCSU Double
-
--- | Make a dimensioned quantity with a custom numerical type and LCSU.
-type MkGenQu dim lcsu n = Qu (DimSpecsOf dim) lcsu n
 
 -- | Is this unit a canonical unit?
 type family IsCanonical (unit :: *) where

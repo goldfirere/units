@@ -89,6 +89,7 @@ module Data.Metrology (
 
 import Data.Metrology.Z
 import Data.Metrology.Quantity
+import Data.Metrology.Dimensions
 import Data.Metrology.DimSpec
 import Data.Metrology.Units
 import Data.Metrology.UnitCombinators

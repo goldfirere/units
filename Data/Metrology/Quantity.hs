@@ -14,7 +14,9 @@
 module Data.Metrology.Quantity where
 
 import Data.Singletons ( Sing )
+import Data.Metrology.Dimensions
 import Data.Metrology.DimSpec
+import Data.Metrology.Units
 import Data.Metrology.Z
 import Data.Metrology.LCSU
 
@@ -30,6 +32,20 @@ type role Qu nominal nominal representational
 -------------------------------------------------------------
 --- User-facing ---------------------------------------------
 -------------------------------------------------------------
+
+-- Abbreviation for creating a Qu (defined here to avoid a module cycle)
+
+-- | Make a dimensioned quantity type capable of storing a value of a given
+-- unit. This uses a 'Double' for storage of the value. For example:
+--
+-- > data LengthDim = LengthDim
+-- > instance Dimension LengthDim
+-- > type Length = MkQu LengthDim
+type MkQu dim = Qu (DimSpecsOf dim) DefaultLCSU Double
+
+-- | Make a dimensioned quantity with a custom numerical type and LCSU.
+type MkGenQu dim lcsu n = Qu (DimSpecsOf dim) lcsu n
+
 
 infixl 6 .+
 -- | Add two compatible dimensioned quantities
