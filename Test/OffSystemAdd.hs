@@ -41,7 +41,8 @@ len2 = 1 % Meter
 len12InM :: Double
 len12InM = (len1 .+ len2) # Meter
 
--- The following expression does not typecheck,
--- because the system is not designed to infer the dimension from the unit.
+-- The following expression does typecheck,
+-- because the system is now able to work in defaultLCSU mode
+-- that only requires relative relation between units.
 len12InM' :: Double
 len12InM' = (defaultLCSU $ (1 % Meter) .+ (3 % Foot)) # Meter
