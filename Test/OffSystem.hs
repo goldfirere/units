@@ -4,6 +4,9 @@ module Test.OffSystem where
 
 import Data.Metrology
 import Data.Metrology.SI
+import Data.Metrology.DimSpec
+import Data.Metrology.Units
+import Data.Metrology.LCSU
 
 data Foot = Foot
 instance Unit Foot where
