@@ -15,8 +15,8 @@ module Test.Readme where
       type BaseUnit Foot = Meter        -- Foot is defined in terms of Meter
       conversionRatio _ = 0.3048        -- do *not* examine the argument!
 
-    type Length = MkDim Meter           -- we will manipulate Lengths
-    type Length' = MkDim Foot           -- this is the *same* as Length
+    type Length = MkQu Meter           -- we will manipulate Lengths
+    type Length' = MkQu Foot           -- this is the *same* as Length
 
     extend :: Length -> Length          -- a function over lengths
     extend x = dim $ x .+ (1 % Meter)   -- more on this later
@@ -45,11 +45,11 @@ module Test.Readme where
     instance Show Second where
       show _ = "s"
 
-    type Time = MkDim Second
+    type Time = MkQu Second
 
 
     type MetersPerSecond = Meter :/ Second
-    type Velocity1 = MkDim MetersPerSecond
+    type Velocity1 = MkQu MetersPerSecond
 
     speed :: Velocity1
     speed = 20 % (Meter :/ Second)
@@ -57,7 +57,7 @@ module Test.Readme where
     type Velocity2 = Length %/ Time    -- same type as Velocity1
 
     type MetersSquared = Meter :^ Two
-    type Area1 = MkDim MetersSquared
+    type Area1 = MkQu MetersSquared
     type Area2 = Length %^ Two        -- same type as Area1
 
     roomSize :: Area1

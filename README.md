@@ -99,8 +99,8 @@ Here is how to define two inter-convertible units:
     instance Show Foot where
       show _ = "ft"
 
-    type Length = MkDim Meter           -- we will manipulate Lengths
-    type Length' = MkDim Foot           -- this is the *same* as Length
+    type Length = MkQu Meter           -- we will manipulate Lengths
+    type Length' = MkQu Foot           -- this is the *same* as Length
 
     extend :: Length -> Length          -- a function over lengths
     extend x = dim $ x .+ (1 % Meter)   -- more on this later
@@ -128,8 +128,8 @@ ratio, which is the number of meters in a foot. Note that the
 it _must not_ inspect that parameter. Internally, it will be passed
 `undefined` quite often.
 
-The `MkDim` type synonym makes a dimensioned quantity for a given unit. Note
-that `Length` and `Length'` are _the same type_. The `MkDim` machinery notices
+The `MkQu` type synonym makes a dimensioned quantity for a given unit. Note
+that `Length` and `Length'` are _the same type_. The `MkQu` machinery notices
 that these two are inter-convertible and will produce the same dimensioned
 quantity.
 
@@ -187,13 +187,13 @@ have a unit of time:
     instance Show Second where
       show _ = "s"
 
-    type Time = MkDim Second
+    type Time = MkQu Second
 
 Units can be multiplied and divided with the operators `:*` and `:/`, at either
 the term or type level. For example:
 
     type MetersPerSecond = Meter :/ Second
-    type Velocity1 = MkDim MetersPerSecond
+    type Velocity1 = MkQu MetersPerSecond
 
     speed :: Velocity1
     speed = 20 % (Meter :/ Second)
@@ -210,7 +210,7 @@ negative numbers `MOne` through `MFive`. At the term level, precede the number
 with a `p` (mnemonic: "power"). For example:
 
     type MetersSquared = Meter :^ Two
-    type Area1 = MkDim MetersSquared
+    type Area1 = MkQu MetersSquared
     type Area2 = Length %^ Two        -- same type as Area1
 
     roomSize :: Area1

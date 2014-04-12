@@ -16,8 +16,8 @@
      $     DimSpec *
      @     [DimSpec *]
      @@    [DimSpec *], where the arguments are ordered similarly
-     %     Dim (at the type level)
-     .     Dim (at the term level)
+     %     Qu (at the type level)
+     .     Qu (at the term level)
      :     units, at both type and term levels
 -}
 
@@ -68,7 +68,7 @@ module Data.Metrology (
   Dimension, MkLCSU, LCSU(DefaultLCSU),
 
   -- * Creating new units
-  Unit(type BaseUnit, type DimOfUnit, conversionRatio), MkDim, MkGenDim, 
+  Unit(type BaseUnit, type DimOfUnit, conversionRatio), MkQu, MkGenQu, 
   Canonical,
 
   -- * Scalars, the only built-in unit
@@ -88,7 +88,7 @@ module Data.Metrology (
   ) where
 
 import Data.Metrology.Z
-import Data.Metrology.Dim
+import Data.Metrology.Quantity
 import Data.Metrology.DimSpec
 import Data.Metrology.Units
 import Data.Metrology.UnitCombinators
@@ -105,8 +105,8 @@ dimIn :: forall unit dim lcsu n.
          , UnitSpec (LookupList dim lcsu)
          , UnitSpecsOf unit *~ LookupList dim lcsu
          , Fractional n )
-      => Dim dim lcsu n -> unit -> n
-dimIn (Dim val) u
+      => Qu dim lcsu n -> unit -> n
+dimIn (Qu val) u
   = val * fromRational
             (canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))
              / canonicalConvRatio u)
@@ -117,7 +117,7 @@ infix 5 #
        , UnitSpec (LookupList dim lcsu)
        , UnitSpecsOf unit *~ LookupList dim lcsu
        , Fractional n )
-    => Dim dim lcsu n -> unit -> n
+    => Qu dim lcsu n -> unit -> n
 (#) = dimIn
 
 -- | Creates a dimensioned quantity in the given unit. For example:
@@ -130,9 +130,9 @@ dimOf :: forall unit dim lcsu n.
          , UnitSpec (LookupList dim lcsu)
          , UnitSpecsOf unit *~ LookupList dim lcsu
          , Fractional n )
-      => n -> unit -> Dim dim lcsu n
+      => n -> unit -> Qu dim lcsu n
 dimOf d u
-  = Dim (d * fromRational
+  = Qu (d * fromRational
                (canonicalConvRatio u
                 / canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))))
 
@@ -143,32 +143,32 @@ infixr 9 %
        , UnitSpec (LookupList dim lcsu)
        , UnitSpecsOf unit *~ LookupList dim lcsu
        , Fractional n )
-    => n -> unit -> Dim dim lcsu n
+    => n -> unit -> Qu dim lcsu n
 (%) = dimOf
 
-defaultLCSU :: Dim dim DefaultLCSU n -> Dim dim DefaultLCSU n
+defaultLCSU :: Qu dim DefaultLCSU n -> Qu dim DefaultLCSU n
 defaultLCSU = id
 
 -- | The number 1, expressed as a unitless dimensioned quantity.
-unity :: Num n => Dim '[] l n
-unity = Dim 1
+unity :: Num n => Qu '[] l n
+unity = Qu 1
 
 -- | The number 0, polymorphic in its dimension. Use of this will
 -- often require a type annotation.
-zero :: Num n => Dim dimspec l n
-zero = Dim 0
+zero :: Num n => Qu dimspec l n
+zero = Qu 0
 
 -- | Dimension-safe cast. See the README for more info.
-dim :: (d @~ e) => Dim d l n -> Dim e l n
-dim (Dim x) = Dim x
+dim :: (d @~ e) => Qu d l n -> Qu e l n
+dim (Qu x) = Qu x
 
 -- | Dimension-safe cast between different CSUs.
 convert :: forall d l1 l2 n. 
   ( UnitSpec (LookupList d l1)
   , UnitSpec (LookupList d l2)  
   , Fractional n) 
-  => Dim d l1 n -> Dim d l2 n
-convert (Dim x) = Dim $ x * fromRational (
+  => Qu d l1 n -> Qu d l2 n
+convert (Qu x) = Qu $ x * fromRational (
   canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l1))
   / canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l2)))
 
@@ -193,8 +193,8 @@ instance Unit Number where
 -- | The type of unitless dimensioned quantities.
 -- This is an instance of @Num@, though Haddock doesn't show it.
 -- This uses a @Double@ internally and uses a default LCSU.
-type Scalar = MkDim Number
+type Scalar = MkQu Number
 
 -- | Convert a raw number into a unitless dimensioned quantity
-scalar :: n -> Dim '[] l n
-scalar = Dim
+scalar :: n -> Qu '[] l n
+scalar = Qu

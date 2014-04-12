@@ -23,7 +23,7 @@ import Data.List
 import Data.Singletons (Sing, sing, SingI)
 
 import Data.Metrology.DimSpec
-import Data.Metrology.Dim
+import Data.Metrology.Quantity
 import Data.Metrology.Z
 import Data.Metrology.LCSU
 import Data.Metrology.UnitCombinators
@@ -88,8 +88,8 @@ instance (Show prefix, Show unit) => Show (prefix :@ unit) where
   show _ = show (undefined :: prefix) ++ show (undefined :: unit)
 
 instance (ShowUnitSpec (LookupList dims lcsu), Show n)
-           => Show (Dim dims lcsu n) where
-  show (Dim d) = (show d ++ showDimSpec (Proxy :: Proxy (LookupList dims lcsu)))
+           => Show (Qu dims lcsu n) where
+  show (Qu d) = (show d ++ showDimSpec (Proxy :: Proxy (LookupList dims lcsu)))
 
 infix 1 `showIn`
 -- | Show a dimensioned quantity in a given unit. (The default @Show@
@@ -100,5 +100,5 @@ showIn :: ( Unit unit
           , Fractional n
           , Show unit
           , Show n )
-       => Dim dim lcsu n -> unit -> String
+       => Qu dim lcsu n -> unit -> String
 showIn x u = show (x # u) ++ " " ++ show u

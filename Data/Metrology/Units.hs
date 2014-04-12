@@ -16,7 +16,7 @@ module Data.Metrology.Units where
 
 import Data.Metrology.Z
 import Data.Metrology.DimSpec
-import Data.Metrology.Dim
+import Data.Metrology.Quantity
 import Data.Metrology.LCSU
 import Data.Type.Bool
 import Data.Type.Equality
@@ -100,18 +100,18 @@ type family DimOfUnitIsConsistent unit :: Constraint where
                                     (DimOfUnit unit ~ DimOfUnit (BaseUnit unit)) )
   -- This definition does not use || so that we get better error messages.
 
--- Abbreviation for creating a Dim (defined here to avoid a module cycle)
+-- Abbreviation for creating a Qu (defined here to avoid a module cycle)
 
 -- | Make a dimensioned quantity type capable of storing a value of a given
 -- unit. This uses a 'Double' for storage of the value. For example:
 --
 -- > data LengthDim = LengthDim
 -- > instance Dimension LengthDim
--- > type Length = MkDim LengthDim
-type MkDim dim = Dim (DimSpecsOf dim) DefaultLCSU Double
+-- > type Length = MkQu LengthDim
+type MkQu dim = Qu (DimSpecsOf dim) DefaultLCSU Double
 
 -- | Make a dimensioned quantity with a custom numerical type and LCSU.
-type MkGenDim dim lcsu n = Dim (DimSpecsOf dim) lcsu n
+type MkGenQu dim lcsu n = Qu (DimSpecsOf dim) lcsu n
 
 -- | Is this unit a canonical unit?
 type family IsCanonical (unit :: *) where

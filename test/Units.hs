@@ -8,8 +8,8 @@ data Meter = Meters
 data Foot = Feet
 data Yard = Yards
 
-type Length = MkDim Meter
-type Time = MkDim Second
+type Length = MkQu Meter
+type Time = MkQu Second
 
 instance Unit Meter where
   type BaseUnit Meter = Canonical

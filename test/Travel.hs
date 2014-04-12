@@ -14,19 +14,19 @@ import Data.Metrology.Imperial.Units
 import Data.Metrology.Show
 import qualified Data.Metrology.SI.Dims as D
 
-type PerArea lcsu n = MkGenDim (D.Area :^ MOne) lcsu n
+type PerArea lcsu n = MkGenQu (D.Area :^ MOne) lcsu n
 
-fromGLtoED :: MkGenDim D.Length Imperial Float
+fromGLtoED :: MkGenQu D.Length Imperial Float
 fromGLtoED = 46.5 % Mile
 
 fuelEfficiency :: PerArea Imperial Float
 fuelEfficiency = 40 % (Mile :/ Gallon)
 
-gasolineDensity :: MkGenDim D.Density Imperial Float
+gasolineDensity :: MkGenQu D.Density Imperial Float
 gasolineDensity = 7.29 % (Pound :/ Gallon)
 
 gasolineWeight :: (Fractional f) 
-  => MkGenDim D.Length su f -> PerArea su f -> MkGenDim D.Density su f -> MkGenDim D.Mass su f
+  => MkGenQu D.Length su f -> PerArea su f -> MkGenQu D.Density su f -> MkGenQu D.Mass su f
 gasolineWeight len0 ef0 den0 = len0 ./ ef0 .* den0
 
 
@@ -42,7 +42,7 @@ main = do
   putStrLn $ fuelEfficiency `showIn`  kilo Meter :/ Liter
   putStrLn $ gasolineDensity `showIn` kilo Gram :/ Liter
   putStrLn $ show $ (gasolineWeight 
-    (convert fromGLtoED) (convert fuelEfficiency) (convert gasolineDensity) :: MkGenDim D.Mass SI Float)
+    (convert fromGLtoED) (convert fuelEfficiency) (convert gasolineDensity) :: MkGenQu D.Mass SI Float)
 
 {---- Execution result ---
 

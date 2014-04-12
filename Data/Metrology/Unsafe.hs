@@ -15,8 +15,8 @@
 
 module Data.Metrology.Unsafe (
   -- * The 'Dim' type
-  Dim(..),
+  Qu(..),
   ) where
 
-import Data.Metrology.Dim
+import Data.Metrology.Quantity
 

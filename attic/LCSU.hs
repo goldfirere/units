@@ -8,7 +8,7 @@ import Text.Printf
 data ZahlK a = Plus a | Minus a
 
 -- kind annotation for base dimensions
-data DimK star = Dim star
+data DimK star = Qu star
 
 -- kind annotation for base units
 data BaseUnitK star = BaseUnit star
@@ -40,7 +40,7 @@ newtype Qu (lcsu :: [(DimK *, BaseUnitK *)]) (unit :: [(BaseUnitK *, ZahlK Nat)]
 
 
 {-
-  coherentDerivedUnit :: LCSU -> Dim -> Unit
+  coherentDerivedUnit :: LCSU -> Qu -> Unit
 
   given LCSU, convents the given dimension to the coherent derived unit under the LCSU.
 -}
@@ -48,13 +48,13 @@ type family CoherentDerivedUnit
      (lcsu    :: [(DimK *, BaseUnitK *)]) 
      (dim     :: [(DimK *, ZahlK Nat)])
      :: ([(BaseUnitK *, ZahlK Nat)]) where
-  CoherentDerivedUnit SI LengthDim = '[ '( BaseUnit Meter , Plus 1) ]
-  CoherentDerivedUnit SI SpeedDim = '[ '( BaseUnit Meter , Plus 1), '(BaseUnit Second, Minus 1) ]
-  CoherentDerivedUnit SI TimeDim = '[ '( BaseUnit Second , Plus 1) ]
+  CoherentDerivedUnit SI LengthQu = '[ '( BaseUnit Meter , Plus 1) ]
+  CoherentDerivedUnit SI SpeedQu = '[ '( BaseUnit Meter , Plus 1), '(BaseUnit Second, Minus 1) ]
+  CoherentDerivedUnit SI TimeQu = '[ '( BaseUnit Second , Plus 1) ]
 
-  CoherentDerivedUnit CGS LengthDim = '[ '( BaseUnit (Centi Meter) , Plus 1) ]
-  CoherentDerivedUnit CGS SpeedDim = '[ '( BaseUnit (Centi Meter) , Plus 1), '(BaseUnit Second, Minus 1) ]
-  CoherentDerivedUnit CGS TimeDim = '[ '( BaseUnit Second , Plus 1) ]
+  CoherentDerivedUnit CGS LengthQu = '[ '( BaseUnit (Centi Meter) , Plus 1) ]
+  CoherentDerivedUnit CGS SpeedQu = '[ '( BaseUnit (Centi Meter) , Plus 1), '(BaseUnit Second, Minus 1) ]
+  CoherentDerivedUnit CGS TimeQu = '[ '( BaseUnit Second , Plus 1) ]
 
 
 -- some base dimension names
@@ -63,9 +63,9 @@ data Time = Time
 data Current = Current
 
 -- dimensions are monominals of the base dimension
-type LengthDim = '[ '( Dim Length , Plus 1) ] 
-type SpeedDim = '[ '( Dim Length , Plus 1) ,  '( Dim Time , Minus 1) ] 
-type TimeDim = '[ '( Dim Time , Plus 1) ]  
+type LengthQu = '[ '( Qu Length , Plus 1) ] 
+type SpeedQu = '[ '( Qu Length , Plus 1) ,  '( Qu Time , Minus 1) ] 
+type TimeQu = '[ '( Qu Time , Plus 1) ]  
 
 -- some units
 data Parsec = Parsec
@@ -77,9 +77,9 @@ data Nano u = Nano u
 data Ampere = Ampere
 
 -- some LCSUs
-type SI = '[ '( Dim Length, BaseUnit Meter),'( Dim Time, BaseUnit Second)  ]
-type CGS = '[ '( Dim Length, BaseUnit (Centi Meter)),'( Dim Time, BaseUnit Second)  ]
-type CGSA = '[ '( Dim Length, BaseUnit (Centi Meter)),'( Dim Time, BaseUnit Second), '(Dim Current, BaseUnit Ampere)  ]
+type SI = '[ '( Qu Length, BaseUnit Meter),'( Qu Time, BaseUnit Second)  ]
+type CGS = '[ '( Qu Length, BaseUnit (Centi Meter)),'( Qu Time, BaseUnit Second)  ]
+type CGSA = '[ '( Qu Length, BaseUnit (Centi Meter)),'( Qu Time, BaseUnit Second), '(Qu Current, BaseUnit Ampere)  ]
 
 
 {- several different representations of marathon track distance, 42.195km . -}

@@ -17,65 +17,65 @@ import Test.CGS
 
 type Position = Length
 
-cur_pos :: MkGenDim Position lcsu Double
-        -> MkGenDim Velocity lcsu Double
-        -> MkGenDim Acceleration lcsu Double
-        -> MkGenDim Time lcsu Double
-        -> MkGenDim Position lcsu Double
+cur_pos :: MkGenQu Position lcsu Double
+        -> MkGenQu Velocity lcsu Double
+        -> MkGenQu Acceleration lcsu Double
+        -> MkGenQu Time lcsu Double
+        -> MkGenQu Position lcsu Double
 cur_pos x0 v a t = x0 .+ (v .* t) .+ (0.5 *. a .* (t .^ pTwo))
 
-siPos :: MkGenDim Position SI Double
+siPos :: MkGenQu Position SI Double
 siPos = 3 % Meter
 
-siVel :: MkGenDim Velocity SI Double
+siVel :: MkGenQu Velocity SI Double
 siVel = 2 % (Meter :/ Second)
 
-siAcc :: MkGenDim Acceleration SI Double
+siAcc :: MkGenQu Acceleration SI Double
 siAcc = 10 % (Meter :/ Second :/ Second)
 
-siTime :: MkGenDim Time SI Double
+siTime :: MkGenQu Time SI Double
 siTime = 4 % Second
 
-siMass :: MkGenDim Mass SI Double
+siMass :: MkGenQu Mass SI Double
 siMass = 1 % (Kilo :@ Gram)
 
-cgsPos :: MkGenDim Position CGS Double
+cgsPos :: MkGenQu Position CGS Double
 cgsPos = 3 % Meter
 
-cgsVel :: MkGenDim Velocity CGS Double
+cgsVel :: MkGenQu Velocity CGS Double
 cgsVel = 2 % (Meter :/ Second)
 
-cgsAcc :: MkGenDim Acceleration CGS Double
+cgsAcc :: MkGenQu Acceleration CGS Double
 cgsAcc = 10 % (Meter :/ Second :/ Second)
 
-cgsTime :: MkGenDim Time CGS Double
+cgsTime :: MkGenQu Time CGS Double
 cgsTime = 4 % Second
 
-cgsMass :: MkGenDim Mass CGS Double
+cgsMass :: MkGenQu Mass CGS Double
 cgsMass = 1 % (Kilo :@ Gram)
 
-kinetic_energy :: MkGenDim Mass lcsu Double
-               -> MkGenDim Velocity lcsu Double
-               -> MkGenDim Energy lcsu Double
+kinetic_energy :: MkGenQu Mass lcsu Double
+               -> MkGenQu Velocity lcsu Double
+               -> MkGenQu Energy lcsu Double
 kinetic_energy m v = dim $ 0.5 *. m .* v .* v
 
-momentum :: MkGenDim Mass l Double
-         -> MkGenDim Velocity l Double
-         -> MkGenDim Momentum l Double
+momentum :: MkGenQu Mass l Double
+         -> MkGenQu Velocity l Double
+         -> MkGenQu Momentum l Double
 momentum m v = dim $ m .* v
 
 g_earth :: Compatible lcsu (Meter :/ (Second :^ Two))
-        => MkGenDim Acceleration lcsu Double
+        => MkGenQu Acceleration lcsu Double
 g_earth = 9.8 % (Meter :/ (Second :^ pTwo))
 
-distance :: MkGenDim Velocity lcsu Double
-         -> MkGenDim Acceleration lcsu Double
-         -> MkGenDim Time lcsu Double
-         -> MkGenDim Length lcsu Double
+distance :: MkGenQu Velocity lcsu Double
+         -> MkGenQu Acceleration lcsu Double
+         -> MkGenQu Time lcsu Double
+         -> MkGenQu Length lcsu Double
 distance v a t = dim $ v .* t .+ (0.5 *. a .* t .* t)
 
-sum :: Num n => [Dim dims l n] -> Dim dims l n
+sum :: Num n => [Qu dims l n] -> Qu dims l n
 sum = foldr (.+) zero
 
-squareAll :: Fractional n => [Dim dims l n] -> [Dim (dims @* Two) l n]
+squareAll :: Fractional n => [Qu dims l n] -> [Qu (dims @* Two) l n]
 squareAll = map (.^ pTwo)

@@ -10,6 +10,6 @@ type CGS = MkLCSU '[ (D.Length, Centi :@ Meter)
                    , (D.Mass, Gram)
                    , (D.Time, Second) ]
 
-type CGSLength = MkGenDim D.Length CGS Double
-type CGSMass = MkGenDim D.Mass CGS Double
-type CGSTime = MkGenDim D.Time CGS Double
+type CGSLength = MkGenQu D.Length CGS Double
+type CGSMass = MkGenQu D.Mass CGS Double
+type CGSTime = MkGenQu D.Time CGS Double

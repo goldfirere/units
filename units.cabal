@@ -33,15 +33,24 @@ library
   build-depends:      
       base >= 4.7 && < 5,
       singletons >= 0.9
-  exposed-modules:    Data.Metrology, Data.Metrology.Show,
-                      Data.Metrology.Poly, Data.Metrology.Unsafe,
-                      Data.Metrology.SI, Data.Metrology.SI.Prefixes,
-                      Data.Metrology.SI.Types, Data.Metrology.SI.Units,
-                      Data.Metrology.SI.Dims, Data.Metrology.Z
+  exposed-modules:    
+    Data.Metrology, 
+    Data.Metrology.Show,
+    Data.Metrology.Poly,
+    Data.Metrology.SI,
+    Data.Metrology.SI.Prefixes,
+    Data.Metrology.SI.Types, 
+    Data.Metrology.SI.Units,
+    Data.Metrology.SI.Dims,
+    Data.Metrology.Unsafe,
+    Data.Metrology.Z
 
-  other-modules:      Data.Metrology.Dim, Data.Metrology.DimSpec,
-                      Data.Metrology.Units, Data.Metrology.UnitCombinators,
-                      Data.Metrology.LCSU
+  other-modules:     
+    Data.Metrology.DimSpec,
+    Data.Metrology.LCSU,
+    Data.Metrology.Quantity, 
+    Data.Metrology.Units,
+    Data.Metrology.UnitCombinators
 
   default-language:   Haskell2010
 

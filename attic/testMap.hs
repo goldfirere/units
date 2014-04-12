@@ -14,13 +14,13 @@ import Unsafe.Coerce
 printBool :: Bool -> IO ()
 printBool = print
 
-type LengthDim = '[ '( Dim Length , Posi 1) ] 
-type SpeedDim = '[ '( Dim Length , Posi 1) ,  '( Dim Time , Nega 1) ] 
-type TimeDim = '[ '( Dim Time , Posi 1) ]  
+type LengthQu = '[ '( Qu Length , Posi 1) ] 
+type SpeedQu = '[ '( Qu Length , Posi 1) ,  '( Qu Time , Nega 1) ] 
+type TimeQu = '[ '( Qu Time , Posi 1) ]  
 
 
 
 main :: IO ()
 main = do
   printBool $ fromSing $ 
-    (sing :: Sing ((Lookup (Dim Length) SpeedDim) :== ('Just (Posi 1))))  
+    (sing :: Sing ((Lookup (Qu Length) SpeedDim) :== ('Just (Posi 1))))  

@@ -4,7 +4,7 @@ module Test.Lcsu where
 
 import Data.Metrology hiding (LCSU)
 import Data.Metrology.Units
-import Data.Metrology.Dim
+import Data.Metrology.Quantity
 import Data.Metrology.DimSpec
 import Data.Metrology.Z
 
@@ -37,5 +37,5 @@ instance Unit Foot where
 
 type LCSU = MkLCSU '[(Length, Meter),  (Time, Second)]
 
-inMeters :: Dim '[D Length One] LCSU Double
+inMeters :: Qu '[D Length One] LCSU Double
 inMeters = dimOf 3 Meter

@@ -1,4 +1,4 @@
-{- Data/Metrology/DimSpec.hs
+{- Data/Metrology.DimSpec.hs
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
