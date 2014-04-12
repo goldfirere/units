@@ -51,7 +51,7 @@ library
     Data.Metrology.LCSU,
     Data.Metrology.Quantity, 
     Data.Metrology.Units,
-    Data.Metrology.UnitCombinators
+    Data.Metrology.Combinators
 
   default-language:   Haskell2010
 

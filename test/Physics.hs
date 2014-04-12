@@ -10,7 +10,7 @@ import Data.Metrology.SI.Units
 import Data.Metrology.SI ( SI )
 import Data.Metrology.Show
 import Data.Metrology.SI.Prefixes
-import Data.Metrology.UnitCombinators
+import Data.Metrology.Combinators
 import Data.Metrology.LCSU
 import Data.Metrology.Units
 import Test.CGS

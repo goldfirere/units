@@ -24,6 +24,11 @@ import Data.Proxy
 import Data.Singletons
 import GHC.Exts
 
+-- | Dummy type use just to label canonical units. It does /not/ have a
+-- 'Unit' instance.
+data Canonical
+
+
 class DimOfUnitIsConsistent unit => Unit unit where
   -- | The base unit of this unit: what this unit is defined in terms of.
   -- For units that are not defined in terms of anything else, the base unit

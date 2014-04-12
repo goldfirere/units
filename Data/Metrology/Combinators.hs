@@ -1,17 +1,17 @@
-{- Data/Metrology/UnitCombinators.hs
+{- Data/Metrology/Combinators.hs
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
    eir@cis.upenn.edu
 
-   This file defines combinators to build more complex units from simpler ones.
+   This file defines combinators to build more complex units and dimensions from simpler ones.
 -}
 
 {-# LANGUAGE TypeOperators, TypeFamilies, UndecidableInstances, 
              ScopedTypeVariables, DataKinds, FlexibleInstances,
              ConstraintKinds #-}
 
-module Data.Metrology.UnitCombinators where
+module Data.Metrology.Combinators where
 
 import Data.Singletons ( Sing, SingI, sing )
 

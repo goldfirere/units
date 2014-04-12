@@ -4,7 +4,9 @@
    Copyright (c) 2013 Richard Eisenberg
    eir@cis.upenn.edu
 
-   This file defines the DimSpec kind and operations over lists of DimSpecs
+   This file defines the DimSpec kind and operations over lists of DimSpecs.
+
+   DimSpecs represents dimensions and units raised to a power of integers, and the lists of DimSpecs represents monomials of dimensions and units.
 -}
 
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances #-}

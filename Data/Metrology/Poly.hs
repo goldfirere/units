@@ -13,12 +13,11 @@
 -- write functions polymorphic over dimension specifications.
 --
 -- Each dimensioned quantity is represented by a member of the type
--- 'Qu', which is parameterized by a type-level list of 'DimSpec's.
--- A 'DimSpec', in turn, is a unit type paired with its exponent,
--- representented with a type-level 'Z'. The unit types should all be
--- /canonical/ -- that is, the "base" unit of all compatible units. Thus,
--- the type of velocity in the SI system would be
--- @Qu '[D Meter One, D Second MOne]@.
+-- 'Qu', which is parameterized by a type-level list of 'DimSpec's and
+-- a local coherent set of units ('LCSU').  A 'DimSpec', in turn, is a
+-- dimension type paired with its exponent, representented with a
+-- type-level integer 'Z'. Thus, the type of velocity in the SI system
+-- would be @Qu '[D Meter One, D Second MOne]@.
 --
 -- A technical detail: because 'DimSpec' is used only at the type level
 -- and needs to store types of kind @*@, it must be parameterized, as we
@@ -31,7 +30,7 @@ module Data.Metrology.Poly (
   -- * The 'Dim' type
   Qu,
 
-  -- * LCSUs (locally consistent sets of units)
+  -- * LCSUs (locally coherent system of units)
   LCSU, LookupList, Compatible,
 
   -- * Manipulating units and dimensions

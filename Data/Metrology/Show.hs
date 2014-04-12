@@ -11,9 +11,9 @@
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
--- This module defines only a 'Show' instance for dimensioned quantities.
--- The Show instance prints out the number stored internally with its canonical
--- units.
+-- This module defines 'Show' instance for dimensioned quantities.
+-- Show instance prints out the number stored internally with its canonical
+-- units. To print out quantities with specific units use function `showIn`.
 -----------------------------------------------------------------------------
 
 module Data.Metrology.Show (showIn) where
@@ -26,7 +26,7 @@ import Data.Metrology.DimSpec
 import Data.Metrology.Quantity
 import Data.Metrology.Z
 import Data.Metrology.LCSU
-import Data.Metrology.UnitCombinators
+import Data.Metrology.Combinators
 import Data.Metrology.Units
 import Data.Metrology
 
@@ -92,6 +92,7 @@ instance (ShowUnitSpec (LookupList dims lcsu), Show n)
   show (Qu d) = (show d ++ showDimSpec (Proxy :: Proxy (LookupList dims lcsu)))
 
 infix 1 `showIn`
+
 -- | Show a dimensioned quantity in a given unit. (The default @Show@
 -- instance always uses canonical units.)
 showIn :: ( Unit unit

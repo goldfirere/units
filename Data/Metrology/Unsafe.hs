@@ -10,7 +10,8 @@
 -- Portability :  non-portable
 --
 -- This module exports the constructor of the 'Dim' type. This allows you
--- to write dimension-unsafe code. Use at your peril.
+-- to write codes that takes values in and out of quantity at your will, 
+-- that may lead to dimension unsafety. Use at your peril.
 -----------------------------------------------------------------------------
 
 module Data.Metrology.Unsafe (

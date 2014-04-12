@@ -4,7 +4,9 @@
    Copyright (c) 2013 Richard Eisenberg
    eir@cis.upenn.edu
 
-   This file defines the Qu type and operations on that type.
+   This file defines the 'Qu' type that represents quantity
+   (a number paired with its measurement reference).
+   This file also defines operations on 'Qu' types.
 -}
 
 {-# LANGUAGE TypeFamilies, TypeOperators, DataKinds, UndecidableInstances,
@@ -24,8 +26,8 @@ import Data.Metrology.LCSU
 --- Internal ------------------------------------------------
 -------------------------------------------------------------
 
--- | Qu adds a dimensional annotation to its base type @n@. This is the
--- representation for all dimensioned quantities.
+-- | 'Qu' adds a dimensional annotation to its numerical value type
+-- @n@. This is the representation for all quantities.
 newtype Qu (a :: [DimSpec *]) (lcsu :: LCSU *) (n :: *) = Qu n
 type role Qu nominal nominal representational
 
@@ -35,7 +37,7 @@ type role Qu nominal nominal representational
 
 -- Abbreviation for creating a Qu (defined here to avoid a module cycle)
 
--- | Make a dimensioned quantity type capable of storing a value of a given
+-- | Make a quantity type capable of storing a value of a given
 -- unit. This uses a 'Double' for storage of the value. For example:
 --
 -- > data LengthDim = LengthDim
@@ -43,62 +45,62 @@ type role Qu nominal nominal representational
 -- > type Length = MkQu LengthDim
 type MkQu dim = Qu (DimSpecsOf dim) DefaultLCSU Double
 
--- | Make a dimensioned quantity with a custom numerical type and LCSU.
+-- | Make a quantity type with a custom numerical type and LCSU.
 type MkGenQu dim lcsu n = Qu (DimSpecsOf dim) lcsu n
 
 
 infixl 6 .+
--- | Add two compatible dimensioned quantities
+-- | Add two compatible quantities
 (.+) :: (d1 @~ d2, Num n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
 (Qu a) .+ (Qu b) = Qu (a + b)
 
 infixl 6 .-
--- | Subtract two compatible dimensioned quantities
+-- | Subtract two compatible quantities
 (.-) :: (d1 @~ d2, Num n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
 (Qu a) .- (Qu b) = Qu (a - b)
 
 infixl 7 .*
--- | Multiply two dimensioned quantities
+-- | Multiply two quantities
 (.*) :: Num n => Qu a l n -> Qu b l n -> Qu (Normalize (a @+ b)) l n
 (Qu a) .* (Qu b) = Qu (a * b)
 
 infixl 7 ./
--- | Divide two dimensioned quantities
+-- | Divide two quantities
 (./) :: Fractional n => Qu a l n -> Qu b l n -> Qu (Normalize (a @- b)) l n
 (Qu a) ./ (Qu b) = Qu (a / b)
 
 infixr 8 .^
--- | Raise a dimensioned quantity to a power known at compile time
+-- | Raise a quantity to a power known at compile time
 (.^) :: Fractional n => Qu a l n -> Sing z -> Qu (a @* z) l n
 (Qu a) .^ sz = Qu (a ^^ szToInt sz)
 
--- | Take the n'th root of a dimensioned quantity, where n is known at compile
+-- | Take the n'th root of a quantity, where n is known at compile
 -- time
 nthRoot :: ((Zero < z) ~ True, Floating n)
         => Sing z -> Qu a l n -> Qu (a @/ z) l n
 nthRoot sz (Qu a) = Qu (a ** (1.0 / (fromIntegral $ szToInt sz)))
 
 infix 4 .<
--- | Check if one dimensioned quantity is less than a compatible one
+-- | Check if one quantity is less than a compatible one
 (.<) :: (d1 @~ d2, Ord n) => Qu d1 l n -> Qu d2 l n -> Bool
 (Qu a) .< (Qu b) = a < b
 
 infix 4 .>
--- | Check if one dimensioned quantity is greater than a compatible one
+-- | Check if one quantity is greater than a compatible one
 (.>) :: (d1 @~ d2, Ord n) => Qu d1 l n -> Qu d2 l n -> Bool
 (Qu a) .> (Qu b) = a > b
 
 infix 4 .<=
--- | Check if one dimensioned quantity is less than or equal to a compatible one
+-- | Check if one quantity is less than or equal to a compatible one
 (.<=) :: (d1 @~ d2, Ord n) => Qu d1 l n -> Qu d2 l n -> Bool
 (Qu a) .<= (Qu b) = a <= b
 
 infix 4 .>=
--- | Check if one dimensioned quantity is greater than or equal to a compatible one
+-- | Check if one quantity is greater than or equal to a compatible one
 (.>=) :: (d1 @~ d2, Ord n) => Qu d1 l n -> Qu d2 l n -> Bool
 (Qu a) .>= (Qu b) = a >= b
 
--- | Compare two compatible dimensioned quantities for equality
+-- | Compare two compatible quantities for equality
 dimEq :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
       => Qu d0 l n  -- ^ If the difference between the next
                      -- two arguments are less than this 
@@ -106,7 +108,7 @@ dimEq :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
       -> Qu d1 l n -> Qu d2 l n -> Bool
 dimEq (Qu epsilon) (Qu a) (Qu b) = abs(a-b) < epsilon
 
--- | Compare two compatible dimensioned quantities for inequality
+-- | Compare two compatible quantities for inequality
 dimNeq :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
        => Qu d0 l n -- ^ If the difference between the next
                      -- two arguments are less  than this 
@@ -114,20 +116,20 @@ dimNeq :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
        -> Qu d1 l n -> Qu d2 l n -> Bool
 dimNeq (Qu epsilon) (Qu a) (Qu b) = abs(a-b) >= epsilon
 
--- | Square a dimensioned quantity
+-- | Square a quantity
 dimSqr :: Num n => Qu a l n -> Qu (Normalize (a @+ a)) l n
 dimSqr x = x .* x
 
--- | Take the square root of a dimensioned quantity
+-- | Take the square root of a quantity
 dimSqrt :: Floating n => Qu a l n -> Qu (a @/ Two) l n
 dimSqrt = nthRoot pTwo
 
--- | Take the cube root of a dimensioned quantity
+-- | Take the cube root of a quantity
 dimCubeRoot :: Floating n => Qu a l n -> Qu (a @/ Three) l n
 dimCubeRoot = nthRoot pThree
 
 infixl 7 *.
--- | Multiply a dimensioned quantity by a scalar
+-- | Multiply a quantity by a scalar
 (*.) :: Num n => n -> Qu a l n -> Qu a l n
 a *. (Qu b) = Qu (a * b)
 

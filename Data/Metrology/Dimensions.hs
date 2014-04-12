@@ -4,8 +4,8 @@
    Copyright (c) 2013 Richard Eisenberg
    eir@cis.upenn.edu
 
-   This file defines the class Unit, which is needed for
-   user-defined units.
+   This file defines the class Dimension, which is needed for
+   defining dimensions.
 -}
 
 {-# LANGUAGE TypeFamilies, DataKinds, DefaultSignatures, MultiParamTypeClasses,
@@ -23,9 +23,6 @@ import Data.Proxy
 import Data.Singletons
 import GHC.Exts
 
--- | Dummy type use just to label canonical units. It does /not/ have a
--- 'Unit' instance.
-data Canonical
 
 -- | This class is used to mark abstract dimensions, such as @Length@, or
 -- @Mass@.

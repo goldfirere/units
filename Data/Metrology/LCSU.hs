@@ -4,8 +4,10 @@
    Copyright (c) 2013 Richard Eisenberg
    eir@cis.upenn.edu
 
-   Defines a locally-consistent system of units,
+   Defines a locally-coherent system of units (LCSUs),
    implemented as an association list.
+   An LCSU is a from base dimensions to units, thus 
+   defining a uniquely mapping units for any dimensions.
 -}
 
 {-# LANGUAGE DataKinds, PolyKinds, TypeFamilies, TypeOperators, UndecidableInstances #-}
