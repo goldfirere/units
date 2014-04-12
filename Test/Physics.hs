@@ -57,12 +57,12 @@ cgsMass = 1 % (Kilo :@ Gram)
 kinetic_energy :: MkGenQu Mass lcsu Double
                -> MkGenQu Velocity lcsu Double
                -> MkGenQu Energy lcsu Double
-kinetic_energy m v = dim $ 0.5 *. m .* v .* v
+kinetic_energy m v = redim $ 0.5 *. m .* v .* v
 
 momentum :: MkGenQu Mass l Double
          -> MkGenQu Velocity l Double
          -> MkGenQu Momentum l Double
-momentum m v = dim $ m .* v
+momentum m v = redim $ m .* v
 
 g_earth :: Compatible lcsu (Meter :/ (Second :^ Two))
         => MkGenQu Acceleration lcsu Double
@@ -72,7 +72,7 @@ distance :: MkGenQu Velocity lcsu Double
          -> MkGenQu Acceleration lcsu Double
          -> MkGenQu Time lcsu Double
          -> MkGenQu Length lcsu Double
-distance v a t = dim $ v .* t .+ (0.5 *. a .* t .* t)
+distance v a t = redim $ v .* t .+ (0.5 *. a .* t .* t)
 
 sum :: Num n => [Qu dims l n] -> Qu dims l n
 sum = foldr (.+) zero
