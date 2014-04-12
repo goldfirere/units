@@ -54,8 +54,8 @@ module Data.Metrology (
   (.+), (.-), (.*), (./), (.^), (*.),
   (.<), (.>), (.<=), (.>=), dimEq, dimNeq,
   nthRoot, dimSqrt, dimCubeRoot,
-  unity, zero, dim, convert,
-  dimIn, (#), dimOf, (%), defaultLCSU,
+  unity, zero, redim, convert,
+  valIn, (#), quOf, (%), defaultLCSU,
 
   -- * Type-level unit combinators
   (:*)(..), (:/)(..), (:^)(..), (:@)(..),
@@ -96,56 +96,56 @@ import Data.Metrology.UnitCombinators
 import Data.Metrology.LCSU
 import Data.Proxy
 
--- | Extracts a @Double@ from a dimensioned quantity, expressed in
+-- | Extracts a numerical value from a dimensioned quantity, expressed in
 --   the given unit. For example:
 --
 --   > inMeters :: Length -> Double
---   > inMeters x = dimIn x Meter
-dimIn :: forall unit dim lcsu n.
+--   > inMeters x = valIn x Meter
+valIn :: forall unit dim lcsu n.
          ( Unit unit
          , UnitSpec (LookupList dim lcsu)
          , UnitSpecsOf unit *~ LookupList dim lcsu
          , Fractional n )
       => Qu dim lcsu n -> unit -> n
-dimIn (Qu val) u
+valIn (Qu val) u
   = val * fromRational
             (canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))
              / canonicalConvRatio u)
 
 infix 5 #
--- | Infix synonym for 'dimIn'
+-- | Infix synonym for 'valIn'
 (#) :: ( Unit unit
        , UnitSpec (LookupList dim lcsu)
        , UnitSpecsOf unit *~ LookupList dim lcsu
        , Fractional n )
     => Qu dim lcsu n -> unit -> n
-(#) = dimIn
+(#) = valIn
 
 -- | Creates a dimensioned quantity in the given unit. For example:
 --
 --   > height :: Length
---   > height = dimOf 2.0 Meter
-dimOf :: forall unit dim lcsu n.
+--   > height = quOf 2.0 Meter
+quOf :: forall unit dim lcsu n.
          ( dim ~ DimSpecsOf (DimOfUnit unit)
          , Unit unit
          , UnitSpec (LookupList dim lcsu)
          , UnitSpecsOf unit *~ LookupList dim lcsu
          , Fractional n )
       => n -> unit -> Qu dim lcsu n
-dimOf d u
+quOf d u
   = Qu (d * fromRational
                (canonicalConvRatio u
                 / canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))))
 
 infixr 9 %
--- | Infix synonym for 'dimOf'
+-- | Infix synonym for 'quOf'
 (%) :: ( dim ~ DimSpecsOf (DimOfUnit unit)
        , Unit unit
        , UnitSpec (LookupList dim lcsu)
        , UnitSpecsOf unit *~ LookupList dim lcsu
        , Fractional n )
     => n -> unit -> Qu dim lcsu n
-(%) = dimOf
+(%) = quOf
 
 defaultLCSU :: Qu dim DefaultLCSU n -> Qu dim DefaultLCSU n
 defaultLCSU = id
@@ -160,8 +160,8 @@ zero :: Num n => Qu dimspec l n
 zero = Qu 0
 
 -- | Dimension-safe cast. See the README for more info.
-dim :: (d @~ e) => Qu d l n -> Qu e l n
-dim (Qu x) = Qu x
+redim :: (d @~ e) => Qu d l n -> Qu e l n
+redim (Qu x) = Qu x
 
 -- | Dimension-safe cast between different CSUs.
 convert :: forall d l1 l2 n. 
