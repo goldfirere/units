@@ -9,7 +9,8 @@
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
--- This module defines SI dimensions.
+-- This module defines SI dimensions. The names of SI dimensions conform to
+-- <http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2012.pdf>.
 -----------------------------------------------------------------------------
 
 module Data.Metrology.SI.Dims where
@@ -31,11 +32,11 @@ instance Dimension Current
 data Temperature = Temperature
 instance Dimension Temperature
 
-data Quantity = Quantity
-instance Dimension Quantity
+data AmountOfSubstance = AmountOfSubstance
+instance Dimension AmountOfSubstance
 
-data Luminosity = Luminosity
-instance Dimension Luminosity
+data LuminousIntensity = LuminousIntensity
+instance Dimension LuminousIntensity
 
 type Area                = Length            :^ Two
 type Volume              = Length            :^ Three
@@ -47,8 +48,8 @@ type SurfaceDensity      = Mass              :/ Area
 type SpecificVolume      = Volume            :/ Mass
 type CurrentDensity      = Current           :/ Area
 type MagneticStrength    = Current           :/ Length
-type Concentration       = Quantity          :/ Volume
-type Luminance           = Luminosity        :/ Area
+type Concentration       = AmountOfSubstance          :/ Volume
+type Luminance           = LuminousIntensity        :/ Area
 
 type Frequency           = Time              :^ MOne
 type Force               = Mass              :* Acceleration
@@ -63,9 +64,9 @@ type Conductance         = Current           :/ ElectricPotential
 type MagneticFlux        = ElectricPotential :* Time
 type MagneticFluxDensity = MagneticFlux      :/ Area
 type Inductance          = MagneticFlux      :/ Current
-type LuminousFlux        = Luminosity
-type Illuminance         = Luminosity        :/ Area
+type LuminousFlux        = LuminousIntensity
+type Illuminance         = LuminousIntensity :/ Area
 type Kerma               = Area              :/ (Time :^ Two)
-type CatalyticActivity   = Quantity          :/ Time
+type CatalyticActivity   = AmountOfSubstance :/ Time
 
 type Momentum            = Mass              :* Velocity

@@ -60,14 +60,14 @@ instance Show Kelvin where
 data Mole = Mole
 instance Unit Mole where
   type BaseUnit Mole = Canonical
-  type DimOfUnit Mole = Quantity
+  type DimOfUnit Mole = AmountOfSubstance
 instance Show Mole where
   show _ = "mol"
 
 data Candela = Candela
 instance Unit Candela where
   type BaseUnit Candela = Canonical
-  type DimOfUnit Candela = Luminosity
+  type DimOfUnit Candela = LuminousIntensity
 instance Show Candela where
   show _ = "cd"
 

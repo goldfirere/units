@@ -26,8 +26,8 @@ type SI = MkLCSU '[ (D.Length, Meter)
                   , (D.Time, Second)
                   , (D.Current, Ampere)
                   , (D.Temperature, Kelvin)
-                  , (D.Quantity, Mole)
-                  , (D.Luminosity, Lumen)
+                  , (D.AmountOfSubstance, Mole)
+                  , (D.LuminousIntensity, Lumen)
                   ]
 
 type Length              = MkGenQu D.Length              SI Double
@@ -35,8 +35,8 @@ type Mass                = MkGenQu D.Mass                SI Double
 type Time                = MkGenQu D.Time                SI Double
 type Current             = MkGenQu D.Current             SI Double
 type Temperature         = MkGenQu D.Temperature         SI Double
-type Quantity            = MkGenQu D.Quantity            SI Double
-type Luminosity          = MkGenQu D.Luminosity          SI Double
+type AmountOfSubstance   = MkGenQu D.AmountOfSubstance   SI Double
+type LuminousIntensity   = MkGenQu D.LuminousIntensity   SI Double
 
 type Area                = MkGenQu D.Area                SI Double
 type Volume              = MkGenQu D.Volume              SI Double

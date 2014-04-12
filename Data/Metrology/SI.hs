@@ -11,7 +11,8 @@
 --
 -- This module exports unit, type, and prefix definitions according to the SI
 -- system of units. The definitions were taken from here:
--- <http://www.bipm.org/en/si/>.
+-- <http://www.bipm.org/en/si/> and here:
+-- <http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2012.pdf>.
 --
 -- There is one deviation from the definition at that site: To work better
 -- with prefixes, the unit of mass is 'Gram'.
