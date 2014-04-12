@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Dimensions.Imperial.Units
+-- Module      :  Data.Metrology.Imperial.Units
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -14,13 +14,13 @@
 --
 -----------------------------------------------------------------------------
 
-module Data.Dimensions.Imperial.Units where
+module Data.Metrology.Imperial.Units where
 
-import Data.Dimensions
-import Data.Dimensions.DimSpec
-import Data.Dimensions.Units
-import Data.Dimensions.SI.Dims
-import Data.Dimensions.SI.Units (Meter(..), Gram(..))
+import Data.Metrology
+import Data.Metrology.DimSpec
+import Data.Metrology.Units
+import Data.Metrology.SI.Dims
+import Data.Metrology.SI.Units (Meter(..), Gram(..))
 import Data.Proxy
 
 ---------------------------------

@@ -33,15 +33,15 @@ library
   build-depends:      
       base >= 4.7 && < 5,
       singletons >= 0.9
-  exposed-modules:    Data.Dimensions, Data.Dimensions.Show,
-                      Data.Dimensions.Poly, Data.Dimensions.Unsafe,
-                      Data.Dimensions.SI, Data.Dimensions.SI.Prefixes,
-                      Data.Dimensions.SI.Types, Data.Dimensions.SI.Units,
-                      Data.Dimensions.SI.Dims, Data.Dimensions.Z
+  exposed-modules:    Data.Metrology, Data.Metrology.Show,
+                      Data.Metrology.Poly, Data.Metrology.Unsafe,
+                      Data.Metrology.SI, Data.Metrology.SI.Prefixes,
+                      Data.Metrology.SI.Types, Data.Metrology.SI.Units,
+                      Data.Metrology.SI.Dims, Data.Metrology.Z
 
-  other-modules:      Data.Dimensions.Dim, Data.Dimensions.DimSpec,
-                      Data.Dimensions.Units, Data.Dimensions.UnitCombinators,
-                      Data.Dimensions.LCSU
+  other-modules:      Data.Metrology.Dim, Data.Metrology.DimSpec,
+                      Data.Metrology.Units, Data.Metrology.UnitCombinators,
+                      Data.Metrology.LCSU
 
   default-language:   Haskell2010
 

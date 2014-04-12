@@ -1,11 +1,11 @@
 module Test.Imperial where
 
-import Data.Dimensions
-import Data.Dimensions.Z
-import Data.Dimensions.DimSpec
-import Data.Dimensions.Show
-import Data.Dimensions.SI as SI
-import Data.Dimensions.Imperial.Units
+import Data.Metrology
+import Data.Metrology.Z
+import Data.Metrology.DimSpec
+import Data.Metrology.Show
+import Data.Metrology.SI as SI
+import Data.Metrology.Imperial.Units
 
 main :: IO ()
 main = do

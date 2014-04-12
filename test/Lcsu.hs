@@ -2,11 +2,11 @@
 
 module Test.Lcsu where
 
-import Data.Dimensions hiding (LCSU)
-import Data.Dimensions.Units
-import Data.Dimensions.Dim
-import Data.Dimensions.DimSpec
-import Data.Dimensions.Z
+import Data.Metrology hiding (LCSU)
+import Data.Metrology.Units
+import Data.Metrology.Dim
+import Data.Metrology.DimSpec
+import Data.Metrology.Z
 
 data Length = Length
 data Time = Time

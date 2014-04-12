@@ -29,49 +29,49 @@ between them. Of course, you're welcome to `import` a module without its
 dependents, but it probably won't be very useful to you. I hope that this list
 grows over time.
 
- -  __`Data.Dimensions`__
+ -  __`Data.Metrology`__
 
     This is the main exported module. It exports all the necessary functionality
     for you to build your own set of units and operate with them. All modules
     implicitly depend on this one.
 
- -  __`Data.Dimensions.Poly`__
+ -  __`Data.Metrology.Poly`__
 
     This module exports some more definitions that may be useful when writing
     functions polymorphic over the choice of dimension. These functions are
     sometimes challenging (or perhaps impossible) to write, as the system is
     designed more with _monomorphic_ use than polymorphic use.
 
- -  __`Data.Dimensions.Unsafe`__
+ -  __`Data.Metrology.Unsafe`__
 
     This module exports the constructor for the central datatype that stores
     dimensioned quantities. With this constructor, you can arbitrarily change
     units! Use at your peril.
 
- -  __`Data.Dimensions.Show`__
+ -  __`Data.Metrology.Show`__
 
     This module defines a `Show` instance for dimensioned quantities, printing
     out the number stored along with its canonical dimension. This behavior
     may not be the best for every setting, so it is exported separately.
 
- -  __`Data.Dimensions.SI`__
+ -  __`Data.Metrology.SI`__
 
     This module exports unit definitions for the [SI][] system of units,
     re-exporting the three modules below.
 
 [SI]: http://en.wikipedia.org/wiki/International_System_of_Units
  
- -  __`Data.Dimensions.SI.Units`__
+ -  __`Data.Metrology.SI.Units`__
 
     This module exports only the SI units, such as `Meter` and `Ampere`.
 
- -  __`Data.Dimensions.SI.Types`__
+ -  __`Data.Metrology.SI.Types`__
 
     This module exports several useful types for use with the SI.Units module,
     which it depends on. For example, `Length` is the type of dimensioned
     quantities made with `Meter`s.
 
- -  __`Data.Dimensions.SI.Prefixes`__
+ -  __`Data.Metrology.SI.Prefixes`__
 
     This module exports the SI prefixes. Note that this does *not* depend on
     any of the other SI modules -- you can use these prefixes with any system

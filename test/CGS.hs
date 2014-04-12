@@ -2,9 +2,9 @@
 
 module Test.CGS where
 
-import Data.Dimensions
-import Data.Dimensions.SI
-import qualified Data.Dimensions.SI.Dims as D
+import Data.Metrology
+import Data.Metrology.SI
+import qualified Data.Metrology.SI.Dims as D
 
 type CGS = MkLCSU '[ (D.Length, Centi :@ Meter)
                    , (D.Mass, Gram)

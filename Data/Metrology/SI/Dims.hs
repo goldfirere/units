@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Dimensions.SI.Dims
+-- Module      :  Data.Metrology.SI.Dims
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -12,9 +12,9 @@
 -- This module defines SI dimensions.
 -----------------------------------------------------------------------------
 
-module Data.Dimensions.SI.Dims where
+module Data.Metrology.SI.Dims where
 
-import Data.Dimensions
+import Data.Metrology
 
 data Length = Length
 instance Dimension Length

@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Dimensions.Poly
+-- Module      :  Data.Metrology.Poly
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -27,7 +27,7 @@
 -- explanation.) So, we always work with @(DimSpec *)@s.
 ----------------------------------------------------------------------------
 
-module Data.Dimensions.Poly (
+module Data.Metrology.Poly (
   -- * The 'Dim' type
   Dim,
 
@@ -45,7 +45,7 @@ module Data.Dimensions.Poly (
 
   ) where
 
-import Data.Dimensions.Dim
-import Data.Dimensions.DimSpec
-import Data.Dimensions.LCSU
-import Data.Dimensions.Units
+import Data.Metrology.Dim
+import Data.Metrology.DimSpec
+import Data.Metrology.LCSU
+import Data.Metrology.Units

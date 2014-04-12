@@ -1,4 +1,4 @@
-{- Data/Dimensions/LCSU.hs
+{- Data/Metrology/LCSU.hs
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
@@ -10,13 +10,13 @@
 
 {-# LANGUAGE DataKinds, PolyKinds, TypeFamilies, TypeOperators, UndecidableInstances #-}
 
-module Data.Dimensions.LCSU (
+module Data.Metrology.LCSU (
   LCSU(DefaultLCSU), DefaultLCSUUnit,
   Lookup, LookupList, MkLCSU
   ) where
 
-import Data.Dimensions.DimSpec
-import Data.Dimensions.Z
+import Data.Metrology.DimSpec
+import Data.Metrology.Z
 
 import Data.Singletons.Maybe
 

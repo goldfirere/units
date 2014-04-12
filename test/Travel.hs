@@ -4,15 +4,15 @@
 
 module Test.Travel where
 
-import Data.Dimensions
-import Data.Dimensions.SI.Types
-import Data.Dimensions.SI.Prefixes
-import Data.Dimensions.SI.Units
-import Data.Dimensions.SI (SI)
-import Data.Dimensions.Imperial.Types (Imperial)
-import Data.Dimensions.Imperial.Units
-import Data.Dimensions.Show
-import qualified Data.Dimensions.SI.Dims as D
+import Data.Metrology
+import Data.Metrology.SI.Types
+import Data.Metrology.SI.Prefixes
+import Data.Metrology.SI.Units
+import Data.Metrology.SI (SI)
+import Data.Metrology.Imperial.Types (Imperial)
+import Data.Metrology.Imperial.Units
+import Data.Metrology.Show
+import qualified Data.Metrology.SI.Dims as D
 
 type PerArea lcsu n = MkGenDim (D.Area :^ MOne) lcsu n
 

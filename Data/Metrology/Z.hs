@@ -1,4 +1,4 @@
-{- Data/Dimensions/Z.hs
+{- Data/Metrology/Z.hs
  
    The units Package
    Copyright (c) 2013 Richard Eisenberg
@@ -19,7 +19,7 @@
 -- use of this package, please let me (Richard, @eir@ at @cis.upenn.edu@)
 -- know.
 
-module Data.Dimensions.Z where
+module Data.Metrology.Z where
 
 import Data.Singletons.TH
 

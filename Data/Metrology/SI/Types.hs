@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Dimensions.SI.Types
+-- Module      :  Data.Metrology.SI.Types
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -13,12 +13,12 @@
 -- internal representation.
 -----------------------------------------------------------------------------
 
-module Data.Dimensions.SI.Types where
+module Data.Metrology.SI.Types where
 
-import Data.Dimensions
-import Data.Dimensions.SI.Units
-import Data.Dimensions.SI.Prefixes ( Kilo )
-import qualified Data.Dimensions.SI.Dims as D
+import Data.Metrology
+import Data.Metrology.SI.Units
+import Data.Metrology.SI.Prefixes ( Kilo )
+import qualified Data.Metrology.SI.Dims as D
 
 -- defined here to avoid a module dependency
 type SI = MkLCSU '[ (D.Length, Meter)

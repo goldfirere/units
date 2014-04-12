@@ -2,9 +2,9 @@
 
 module Test.OffSystemCSU where
 
-import Data.Dimensions
-import Data.Dimensions.SI
-import qualified Data.Dimensions.SI.Dims as D
+import Data.Metrology
+import Data.Metrology.SI
+import qualified Data.Metrology.SI.Dims as D
 
 
 type YardPond = MkLCSU '[ (D.Length, Foot)]

@@ -1,4 +1,4 @@
-{- Data/Dimensions/Dim.hs
+{- Data/Metrology/Dim.hs
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
@@ -11,12 +11,12 @@
              ConstraintKinds, StandaloneDeriving, GeneralizedNewtypeDeriving,
              FlexibleInstances, RoleAnnotations #-}
 
-module Data.Dimensions.Dim where
+module Data.Metrology.Dim where
 
 import Data.Singletons ( Sing )
-import Data.Dimensions.DimSpec
-import Data.Dimensions.Z
-import Data.Dimensions.LCSU
+import Data.Metrology.DimSpec
+import Data.Metrology.Z
+import Data.Metrology.LCSU
 
 -------------------------------------------------------------
 --- Internal ------------------------------------------------

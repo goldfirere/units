@@ -2,12 +2,12 @@
 
 module Test.Simulator where
 
-import Data.Dimensions
-import Data.Dimensions.SI
-import Data.Dimensions.SI.Types
-import Data.Dimensions.SI.Prefixes
-import Data.Dimensions.Show
-import Data.Dimensions.Poly
+import Data.Metrology
+import Data.Metrology.SI
+import Data.Metrology.SI.Types
+import Data.Metrology.SI.Prefixes
+import Data.Metrology.Show
+import Data.Metrology.Poly
 
 type Position = Length
 

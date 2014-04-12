@@ -2,7 +2,7 @@
 
 module Test.Units where
 
-import Data.Dimensions
+import Data.Metrology
 
 data Meter = Meters
 data Foot = Feet

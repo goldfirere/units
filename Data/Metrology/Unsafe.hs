@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Dimensions.Unsafe
+-- Module      :  Data.Metrology.Unsafe
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -13,10 +13,10 @@
 -- to write dimension-unsafe code. Use at your peril.
 -----------------------------------------------------------------------------
 
-module Data.Dimensions.Unsafe (
+module Data.Metrology.Unsafe (
   -- * The 'Dim' type
   Dim(..),
   ) where
 
-import Data.Dimensions.Dim
+import Data.Metrology.Dim
 

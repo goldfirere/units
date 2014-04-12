@@ -2,8 +2,8 @@
 
 module Test.OffSystem where
 
-import Data.Dimensions
-import Data.Dimensions.SI
+import Data.Metrology
+import Data.Metrology.SI
 
 data Foot = Foot
 instance Unit Foot where

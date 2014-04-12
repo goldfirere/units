@@ -3,16 +3,16 @@
 
 module Test.Physics where
 
-import Data.Dimensions
-import Data.Dimensions.Poly
-import Data.Dimensions.SI.Dims
-import Data.Dimensions.SI.Units
-import Data.Dimensions.SI ( SI )
-import Data.Dimensions.Show
-import Data.Dimensions.SI.Prefixes
-import Data.Dimensions.UnitCombinators
-import Data.Dimensions.LCSU
-import Data.Dimensions.Units
+import Data.Metrology
+import Data.Metrology.Poly
+import Data.Metrology.SI.Dims
+import Data.Metrology.SI.Units
+import Data.Metrology.SI ( SI )
+import Data.Metrology.Show
+import Data.Metrology.SI.Prefixes
+import Data.Metrology.UnitCombinators
+import Data.Metrology.LCSU
+import Data.Metrology.Units
 import Test.CGS
 
 type Position = Length

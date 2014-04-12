@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Dimensions.SI.Prefixes
+-- Module      :  Data.Metrology.SI.Prefixes
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -12,9 +12,9 @@
 -- Defines prefixes from the SI standard at <http://www.bipm.org/en/si/>
 -----------------------------------------------------------------------------
 
-module Data.Dimensions.SI.Prefixes where
+module Data.Metrology.SI.Prefixes where
 
-import Data.Dimensions
+import Data.Metrology
 
 -- | 10^1
 data Deca = Deca

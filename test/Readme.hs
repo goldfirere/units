@@ -2,7 +2,7 @@
 
 module Test.Readme where
 
-    import Data.Dimensions
+    import Data.Metrology
 
     data Meter = Meter    -- each unit is a datatype that acts as its own proxy
     instance Unit Meter where           -- declare Meter as a Unit

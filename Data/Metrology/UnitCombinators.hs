@@ -1,4 +1,4 @@
-{- Data/Dimensions/UnitCombinators.hs
+{- Data/Metrology/UnitCombinators.hs
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
@@ -11,13 +11,13 @@
              ScopedTypeVariables, DataKinds, FlexibleInstances,
              ConstraintKinds #-}
 
-module Data.Dimensions.UnitCombinators where
+module Data.Metrology.UnitCombinators where
 
 import Data.Singletons ( Sing, SingI, sing )
 
-import Data.Dimensions.Units
-import Data.Dimensions.DimSpec
-import Data.Dimensions.Z
+import Data.Metrology.Units
+import Data.Metrology.DimSpec
+import Data.Metrology.Z
 import Data.Type.Equality
 
 infixl 7 :*

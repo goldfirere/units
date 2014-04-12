@@ -1,4 +1,4 @@
-{- Data/Dimensions/Units.hs
+{- Data/Metrology/Units.hs
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
@@ -12,12 +12,12 @@
              ConstraintKinds, UndecidableInstances, FlexibleContexts,
              FlexibleInstances, ScopedTypeVariables, TypeOperators #-}
 
-module Data.Dimensions.Units where
+module Data.Metrology.Units where
 
-import Data.Dimensions.Z
-import Data.Dimensions.DimSpec
-import Data.Dimensions.Dim
-import Data.Dimensions.LCSU
+import Data.Metrology.Z
+import Data.Metrology.DimSpec
+import Data.Metrology.Dim
+import Data.Metrology.LCSU
 import Data.Type.Bool
 import Data.Type.Equality
 import Data.Proxy

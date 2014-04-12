@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Dimensions.SI.Units
+-- Module      :  Data.Metrology.SI.Units
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -16,11 +16,11 @@
 -- with prefixes, the unit of mass is 'Gram'.
 -----------------------------------------------------------------------------
 
-module Data.Dimensions.SI.Units where
+module Data.Metrology.SI.Units where
 
-import Data.Dimensions
-import Data.Dimensions.SI.Dims
-import Data.Dimensions.SI.Prefixes ( Centi )
+import Data.Metrology
+import Data.Metrology.SI.Dims
+import Data.Metrology.SI.Prefixes ( Centi )
 
 data Meter = Meter
 instance Unit Meter where

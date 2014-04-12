@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Dimensions.Imperial.Types
+-- Module      :  Data.Metrology.Imperial.Types
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -11,12 +11,12 @@
 --
 -- This module defines type synonyms for British Imperial units.
 -----------------------------------------------------------------------------
-module Data.Dimensions.Imperial.Types where
+module Data.Metrology.Imperial.Types where
 
-import Data.Dimensions
-import Data.Dimensions.SI.Units
-import Data.Dimensions.Imperial.Units (Yard, Pound)
-import qualified Data.Dimensions.SI.Dims as D
+import Data.Metrology
+import Data.Metrology.SI.Units
+import Data.Metrology.Imperial.Units (Yard, Pound)
+import qualified Data.Metrology.SI.Dims as D
 
 
 type Imperial = 

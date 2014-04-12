@@ -4,7 +4,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Dimensions.Show
+-- Module      :  Data.Metrology.Show
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -16,19 +16,19 @@
 -- units.
 -----------------------------------------------------------------------------
 
-module Data.Dimensions.Show (showIn) where
+module Data.Metrology.Show (showIn) where
 
 import Data.Proxy (Proxy(..))
 import Data.List
 import Data.Singletons (Sing, sing, SingI)
 
-import Data.Dimensions.DimSpec
-import Data.Dimensions.Dim
-import Data.Dimensions.Z
-import Data.Dimensions.LCSU
-import Data.Dimensions.UnitCombinators
-import Data.Dimensions.Units
-import Data.Dimensions
+import Data.Metrology.DimSpec
+import Data.Metrology.Dim
+import Data.Metrology.Z
+import Data.Metrology.LCSU
+import Data.Metrology.UnitCombinators
+import Data.Metrology.Units
+import Data.Metrology
 
 class ShowUnitSpec (dims :: [DimSpec *]) where
   showDims :: Proxy dims -> ([String], [String])

@@ -1,4 +1,4 @@
-{- Data/Dimensions.hs
+{- Data/Metrology.hs
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
@@ -27,7 +27,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Dimensions
+-- Module      :  Data.Metrology
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -49,7 +49,7 @@
 -- generally has all the numeric instances that @Double@ has.
 -----------------------------------------------------------------------------
 
-module Data.Dimensions (
+module Data.Metrology (
   -- * Term-level combinators
   (.+), (.-), (.*), (./), (.^), (*.),
   (.<), (.>), (.<=), (.>=), dimEq, dimNeq,
@@ -87,12 +87,12 @@ module Data.Dimensions (
 
   ) where
 
-import Data.Dimensions.Z
-import Data.Dimensions.Dim
-import Data.Dimensions.DimSpec
-import Data.Dimensions.Units
-import Data.Dimensions.UnitCombinators
-import Data.Dimensions.LCSU
+import Data.Metrology.Z
+import Data.Metrology.Dim
+import Data.Metrology.DimSpec
+import Data.Metrology.Units
+import Data.Metrology.UnitCombinators
+import Data.Metrology.LCSU
 import Data.Proxy
 
 -- | Extracts a @Double@ from a dimensioned quantity, expressed in

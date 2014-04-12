@@ -1,4 +1,4 @@
-{- Data/Dimensions/DimSpec.hs
+{- Data/Metrology/DimSpec.hs
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
@@ -9,10 +9,10 @@
 
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances #-}
 
-module Data.Dimensions.DimSpec where
+module Data.Metrology.DimSpec where
 
 import GHC.Exts (Constraint)
-import Data.Dimensions.Z
+import Data.Metrology.Z
 import Data.Type.Equality
 import Data.Type.Bool
 

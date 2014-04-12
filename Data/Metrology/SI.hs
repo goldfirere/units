@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Dimensions.SI
+-- Module      :  Data.Metrology.SI
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -17,13 +17,13 @@
 -- with prefixes, the unit of mass is 'Gram'.
 -----------------------------------------------------------------------------
 
-module Data.Dimensions.SI (
-  module Data.Dimensions.SI.Units,
-  module Data.Dimensions.SI.Types,
-  module Data.Dimensions.SI.Prefixes
+module Data.Metrology.SI (
+  module Data.Metrology.SI.Units,
+  module Data.Metrology.SI.Types,
+  module Data.Metrology.SI.Prefixes
   ) where
 
-import Data.Dimensions.SI.Units
-import Data.Dimensions.SI.Types
-import Data.Dimensions.SI.Prefixes
+import Data.Metrology.SI.Units
+import Data.Metrology.SI.Types
+import Data.Metrology.SI.Prefixes
 
