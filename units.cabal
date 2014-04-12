@@ -48,6 +48,7 @@ library
     Data.Metrology.SI.Types, 
     Data.Metrology.SI.Units,
     Data.Metrology.SI.Dims,
+    Data.Metrology.Types, 
     Data.Metrology.Unsafe,
     Data.Metrology.Z
 

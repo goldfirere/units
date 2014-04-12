@@ -46,7 +46,7 @@ type role Qu nominal nominal representational
 type MkQu dim = Qu (DimSpecsOf dim) DefaultLCSU Double
 
 -- | Make a quantity type with a custom numerical type and LCSU.
-type MkGenQu dim lcsu n = Qu (DimSpecsOf dim) lcsu n
+type MkGenQu dim = Qu (DimSpecsOf dim)
 
 
 infixl 6 .+
