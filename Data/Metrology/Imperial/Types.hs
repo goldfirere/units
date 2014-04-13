@@ -26,8 +26,8 @@ type Imperial =
     , (D.Time, Second)
     , (D.Current, Ampere)
     , (D.Temperature, Kelvin)
-    , (D.Quantity, Mole)
-    , (D.Luminosity, Candela)
+    , (D.AmountOfSubstance, Mole)
+    , (D.LuminousIntensity, Candela)
     ]
 
 type Length              = MkGenQu D.Length              Imperial Double
@@ -35,8 +35,8 @@ type Mass                = MkGenQu D.Mass                Imperial Double
 type Time                = MkGenQu D.Time                Imperial Double
 type Current             = MkGenQu D.Current             Imperial Double
 type Temperature         = MkGenQu D.Temperature         Imperial Double
-type Quantity            = MkGenQu D.Quantity            Imperial Double
-type Luminosity          = MkGenQu D.Luminosity          Imperial Double
+type AmountOfSubstance   = MkGenQu D.AmountOfSubstance   Imperial Double
+type LuminousIntensity   = MkGenQu D.LuminousIntensity   Imperial Double
 
 type Area                = MkGenQu D.Area                Imperial Double
 type Volume              = MkGenQu D.Volume              Imperial Double
