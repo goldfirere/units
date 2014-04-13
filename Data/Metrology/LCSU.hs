@@ -4,7 +4,7 @@
    Copyright (c) 2013 Richard Eisenberg
    eir@cis.upenn.edu
 
-   Defines a locally-coherent system of units (LCSUs),
+   Defines a locally coherent system of units (LCSUs),
    implemented as an association list.
    An LCSU is a from base dimensions to units, thus 
    defining a uniquely mapping units for any dimensions.

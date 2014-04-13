@@ -1,13 +1,40 @@
 units
 =====
 
-The _units_ package provides a mechanism for compile-time dimensional analysis
-in Haskell programs. It defines an embedded type system based on
-units-of-measure. The units defined are fully extensible, and need not relate
-to physical properties. In fact, the core package defines only one built-in
-unit: Scalar. The package supports defining multiple inter-convertible units,
-such as Meter and Foot. When extracting a number from a dimensioned quantity,
-the desired unit must be specified, and the value is converted into that unit.
+The _units_ package provides a mechanism for compile-time dimensional
+analysis in Haskell programs. It defines an embedded type system based
+on units-of-measure. The units defined are fully extensible, and need
+not relate to physical properties.  In fact, the core package defines
+built-in international system (SI), and you can find many additional
+units and dimensions in package _units-extra_ .
+
+The package supports defining multiple inter-convertible units, such
+as Meter and Foot. When extracting a numerical value from a quantity,
+the desired unit must be specified, and the value is converted into
+that unit.
+
+Laws of nature have dimensions, and holds true regardless of the units
+expressed in. For example, gravitational force between two bodies are
+`(gravitational constant) * (mass 1) * (mass 2) / (distance between
+body 1 and 2)^2` , even if masses are in kilograms or in pounds,
+length in meters or feet or centimeters. In other words, every laws of
+nature are unit-polymorphic.
+
+The package supports unit-polymorphic programs through the coherent
+system of units (CSU) mechanism. CSU is essentially an association
+list of base dimensions to the units of choice. Therefore CSU maps any
+derived dimension uniquely to a unit. The `Qu` type constructor takes
+a dimension, a local CSU and a numerical value type as arguments, and
+`Qu` value constructor carries numerical values nondimensionalized
+using the CSU. Therefore, in the sequence of computation that locally
+shares a CSU there's no need of unit conversion. Unit conversions are
+only need when putting values in and out of quantities, or converting
+between two different LCSUs.
+
+
+
+
+
 
 User contributions
 ------------------
@@ -45,12 +72,12 @@ grows over time.
  -  __`Data.Metrology.Unsafe`__
 
     This module exports the constructor for the central datatype that stores
-    dimensioned quantities. With this constructor, you can arbitrarily change
+    quantities. With this constructor, you can arbitrarily change
     units! Use at your peril.
 
  -  __`Data.Metrology.Show`__
 
-    This module defines a `Show` instance for dimensioned quantities, printing
+    This module defines a `Show` instance for quantities, printing
     out the number stored along with its canonical dimension. This behavior
     may not be the best for every setting, so it is exported separately.
 
@@ -67,15 +94,17 @@ grows over time.
 
  -  __`Data.Metrology.SI.Types`__
 
-    This module exports several useful types for use with the SI.Units module,
-    which it depends on. For example, `Length` is the type of dimensioned
-    quantities made with `Meter`s.
+    This module exports pre-defined unit type synonyms for SI dimensions,
+    convenient for use with the SI.Units module.
+    For example, `Length` is the type of
+    quantities with unit `Meter`s and with numerical type `Double`.
 
  -  __`Data.Metrology.SI.Prefixes`__
 
     This module exports the SI prefixes. Note that this does *not* depend on
     any of the other SI modules -- you can use these prefixes with any system
     of units.
+
 
 
 Examples
@@ -128,14 +157,14 @@ ratio, which is the number of meters in a foot. Note that the
 it _must not_ inspect that parameter. Internally, it will be passed
 `undefined` quite often.
 
-The `MkQu` type synonym makes a dimensioned quantity for a given unit. Note
+The `MkQu` type synonym makes a quantity for a given unit. Note
 that `Length` and `Length'` are _the same type_. The `MkQu` machinery notices
 that these two are inter-convertible and will produce the same dimensioned
 quantity.
 
 Note that, as you can see in the function examples at the end, it is necessary
-to specify the choice of unit when creating a dimensioned quantity or
-extracting from a dimensioned quantity. Thus, other than thinking about the
+to specify the choice of unit when creating a quantity or
+extracting from a quantity. Thus, other than thinking about the
 vagaries of floating point wibbles and the `Show` instance, it is _completely
 irrelevant_ which unit is canonical. The type `Length` defined here could be
 used equally well in a program that deals exclusively in feet as it could in a
@@ -199,12 +228,12 @@ the term or type level. For example:
     speed = 20 % (Meter :/ Second)
 
 The _units_ package also provides combinators "%*" and "%/" to combine the
-types of dimensioned quantities.
+types of quantities.
 
     type Velocity2 = Length %/ Time    -- same type as Velocity1
     
 There are also exponentiation combinators `:^` (for units) and `%^` (for
-dimensioned quantities) to raise to a power. To represent the power, the
+quantities) to raise to a power. To represent the power, the
 _units_ package exports `Zero`, positive numbers `One` through `Five`, and
 negative numbers `MOne` through `MFive`. At the term level, precede the number
 with a `p` (mnemonic: "power"). For example:
@@ -225,14 +254,14 @@ those operations are not provided.
 Dimension-safe cast
 -------------------
 
-The haddock documentation shows the term-level dimensioned quantity
+The haddock documentation shows the term-level quantity
 combinators. The only one deserving special mention is `dim`, the
 dimension-safe cast operator. Expressions written with the _units_ package can
 have their types inferred. This works just fine in practice, but the types are
 terrible, unfortunately. Much better is to use top-level annotations (using
 abbreviations like `Length` and `Time`) for your functions. However, it may
 happen that the inferred type of your expression and the given type of your
-function may not exactly match up. This is because dimensioned quantities have
+function may not exactly match up. This is because quantities have
 a looser notion of type equality than Haskell does. For example, "meter *
 second" should be the same as "second * meter", even though these are in
 different order. The `dim` function checks (at compile time) to make sure its
