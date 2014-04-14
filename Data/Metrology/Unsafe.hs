@@ -9,9 +9,9 @@
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
--- This module exports the constructor of the 'Dim' type. This allows you
--- to write codes that takes values in and out of quantity at your will, 
--- that may lead to dimension unsafety. Use at your peril.
+-- This module exports the constructor of the 'Qu' type. This allows you
+-- to write code that takes creates and reads quantities at will, 
+-- which may lead to dimension unsafety. Use at your peril.
 -----------------------------------------------------------------------------
 
 module Data.Metrology.Unsafe (

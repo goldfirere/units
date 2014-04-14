@@ -1,38 +1,36 @@
 units
 =====
 
-The _units_ package provides a mechanism for compile-time dimensional
-analysis in Haskell programs. It defines an embedded type system based
-on units-of-measure. The units defined are fully extensible, and need
-not relate to physical properties.  In fact, the core package defines
-built-in international system (SI), and you can find many additional
-units and dimensions in package _units-extra_ .
+The _units_ package provides a mechanism for compile-time dimensional analysis
+in Haskell programs. It defines an embedded type system based on
+units-of-measure. The units defined are fully extensible, and need not relate
+to physical properties. As a matter of convenience only, the core package
+defines the dimensions and units for the international system (SI), and you
+can find many additional units and dimensions in package _units-extra_.
 
 The package supports defining multiple inter-convertible units, such
-as Meter and Foot. When extracting a numerical value from a quantity,
+as `Meter` and `Foot`. When extracting a numerical value from a quantity,
 the desired unit must be specified, and the value is converted into
 that unit.
 
-Laws of nature have dimensions, and holds true regardless of the units
-expressed in. For example, gravitational force between two bodies are
-`(gravitational constant) * (mass 1) * (mass 2) / (distance between
-body 1 and 2)^2` , even if masses are in kilograms or in pounds,
-length in meters or feet or centimeters. In other words, every laws of
-nature are unit-polymorphic.
+The laws of nature have dimensions, and they hold true regardless of the units
+used. For example, the gravitational force between two bodies is
+`(gravitational constant) * (mass 1) * (mass 2) / (distance between body 1 and
+2)^2`, regardless of whether the distance is given in meters or feet
+or centimeters. In other words, every law of nature is unit-polymorphic.
 
-The package supports unit-polymorphic programs through the coherent
-system of units (CSU) mechanism. CSU is essentially an association
-list of base dimensions to the units of choice. Therefore CSU maps any
-derived dimension uniquely to a unit. The `Qu` type constructor takes
-a dimension, a local CSU and a numerical value type as arguments, and
-`Qu` value constructor carries numerical values nondimensionalized
-using the CSU. Therefore, in the sequence of computation that locally
-shares a CSU there's no need of unit conversion. Unit conversions are
-only need when putting values in and out of quantities, or converting
-between two different LCSUs.
-
-
-
+The _units_ package supports unit-polymorphic programs through the coherent
+system of units (CSU) mechanism. A CSU is essentially a mapping from
+dimensions (such as length or mass) to the units (such as meters or
+kilograms). All dimensioned quantities (generally just called quantities) are
+expressed using the `Qu` type. The `Qu` type constructor takes a (perhaps
+compound) dimension, a CSU and a numerical value type as arguments.
+Internally, the quantity is stored as a number in the units as specified in
+the CSU -- this may matter if you are worried about rounding errors.
+In the sequence of computations that works within one CSU,
+there is no unit conversion. Unit conversions are needed only when
+putting values in and out of quantities, or converting between two different
+CSUs.
 
 
 
@@ -109,6 +107,8 @@ grows over time.
 
 Examples
 ========
+
+**NOTE: THIS IS OUT OF DATE.**
 
 Unit definitions
 ----------------
