@@ -11,9 +11,9 @@
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
--- This module defines 'Show' instance for dimensioned quantities.
--- Show instance prints out the number stored internally with its canonical
--- units. To print out quantities with specific units use function `showIn`.
+-- This module defines 'Show' instance for quantities. The show instance
+-- prints out the number stored internally with its canonical units. To print
+-- out quantities with specific units use the function `showIn`.
 -----------------------------------------------------------------------------
 
 module Data.Metrology.Show (showIn) where

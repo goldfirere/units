@@ -17,14 +17,15 @@ description:
     The units package provides a mechanism for compile-time
     dimensional analysis in Haskell programs. It defines an embedded
     type system based on units-of-measure. The units defined are fully
-    extensible, and need not relate to physical properties. In fact,
-    the core package defines built-in international system (SI), and
-    @units-extra@ package provides additional units and dimensions.
+    extensible, and need not relate to physical properties. 
+    As a matter of convenience, the @units@ package defines
+    the standard international system (SI).
+
     The package supports defining multiple inter-convertible units,
     such as Meter and Foot. When extracting a number from a
     dimensioned quantity, the desired unit must be specified, and the
     value is converted into that unit.
-    .
+
     The Haddock documentation is insufficient for using the units
     package. Please see the README file, available from the package
     home page.
