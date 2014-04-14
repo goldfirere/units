@@ -2,6 +2,6 @@
 
 while :
 do
-    runhaskell Test/LCSU.hs
-    inotifywait -e modify  ./Test/LCSU.hs
+    runhaskell test/Lcsu.hs
+    inotifywait -e modify  ./test/Lcsu.hs
 done
