@@ -9,11 +9,11 @@
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
--- This module defines type synonyms for units based on the seven
--- SI dimensions for arbitrary choice of system of units and numerical values.
+-- This module defines type synonyms for dimensions based on the seven
+-- SI dimensions, for arbitrary choice of system of units and numerical values.
 -----------------------------------------------------------------------------
 
-module Data.Metrology.Types where
+module Data.Metrology.SI.DimTypes where
 
 import Data.Metrology
 import qualified Data.Metrology.SI.Dims as D

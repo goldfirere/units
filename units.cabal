@@ -45,11 +45,11 @@ library
     Data.Metrology.Show,
     Data.Metrology.Poly,
     Data.Metrology.SI,
+    Data.Metrology.SI.Dims,
+    Data.Metrology.SI.DimTypes, 
     Data.Metrology.SI.Prefixes,
     Data.Metrology.SI.Types, 
     Data.Metrology.SI.Units,
-    Data.Metrology.SI.Dims,
-    Data.Metrology.Types, 
     Data.Metrology.Unsafe,
     Data.Metrology.Z
 
