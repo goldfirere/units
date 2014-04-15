@@ -17,7 +17,7 @@ module Data.Metrology.LCSU (
   Lookup, LookupList, MkLCSU
   ) where
 
-import Data.Metrology.DimSpec
+import Data.Metrology.Factor
 import Data.Metrology.Z
 
 import Data.Singletons.Maybe
@@ -31,11 +31,11 @@ type family Lookup (key :: *) (map :: [*]) :: * where
   Lookup key ((key, value) ': rest) =  value
   Lookup key (other ': rest)        = Lookup key rest
 
-type family LookupList (keys :: [DimSpec *]) (map :: LCSU *) :: [DimSpec *] where
+type family LookupList (keys :: [Factor *]) (map :: LCSU *) :: [Factor *] where
   LookupList '[] lcsu = '[]
-  LookupList (D dim z ': rest) (MkLCSU_ lcsu)
-    = D (Lookup dim lcsu) z ': LookupList rest (MkLCSU_ lcsu)
-  LookupList dims DefaultLCSU = '[D DefaultLCSUUnit Zero]
+  LookupList (F dim z ': rest) (MkLCSU_ lcsu)
+    = F (Lookup dim lcsu) z ': LookupList rest (MkLCSU_ lcsu)
+  LookupList dims DefaultLCSU = '[F DefaultLCSUUnit Zero]
 
 -- use type family to prevent pattern-matching
 type family MkLCSU pairs where

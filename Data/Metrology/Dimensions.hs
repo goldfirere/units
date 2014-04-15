@@ -15,7 +15,7 @@
 module Data.Metrology.Dimensions where
 
 import Data.Metrology.Z
-import Data.Metrology.DimSpec
+import Data.Metrology.Factor
 import Data.Metrology.LCSU
 import Data.Type.Bool
 import Data.Type.Equality
@@ -27,8 +27,8 @@ import GHC.Exts
 -- | This class is used to mark abstract dimensions, such as @Length@, or
 -- @Mass@.
 class Dimension dim where
-  -- | Retrieve a list of @DimSpec@s representing the given dimension. Overriding
+  -- | Retrieve a list of @Factor@s representing the given dimension. Overriding
   -- the default of this type family should not be necessary in user code.
-  type DimSpecsOf dim :: [DimSpec *]
-  type DimSpecsOf dim = '[D dim One]
+  type DimFactorsOf dim :: [Factor *]
+  type DimFactorsOf dim = '[F dim One]
   

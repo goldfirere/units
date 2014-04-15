@@ -15,7 +15,7 @@
 module Data.Metrology.Units where
 
 import Data.Metrology.Z
-import Data.Metrology.DimSpec
+import Data.Metrology.Factor
 import Data.Metrology.Dimensions
 import Data.Metrology.LCSU
 import Data.Type.Bool
@@ -56,10 +56,10 @@ class DimOfUnitIsConsistent unit => Unit unit where
 
   -- | The internal list of canonical units corresponding to this unit.
   -- Overriding the default should not be necessary in user code.
-  type UnitSpecsOf unit :: [DimSpec *]
-  type UnitSpecsOf unit = If (IsCanonical unit)
-                            '[D unit One]
-                            (UnitSpecsOf (BaseUnit unit))
+  type UnitFactorsOf unit :: [Factor *]
+  type UnitFactorsOf unit = If (IsCanonical unit)
+                            '[F unit One]
+                            (UnitFactorsOf (BaseUnit unit))
 
   -- | Compute the conversion from the underlying canonical unit to
   -- this one. A default is provided that multiplies together the ratios
@@ -118,42 +118,42 @@ instance ( False ~ IsCanonical noncanonical_unit
          => HasConvRatio False noncanonical_unit where
   baseUnitRatio _ = canonicalConvRatio (undefined :: BaseUnit noncanonical_unit)
 
-class UnitSpec (units :: [DimSpec *]) where
+class UnitFactor (units :: [Factor *]) where
   canonicalConvRatioSpec :: Proxy units -> Rational
 
-instance UnitSpec '[] where
+instance UnitFactor '[] where
   canonicalConvRatioSpec _ = 1
 
 -- the instances for S n and P n must be separate to allow for the Zero case,
 -- which comes up for a DefaultLCSU
-instance (UnitSpec rest, Unit unit, SingI n) => UnitSpec (D unit (S n) ': rest) where
+instance (UnitFactor rest, Unit unit, SingI n) => UnitFactor (F unit (S n) ': rest) where
   canonicalConvRatioSpec _ =
     (canonicalConvRatio (undefined :: unit) ^^ szToInt (sing :: Sing (S n))) *
     canonicalConvRatioSpec (Proxy :: Proxy rest)
 
-instance (UnitSpec rest, Unit unit, SingI n) => UnitSpec (D unit (P n) ': rest) where
+instance (UnitFactor rest, Unit unit, SingI n) => UnitFactor (F unit (P n) ': rest) where
   canonicalConvRatioSpec _ =
     (canonicalConvRatio (undefined :: unit) ^^ szToInt (sing :: Sing (P n))) *
     canonicalConvRatioSpec (Proxy :: Proxy rest)
 
-instance UnitSpec '[D DefaultLCSUUnit Zero] where
+instance UnitFactor '[F DefaultLCSUUnit Zero] where
   canonicalConvRatioSpec _ = 1
                                                           
 infix 4 *~
--- | Check if two @[DimSpec *]@s, representing /units/, should be
+-- | Check if two @[Factor *]@s, representing /units/, should be
 -- considered to be equal
 type family units1 *~ units2 where
-  '[D DefaultLCSUUnit Zero] *~ units2 = (() :: Constraint)
-  units1 *~ '[D DefaultLCSUUnit Zero] = (() :: Constraint)
+  '[F DefaultLCSUUnit Zero] *~ units2 = (() :: Constraint)
+  units1 *~ '[F DefaultLCSUUnit Zero] = (() :: Constraint)
   units1 *~ units2 = (Canonicalize units1 @~ Canonicalize units2)
 
 -- | Given a unit specification, get the canonical units of each component.
-type family Canonicalize (units :: [DimSpec *]) :: [DimSpec *] where
+type family Canonicalize (units :: [Factor *]) :: [Factor *] where
   Canonicalize '[] = '[]
-  Canonicalize (D unit n ': rest) = D (CanonicalUnit unit) n ': Canonicalize rest
+  Canonicalize (F unit n ': rest) = F (CanonicalUnit unit) n ': Canonicalize rest
 
 -- | Check if an LCSU has consistent entries for the given unit.
 type family Compatible (lcsu :: LCSU *) (unit :: *) :: Constraint where
   Compatible lcsu unit
-   = ( UnitSpecsOf unit *~ LookupList (DimSpecsOf (DimOfUnit unit)) lcsu
-     , UnitSpec (LookupList (DimSpecsOf (DimOfUnit unit)) lcsu) )
+   = ( UnitFactorsOf unit *~ LookupList (DimFactorsOf (DimOfUnit unit)) lcsu
+     , UnitFactor (LookupList (DimFactorsOf (DimOfUnit unit)) lcsu) )

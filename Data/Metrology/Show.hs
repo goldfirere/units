@@ -22,7 +22,7 @@ import Data.Proxy (Proxy(..))
 import Data.List
 import Data.Singletons (Sing, sing, SingI)
 
-import Data.Metrology.DimSpec
+import Data.Metrology.Factor
 import Data.Metrology.Quantity
 import Data.Metrology.Z
 import Data.Metrology.LCSU
@@ -30,14 +30,14 @@ import Data.Metrology.Combinators
 import Data.Metrology.Units
 import Data.Metrology
 
-class ShowUnitSpec (dims :: [DimSpec *]) where
+class ShowUnitFactor (dims :: [Factor *]) where
   showDims :: Proxy dims -> ([String], [String])
 
-instance ShowUnitSpec '[] where
+instance ShowUnitFactor '[] where
   showDims _ = ([], [])
 
-instance (ShowUnitSpec rest, Show unit, SingI z)
-         => ShowUnitSpec (D unit z ': rest) where
+instance (ShowUnitFactor rest, Show unit, SingI z)
+         => ShowUnitFactor (F unit z ': rest) where
   showDims _ =
     let (nums, denoms) = showDims (Proxy :: Proxy rest)
         baseStr        = show (undefined :: unit)
@@ -51,8 +51,8 @@ instance (ShowUnitSpec rest, Show unit, SingI z)
       EQ -> (nums, denoms)
       GT -> (str : nums, denoms)
 
-showDimSpec :: ShowUnitSpec dimspec => Proxy dimspec -> String
-showDimSpec p
+showFactor :: ShowUnitFactor dimspec => Proxy dimspec -> String
+showFactor p
   = let (nums, denoms) = mapPair (build_string . sort) $ showDims p in
     case (length nums, length denoms) of
       (0, 0) -> ""
@@ -87,17 +87,17 @@ instance (Show u1, SingI power) => Show (u1 :^ (power :: Z)) where
 instance (Show prefix, Show unit) => Show (prefix :@ unit) where
   show _ = show (undefined :: prefix) ++ show (undefined :: unit)
 
-instance (ShowUnitSpec (LookupList dims lcsu), Show n)
+instance (ShowUnitFactor (LookupList dims lcsu), Show n)
            => Show (Qu dims lcsu n) where
-  show (Qu d) = (show d ++ showDimSpec (Proxy :: Proxy (LookupList dims lcsu)))
+  show (Qu d) = (show d ++ showFactor (Proxy :: Proxy (LookupList dims lcsu)))
 
 infix 1 `showIn`
 
 -- | Show a dimensioned quantity in a given unit. (The default @Show@
 -- instance always uses canonical units.)
 showIn :: ( Unit unit
-          , UnitSpec (LookupList dim lcsu)      
-          , UnitSpecsOf unit *~ LookupList dim lcsu
+          , UnitFactor (LookupList dim lcsu)      
+          , UnitFactorsOf unit *~ LookupList dim lcsu
           , Fractional n
           , Show unit
           , Show n )

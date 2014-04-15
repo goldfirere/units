@@ -54,7 +54,7 @@ library
     Data.Metrology.Z
 
   other-modules:     
-    Data.Metrology.DimSpec,
+    Data.Metrology.Factor,
     Data.Metrology.LCSU,
     Data.Metrology.Quantity, 
     Data.Metrology.Units,

@@ -17,7 +17,7 @@
 module Data.Metrology.Imperial.Units where
 
 import Data.Metrology
-import Data.Metrology.DimSpec
+import Data.Metrology.Factor
 import Data.Metrology.Units
 import Data.Metrology.SI.Dims
 import Data.Metrology.SI.Units (Meter(..), Gram(..))

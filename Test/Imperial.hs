@@ -2,7 +2,7 @@ module Test.Imperial where
 
 import Data.Metrology
 import Data.Metrology.Z
-import Data.Metrology.DimSpec
+import Data.Metrology.Factor
 import Data.Metrology.Show
 import Data.Metrology.SI as SI
 import Data.Metrology.Imperial.Units

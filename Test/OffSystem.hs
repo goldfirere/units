@@ -4,7 +4,7 @@ module Test.OffSystem where
 
 import Data.Metrology
 import Data.Metrology.SI
-import Data.Metrology.DimSpec
+import Data.Metrology.Factor
 import Data.Metrology.Units
 import Data.Metrology.LCSU
 

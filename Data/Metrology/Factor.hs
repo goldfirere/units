@@ -1,17 +1,17 @@
-{- Data/Metrology.DimSpec.hs
+{- Data/Metrology.Factor.hs
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
    eir@cis.upenn.edu
 
-   This file defines the DimSpec kind and operations over lists of DimSpecs.
+   This file defines the Factor kind and operations over lists of Factors.
 
-   DimSpecs represents dimensions and units raised to a power of integers, and the lists of DimSpecs represents monomials of dimensions and units.
+   Factors represents dimensions and units raised to a power of integers, and the lists of Factors represents monomials of dimensions and units.
 -}
 
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances #-}
 
-module Data.Metrology.DimSpec where
+module Data.Metrology.Factor where
 
 import GHC.Exts (Constraint)
 import Data.Metrology.Z
@@ -20,9 +20,9 @@ import Data.Type.Bool
 
 import Data.Singletons.Tuple (Fst, Snd)
 
--- | This will only be used at the kind level. It holds a dimension with its
--- exponent.
-data DimSpec star = D star Z
+-- | This will only be used at the kind level. It holds a dimension or unit
+-- with its exponent.
+data Factor star = F star Z
 
 ----------------------------------------------------------
 --- Set-like operations ----------------------------------
@@ -53,29 +53,29 @@ reorder x (h:t) =
 -}
 
 infix 4 $=
--- | Do these DimSpecs represent the same dimension?
-type family (a :: DimSpec *) $= (b :: DimSpec *) :: Bool where
-  (D n1 z1) $= (D n2 z2) = n1 == n2
+-- | Do these Factors represent the same dimension?
+type family (a :: Factor *) $= (b :: Factor *) :: Bool where
+  (F n1 z1) $= (F n2 z2) = n1 == n2
   a         $= b         = False
 
--- | @(Extract s lst)@ pulls the DimSpec that matches s out of lst, returning a
---   diminished list and, possibly, the extracted DimSpec.
+-- | @(Extract s lst)@ pulls the Factor that matches s out of lst, returning a
+--   diminished list and, possibly, the extracted Factor.
 --
 -- @
 -- Extract A [A, B, C] ==> ([B, C], Just A
--- Extract D [A, B, C] ==> ([A, B, C], Nothing)
+-- Extract F [A, B, C] ==> ([A, B, C], Nothing)
 -- @
-type family Extract (s :: DimSpec *)
-                    (lst :: [DimSpec *])
-                 :: ([DimSpec *], Maybe (DimSpec *)) where
+type family Extract (s :: Factor *)
+                    (lst :: [Factor *])
+                 :: ([Factor *], Maybe (Factor *)) where
   Extract s '[] = '( '[], Nothing )
   Extract s (h ': t) =
     If (s $= h)
       '(t, Just h)
       '(h ': Fst (Extract s t), Snd (Extract s t))
 
--- kind DimAnnotation = [DimSpec *]
--- a list of DimSpecs forms a full annotation of a quantity's dimension
+-- kind DimAnnotation = [Factor *]
+-- a list of Factors forms a full annotation of a quantity's dimension
 
 -- | Reorders a to be the in the same order as b, putting entries not in b at the end
 --
@@ -87,31 +87,31 @@ type family Extract (s :: DimSpec *)
 -- Reorder x [] ==> x
 -- Reorder [] x ==> []
 -- @
-type family Reorder (a :: [DimSpec *]) (b :: [DimSpec *]) :: [DimSpec *] where
+type family Reorder (a :: [Factor *]) (b :: [Factor *]) :: [Factor *] where
   Reorder x x = x
   Reorder x '[] = x
   Reorder x (h ': t) = Reorder' (Extract h x) t
 
 -- | Helper function in 'Reorder'
-type family Reorder' (scrut :: ([DimSpec *], Maybe (DimSpec *)))
-                     (t :: [DimSpec *])
-                     :: [DimSpec *] where
+type family Reorder' (scrut :: ([Factor *], Maybe (Factor *)))
+                     (t :: [Factor *])
+                     :: [Factor *] where
   Reorder' '(lst, Nothing) t = Reorder lst t
   Reorder' '(lst, Just elt) t = elt ': (Reorder lst t)
 
 infix 4 @~
--- | Check if two @[DimSpec *]@s should be considered to be equal
-type family (a :: [DimSpec *]) @~ (b :: [DimSpec *]) :: Constraint where
+-- | Check if two @[Factor *]@s should be considered to be equal
+type family (a :: [Factor *]) @~ (b :: [Factor *]) :: Constraint where
   a @~ b = (Normalize (Reorder a b) ~ Normalize b)
 
 ----------------------------------------------------------
 --- Normalization ----------------------------------------
 ----------------------------------------------------------
 
--- | Take a @[DimSpec *]@ and remove any @DimSpec@s with an exponent of 0
-type family Normalize (d :: [DimSpec *]) :: [DimSpec *] where
+-- | Take a @[Factor *]@ and remove any @Factor@s with an exponent of 0
+type family Normalize (d :: [Factor *]) :: [Factor *] where
   Normalize '[] = '[]
-  Normalize ((D n Zero) ': t) = Normalize t
+  Normalize ((F n Zero) ': t) = Normalize t
   Normalize (h ': t) = h ': Normalize t
 
 ----------------------------------------------------------
@@ -121,48 +121,48 @@ type family Normalize (d :: [DimSpec *]) :: [DimSpec *] where
 infixl 6 @@+
 -- | Adds corresponding exponents in two dimension, assuming the lists are
 -- ordered similarly.
-type family (a :: [DimSpec *]) @@+ (b :: [DimSpec *]) :: [DimSpec *] where
+type family (a :: [Factor *]) @@+ (b :: [Factor *]) :: [Factor *] where
   '[]                 @@+ b                   = b
   a                   @@+ '[]                 = a
-  ((D name z1) ': t1) @@+ ((D name z2) ': t2) = (D name (z1 #+ z2)) ': (t1 @@+ t2)
+  ((F name z1) ': t1) @@+ ((F name z2) ': t2) = (F name (z1 #+ z2)) ': (t1 @@+ t2)
   a                   @@+ (h ': t)            = h ': (a @@+ t)
 
 infixl 6 @+
 -- | Adds corresponding exponents in two dimension
-type family (a :: [DimSpec *]) @+ (b :: [DimSpec *]) :: [DimSpec *] where
+type family (a :: [Factor *]) @+ (b :: [Factor *]) :: [Factor *] where
   a @+ b = (Reorder a b) @@+ b
 
 infixl 6 @@-
 -- | Subtract exponents in two dimensions, assuming the lists are ordered
 -- similarly.
-type family (a :: [DimSpec *]) @@- (b :: [DimSpec *]) :: [DimSpec *] where
+type family (a :: [Factor *]) @@- (b :: [Factor *]) :: [Factor *] where
   '[]                 @@- b                   = NegList b
   a                   @@- '[]                 = a
-  ((D name z1) ': t1) @@- ((D name z2) ': t2) = (D name (z1 #- z2)) ': (t1 @@- t2)
+  ((F name z1) ': t1) @@- ((F name z2) ': t2) = (F name (z1 #- z2)) ': (t1 @@- t2)
   a                   @@- (h ': t)            = (NegDim h) ': (a @@- t)
 
 infixl 6 @-
 -- | Subtract exponents in two dimensions
-type family (a :: [DimSpec *]) @- (b :: [DimSpec *]) :: [DimSpec *] where
+type family (a :: [Factor *]) @- (b :: [Factor *]) :: [Factor *] where
   a @- b = (Reorder a b) @@- b
 
--- | negate a single @DimSpec@
-type family NegDim (a :: DimSpec *) :: DimSpec * where
-  NegDim (D n z) = D n (NegZ z)
+-- | negate a single @Factor@
+type family NegDim (a :: Factor *) :: Factor * where
+  NegDim (F n z) = F n (NegZ z)
 
--- | negate a list of @DimSpec@s
-type family NegList (a :: [DimSpec *]) :: [DimSpec *] where
+-- | negate a list of @Factor@s
+type family NegList (a :: [Factor *]) :: [Factor *] where
   NegList '[]      = '[]
   NegList (h ': t) = (NegDim h ': (NegList t))
 
 infixl 7 @*
 -- | Multiplication of the exponents in a dimension by a scalar
-type family (base :: [DimSpec *]) @* (power :: Z) :: [DimSpec *] where
+type family (base :: [Factor *]) @* (power :: Z) :: [Factor *] where
   '[]                 @* power = '[]
-  ((D name num) ': t) @* power = (D name (num #* power)) ': (t @* power)
+  ((F name num) ': t) @* power = (F name (num #* power)) ': (t @* power)
 
 infixl 7 @/
 -- | Division of the exponents in a dimension by a scalar
-type family (dims :: [DimSpec *]) @/ (z :: Z) :: [DimSpec *] where
+type family (dims :: [Factor *]) @/ (z :: Z) :: [Factor *] where
   '[]                 @/ z = '[]
-  ((D name num) ': t) @/ z = (D name (num #/ z)) ': (t @/ z)
+  ((F name num) ': t) @/ z = (F name (num #/ z)) ': (t @/ z)

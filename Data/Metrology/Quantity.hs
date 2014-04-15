@@ -17,7 +17,7 @@ module Data.Metrology.Quantity where
 
 import Data.Singletons ( Sing )
 import Data.Metrology.Dimensions
-import Data.Metrology.DimSpec
+import Data.Metrology.Factor
 import Data.Metrology.Units
 import Data.Metrology.Z
 import Data.Metrology.LCSU
@@ -28,7 +28,7 @@ import Data.Metrology.LCSU
 
 -- | 'Qu' adds a dimensional annotation to its numerical value type
 -- @n@. This is the representation for all quantities.
-newtype Qu (a :: [DimSpec *]) (lcsu :: LCSU *) (n :: *) = Qu n
+newtype Qu (a :: [Factor *]) (lcsu :: LCSU *) (n :: *) = Qu n
 type role Qu nominal nominal representational
 
 -------------------------------------------------------------
@@ -43,10 +43,10 @@ type role Qu nominal nominal representational
 -- > data LengthDim = LengthDim
 -- > instance Dimension LengthDim
 -- > type Length = MkQu LengthDim
-type MkQu dim = Qu (DimSpecsOf dim) DefaultLCSU Double
+type MkQu dim = Qu (DimFactorsOf dim) DefaultLCSU Double
 
 -- | Make a quantity type with a custom numerical type and LCSU.
-type MkGenQu dim = Qu (DimSpecsOf dim)
+type MkGenQu dim = Qu (DimFactorsOf dim)
 
 
 infixl 6 .+

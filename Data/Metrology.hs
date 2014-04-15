@@ -13,9 +13,9 @@
    Prefix  Target type/kind
    ------------------------
      #     Z
-     $     DimSpec *
-     @     [DimSpec *]
-     @@    [DimSpec *], where the arguments are ordered similarly
+     $     Factor *
+     @     [Factor *]
+     @@    [Factor *], where the arguments are ordered similarly
      %     Qu (at the type level)
      .     Qu (at the term level)
      :     units, at both type and term levels
@@ -90,7 +90,7 @@ module Data.Metrology (
 import Data.Metrology.Z
 import Data.Metrology.Quantity
 import Data.Metrology.Dimensions
-import Data.Metrology.DimSpec
+import Data.Metrology.Factor
 import Data.Metrology.Units
 import Data.Metrology.Combinators
 import Data.Metrology.LCSU
@@ -103,8 +103,8 @@ import Data.Proxy
 --   > inMeters x = valIn x Meter
 valIn :: forall unit dim lcsu n.
          ( Unit unit
-         , UnitSpec (LookupList dim lcsu)
-         , UnitSpecsOf unit *~ LookupList dim lcsu
+         , UnitFactor (LookupList dim lcsu)
+         , UnitFactorsOf unit *~ LookupList dim lcsu
          , Fractional n )
       => Qu dim lcsu n -> unit -> n
 valIn (Qu val) u
@@ -115,8 +115,8 @@ valIn (Qu val) u
 infix 5 #
 -- | Infix synonym for 'valIn'
 (#) :: ( Unit unit
-       , UnitSpec (LookupList dim lcsu)
-       , UnitSpecsOf unit *~ LookupList dim lcsu
+       , UnitFactor (LookupList dim lcsu)
+       , UnitFactorsOf unit *~ LookupList dim lcsu
        , Fractional n )
     => Qu dim lcsu n -> unit -> n
 (#) = valIn
@@ -126,10 +126,10 @@ infix 5 #
 --   > height :: Length
 --   > height = quOf 2.0 Meter
 quOf :: forall unit dim lcsu n.
-         ( dim ~ DimSpecsOf (DimOfUnit unit)
+         ( dim ~ DimFactorsOf (DimOfUnit unit)
          , Unit unit
-         , UnitSpec (LookupList dim lcsu)
-         , UnitSpecsOf unit *~ LookupList dim lcsu
+         , UnitFactor (LookupList dim lcsu)
+         , UnitFactorsOf unit *~ LookupList dim lcsu
          , Fractional n )
       => n -> unit -> Qu dim lcsu n
 quOf d u
@@ -139,10 +139,10 @@ quOf d u
 
 infixr 9 %
 -- | Infix synonym for 'quOf'
-(%) :: ( dim ~ DimSpecsOf (DimOfUnit unit)
+(%) :: ( dim ~ DimFactorsOf (DimOfUnit unit)
        , Unit unit
-       , UnitSpec (LookupList dim lcsu)
-       , UnitSpecsOf unit *~ LookupList dim lcsu
+       , UnitFactor (LookupList dim lcsu)
+       , UnitFactorsOf unit *~ LookupList dim lcsu
        , Fractional n )
     => n -> unit -> Qu dim lcsu n
 (%) = quOf
@@ -165,8 +165,8 @@ redim (Qu x) = Qu x
 
 -- | Dimension-safe cast between different CSUs.
 convert :: forall d l1 l2 n. 
-  ( UnitSpec (LookupList d l1)
-  , UnitSpec (LookupList d l2)  
+  ( UnitFactor (LookupList d l1)
+  , UnitFactor (LookupList d l2)  
   , Fractional n) 
   => Qu d l1 n -> Qu d l2 n
 convert (Qu x) = Qu $ x * fromRational (
@@ -182,14 +182,14 @@ convert (Qu x) = Qu $ x * fromRational (
 -- @One@ is confusing with the type-level integer One.
 data Dimensionless = Dimensionless
 instance Dimension Dimensionless where
-  type DimSpecsOf Dimensionless = '[]
+  type DimFactorsOf Dimensionless = '[]
 
 -- | The unit for unitless dimensioned quantities
 data Number = Number -- the unit for unadorned numbers
 instance Unit Number where
   type BaseUnit Number = Canonical
   type DimOfUnit Number = Dimensionless
-  type UnitSpecsOf Number = '[]
+  type UnitFactorsOf Number = '[]
 
 -- | The type of unitless dimensioned quantities.
 -- This is an instance of @Num@, though Haddock doesn't show it.

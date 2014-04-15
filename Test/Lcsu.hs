@@ -5,7 +5,7 @@ module Test.Lcsu where
 import Data.Metrology hiding (LCSU)
 import Data.Metrology.Units
 import Data.Metrology.Quantity
-import Data.Metrology.DimSpec
+import Data.Metrology.Factor
 import Data.Metrology.Z
 
 data Length = Length
