@@ -62,7 +62,7 @@ gravityAt univ pos m = sum (map gravity_at_1 univ)
     sum [] = (zero, zero)
     sum (h : t) = h !+ sum t
 
-    dimPair (a,b) = (dim a, dim b)
+    dimPair (a,b) = (redim a, redim b)
 
 updateColls :: Universe -> Universe
 updateColls objs
