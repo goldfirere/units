@@ -1,0 +1,43 @@
+name:           units-defs
+version:        1.0
+cabal-version:  >= 1.10
+synopsis:       Definitions for use with the units package
+homepage:       http://github.com/goldfirere/units-defs
+category:       Physics
+author:         Richard Eisenberg <eir@cis.upenn.edu>, Takayuki Muranushi <muranushi@gmail.com>
+maintainer:     Richard Eisenberg <eir@cis.upenn.edu>, Takayuki Muranushi <muranushi@gmail.com>
+bug-reports:    https://github.com/goldfirere/units-defs/issues
+stability:      experimental
+extra-source-files: README.md, CHANGES.md
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+description:
+
+    This package provides system definitions for use with the separate
+    @units@ package. See the individual modules for details.
+
+    User contributions to this package are strongly encouraged. Please
+    submit pull requests!
+
+source-repository this
+  type:     git
+  location: https://github.com/goldfirere/units-defs.git
+  tag:      v1.0
+
+library
+  build-depends:      
+      base >= 4.7 && < 5,
+      units >= 1.4
+  exposed-modules:
+    Data.Metrology.SI,
+    Data.Metrology.SI.Prefixes,
+    Data.Metrology.SI.Types, 
+    Data.Metrology.SI.Units,
+    Data.Metrology.SI.Dims,
+    Data.Metrology.SI.GenTypes,
+    Data.Metrology.Imperial.Types
+    Data.Metrology.Imperial.Units
+
+  default-language:   Haskell2010
+
