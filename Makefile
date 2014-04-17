@@ -10,6 +10,10 @@ init:
 build:
 	cabal build
 
+prepare-test:
+	git clone git@github.com:goldfirere/units-defs
+	ln -s $PWD/units-defs/Data Test/
+
 test: build
 	cabal test
 

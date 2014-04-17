@@ -2,7 +2,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE TypeOperators #-}
 
-module Test.Travel where
+module Main where
 
 import Data.Metrology
 import Data.Metrology.SI.Types
