@@ -55,7 +55,7 @@ module Data.Metrology (
   (.<), (.>), (.<=), (.>=), dimEq, dimNeq,
   nthRoot, dimSqrt, dimCubeRoot,
   unity, zero, redim, convert,
-  valIn, (#), quOf, (%), defaultLCSU,
+  numIn, (#), quOf, (%), defaultLCSU,
 
   -- * Type-level unit combinators
   (:*)(..), (:/)(..), (:^)(..), (:@)(..),
@@ -100,26 +100,26 @@ import Data.Proxy
 --   the given unit. For example:
 --
 --   > inMeters :: Length -> Double
---   > inMeters x = valIn x Meter
-valIn :: forall unit dim lcsu n.
+--   > inMeters x = numIn x Meter
+numIn :: forall unit dim lcsu n.
          ( Unit unit
          , UnitFactor (LookupList dim lcsu)
          , UnitFactorsOf unit *~ LookupList dim lcsu
          , Fractional n )
       => Qu dim lcsu n -> unit -> n
-valIn (Qu val) u
+numIn (Qu val) u
   = val * fromRational
             (canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))
              / canonicalConvRatio u)
 
 infix 5 #
--- | Infix synonym for 'valIn'
+-- | Infix synonym for 'numIn'
 (#) :: ( Unit unit
        , UnitFactor (LookupList dim lcsu)
        , UnitFactorsOf unit *~ LookupList dim lcsu
        , Fractional n )
     => Qu dim lcsu n -> unit -> n
-(#) = valIn
+(#) = numIn
 
 -- | Creates a dimensioned quantity in the given unit. For example:
 --
