@@ -112,7 +112,7 @@ instance Show Watt where
 
 data Coulomb = Coulomb
 instance Unit Coulomb where
-  type BaseUnit Coulomb = Second :* Ampere
+  type BaseUnit Coulomb = Ampere :* Second
 instance Show Coulomb where
   show _ = "C"
 
