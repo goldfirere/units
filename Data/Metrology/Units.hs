@@ -152,7 +152,8 @@ type family Canonicalize (units :: [Factor *]) :: [Factor *] where
   Canonicalize '[] = '[]
   Canonicalize (F unit n ': rest) = F (CanonicalUnit unit) n ': Canonicalize rest
 
--- | Check if an LCSU has consistent entries for the given unit.
+-- | Check if an LCSU has consistent entries for the given unit. i.e. can the lcsu
+--   describe the unit?
 type family Compatible (lcsu :: LCSU *) (unit :: *) :: Constraint where
   Compatible lcsu unit
    = ( UnitFactorsOf unit *~ LookupList (DimFactorsOf (DimOfUnit unit)) lcsu

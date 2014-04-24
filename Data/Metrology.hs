@@ -69,7 +69,7 @@ module Data.Metrology (
 
   -- * Creating new units
   Unit(type BaseUnit, type DimOfUnit, conversionRatio), MkQu, MkGenQu, 
-  Canonical,
+  Canonical, Compatible,
 
   -- * Scalars, the only built-in unit
   Dimensionless(..), Number(..), Scalar, scalar,
