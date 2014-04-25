@@ -140,6 +140,7 @@ infix 4 |/=|
 (|/=|) :: (d1 @~ d2, Eq n) => Qu d1 l n -> Qu d2 l n -> Bool
 (Qu a) |/=| (Qu b) = a /= b
 
+infix 4 `qApprox` , `qNapprox`
 -- | Compare two compatible quantities for approximate equality
 qApprox :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
       => Qu d0 l n  -- ^ If the difference between the next
