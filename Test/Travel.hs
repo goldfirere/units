@@ -5,6 +5,7 @@
 module Main where
 
 import Data.Metrology
+import Data.Metrology.AltOperators
 import Data.Metrology.SI.Types
 import Data.Metrology.SI.Prefixes
 import Data.Metrology.SI.Units

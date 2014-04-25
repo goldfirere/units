@@ -51,9 +51,19 @@
 
 module Data.Metrology (
   -- * Term-level combinators
-  (.+), (.-), (.*), (./), (.^), (*.),
-  (.<), (.>), (.<=), (.>=), dimEq, dimNeq,
-  nthRoot, dimSqrt, dimCubeRoot,
+
+  -- | The term-level arithmetic operators are defined by
+  -- applying vertical bar(s) to the sides the dimensioned 
+  -- quantities acts on. 
+  -- See also "Data.Metrology.AltOperators" for an alternative system of operators.
+  (|+|), (|-|), 
+  (|*|), (|/|), (*|),  (|*), (/|), (|/), 
+  (|^), (|^^),
+  (|<|), (|>|), (|<=|), (|>=|), (|==|), (|/=|),
+  qApprox, qNapprox,        
+  nthRoot, qSq, qCube, qSqrt, qCubeRoot,
+
+  -- * Nondimensional units, conversion between quantities and numeric values
   unity, zero, redim, convert,
   numIn, (#), quOf, (%), defaultLCSU,
 
@@ -67,7 +77,7 @@ module Data.Metrology (
   -- * Creating new dimensions
   Dimension, MkLCSU, LCSU(DefaultLCSU),
 
-  -- * Creating new units
+  -- * Creating new units 
   Unit(type BaseUnit, type DimOfUnit, conversionRatio), 
   MkQu, MkGenQu, QuOfUL, GenQuOfUL, 
   Canonical, Compatible,

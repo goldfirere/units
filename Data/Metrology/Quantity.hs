@@ -57,30 +57,52 @@ type QuOfUL unit lcsu = Qu (DimFactorsOf (DimOfUnit unit)) lcsu Double
 type GenQuOfUL unit lcsu = Qu (DimFactorsOf (DimOfUnit unit)) lcsu
 
 
-infixl 6 .+
+infixl 6 |+|
 -- | Add two compatible quantities
-(.+) :: (d1 @~ d2, Num n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
-(Qu a) .+ (Qu b) = Qu (a + b)
+(|+|) :: (d1 @~ d2, Num n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
+(Qu a) |+| (Qu b) = Qu (a + b)
 
-infixl 6 .-
+infixl 6 |-|
 -- | Subtract two compatible quantities
-(.-) :: (d1 @~ d2, Num n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
-(Qu a) .- (Qu b) = Qu (a - b)
+(|-|) :: (d1 @~ d2, Num n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
+(Qu a) |-| (Qu b) = Qu (a - b)
 
-infixl 7 .*
+infixl 7 |*|
 -- | Multiply two quantities
-(.*) :: Num n => Qu a l n -> Qu b l n -> Qu (Normalize (a @+ b)) l n
-(Qu a) .* (Qu b) = Qu (a * b)
+(|*|) :: Num n => Qu a l n -> Qu b l n -> Qu (Normalize (a @+ b)) l n
+(Qu a) |*| (Qu b) = Qu (a * b)
 
-infixl 7 ./
+infixl 7 |/|
 -- | Divide two quantities
-(./) :: Fractional n => Qu a l n -> Qu b l n -> Qu (Normalize (a @- b)) l n
-(Qu a) ./ (Qu b) = Qu (a / b)
+(|/|) :: Fractional n => Qu a l n -> Qu b l n -> Qu (Normalize (a @- b)) l n
+(Qu a) |/| (Qu b) = Qu (a / b)
 
-infixr 8 .^
--- | Raise a quantity to a power known at compile time
-(.^) :: Fractional n => Qu a l n -> Sing z -> Qu (a @* z) l n
-(Qu a) .^ sz = Qu (a ^^ szToInt sz)
+infixl 7 *| , |* , /| , |/
+-- | Multiply a quantity by a scalar from the left
+(*|) :: Num n => n -> Qu b l n -> Qu b l n
+a *| (Qu b) = Qu (a * b)
+
+-- | Multiply a quantity by a scalar from the right
+(|*) :: Num n => Qu a l n -> n -> Qu a l n
+(Qu a) |* b = Qu (a * b)
+
+-- | Divide a scalar by a quantity
+(/|) :: Fractional n => n -> Qu b l n -> Qu ('[] @- b) l n
+a /| (Qu b) = Qu (a / b)
+
+-- | Divide a quantity by a scalar
+(|/) :: Fractional n => Qu a l n -> n -> Qu a l n
+(Qu a) |/ b = Qu (a / b)
+
+infixr 8 |^
+-- | Raise a quantity to a integer power, knowing at compile time that the integer is non-negative.
+(|^) :: Fractional n => Qu a l n -> Sing z -> Qu (a @* z) l n -- TODO: type level proof here
+(Qu a) |^ sz = Qu (a ^ szToInt sz)
+
+infixr 8 |^^
+-- | Raise a quantity to a integer power known at compile time
+(|^^) :: Fractional n => Qu a l n -> Sing z -> Qu (a @* z) l n
+(Qu a) |^^ sz = Qu (a ^^ szToInt sz)
 
 -- | Take the n'th root of a quantity, where n is known at compile
 -- time
@@ -88,58 +110,68 @@ nthRoot :: ((Zero < z) ~ True, Floating n)
         => Sing z -> Qu a l n -> Qu (a @/ z) l n
 nthRoot sz (Qu a) = Qu (a ** (1.0 / (fromIntegral $ szToInt sz)))
 
-infix 4 .<
+infix 4 |<|
 -- | Check if one quantity is less than a compatible one
-(.<) :: (d1 @~ d2, Ord n) => Qu d1 l n -> Qu d2 l n -> Bool
-(Qu a) .< (Qu b) = a < b
+(|<|) :: (d1 @~ d2, Ord n) => Qu d1 l n -> Qu d2 l n -> Bool
+(Qu a) |<| (Qu b) = a < b
 
-infix 4 .>
+infix 4 |>|
 -- | Check if one quantity is greater than a compatible one
-(.>) :: (d1 @~ d2, Ord n) => Qu d1 l n -> Qu d2 l n -> Bool
-(Qu a) .> (Qu b) = a > b
+(|>|) :: (d1 @~ d2, Ord n) => Qu d1 l n -> Qu d2 l n -> Bool
+(Qu a) |>| (Qu b) = a > b
 
-infix 4 .<=
+infix 4 |<=|
 -- | Check if one quantity is less than or equal to a compatible one
-(.<=) :: (d1 @~ d2, Ord n) => Qu d1 l n -> Qu d2 l n -> Bool
-(Qu a) .<= (Qu b) = a <= b
+(|<=|) :: (d1 @~ d2, Ord n) => Qu d1 l n -> Qu d2 l n -> Bool
+(Qu a) |<=| (Qu b) = a <= b
 
-infix 4 .>=
+infix 4 |>=|
 -- | Check if one quantity is greater than or equal to a compatible one
-(.>=) :: (d1 @~ d2, Ord n) => Qu d1 l n -> Qu d2 l n -> Bool
-(Qu a) .>= (Qu b) = a >= b
+(|>=|) :: (d1 @~ d2, Ord n) => Qu d1 l n -> Qu d2 l n -> Bool
+(Qu a) |>=| (Qu b) = a >= b
 
--- | Compare two compatible quantities for equality
-dimEq :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
+infix 4 |==|
+-- | Check if two quantities are equal (uses the equality of the underlying numerical type)
+(|==|) :: (d1 @~ d2, Eq n) => Qu d1 l n -> Qu d2 l n -> Bool
+(Qu a) |==| (Qu b) = a == b
+
+infix 4 |/=|
+-- | Check if two quantities are not equal
+(|/=|) :: (d1 @~ d2, Eq n) => Qu d1 l n -> Qu d2 l n -> Bool
+(Qu a) |/=| (Qu b) = a /= b
+
+-- | Compare two compatible quantities for approximate equality
+qApprox :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
       => Qu d0 l n  -- ^ If the difference between the next
                      -- two arguments are less than this 
                      -- amount, they are considered equal
       -> Qu d1 l n -> Qu d2 l n -> Bool
-dimEq (Qu epsilon) (Qu a) (Qu b) = abs(a-b) < epsilon
+qApprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) < epsilon
 
--- | Compare two compatible quantities for inequality
-dimNeq :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
+-- | Compare two compatible quantities for approixmate inequality
+qNapprox :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
        => Qu d0 l n -- ^ If the difference between the next
                      -- two arguments are less  than this 
                      -- amount, they are considered equal
        -> Qu d1 l n -> Qu d2 l n -> Bool
-dimNeq (Qu epsilon) (Qu a) (Qu b) = abs(a-b) >= epsilon
+qNapprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) >= epsilon
 
 -- | Square a quantity
-dimSqr :: Num n => Qu a l n -> Qu (Normalize (a @+ a)) l n
-dimSqr x = x .* x
+qSq :: Num n => Qu a l n -> Qu (Normalize (a @+ a)) l n
+qSq x = x |*| x
+
+-- | Cube a quantity
+qCube :: Num n => Qu a l n -> Qu (Normalize (Normalize (a @+ a) @+ a)) l n
+qCube x = x |*| x |*| x
 
 -- | Take the square root of a quantity
-dimSqrt :: Floating n => Qu a l n -> Qu (a @/ Two) l n
-dimSqrt = nthRoot pTwo
+qSqrt :: Floating n => Qu a l n -> Qu (a @/ Two) l n
+qSqrt = nthRoot pTwo
 
--- | Take the cube root of a quantity
-dimCubeRoot :: Floating n => Qu a l n -> Qu (a @/ Three) l n
-dimCubeRoot = nthRoot pThree
+-- | Take the cubic root of a quantity
+qCubeRoot :: Floating n => Qu a l n -> Qu (a @/ Three) l n
+qCubeRoot = nthRoot pThree
 
-infixl 7 *.
--- | Multiply a quantity by a scalar
-(*.) :: Num n => n -> Qu a l n -> Qu a l n
-a *. (Qu b) = Qu (a * b)
 
 -------------------------------------------------------------
 --- Instances for dimensionless quantities ------------------
