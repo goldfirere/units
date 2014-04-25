@@ -39,7 +39,33 @@ kB :: Compatible l SIkBUnit => QuOfUL SIkBUnit l
 kB = 1.3806488e-23 % (undefined :: SIkBUnit)
 
 
-planckLength :: (Compatible l SIGCUnit, Compatible l JouleSecond, Compatible l MPerSec, Compatible l Meter) => Length l Double
+-- This doesn't work; I accept that it does not work, because the
+-- compiler needs to know how to stage the hbar, G and c into the
+-- lcsu.
+--
+-- planckLength :: (Compatible l Meter) => Length l Double
+
+
+-- This does work, but this approach does not scale. You'd need a
+-- `Compatible` clause for every kind of units involved.
+--
+-- planckLength :: (Compatible l SIGCUnit, Compatible l JouleSecond, Compatible l MPerSec, Compatible l Meter) => Length l Double
+
+-- By the way, the final (Compatible l Meter) can be omitted. The
+-- following works.
+--
+-- planckLength :: (Compatible l SIGCUnit, Compatible l JouleSecond, Compatible l MPerSec) => Length l Double
+
+
+-- I want something like this to work. In this way, we need at most
+-- several constraints (the number is the number of the base
+-- dimensions involved.) Sadly, our current `units` design is such
+-- that all units of a dimension are not necessary convertible.  If
+-- there is a way to specify all independent base units and make
+-- planckLength work, I think that's also a scalable approach and is
+-- fine.
+--
+planckLength :: (Compatible l Gram, Compatible l Meter, Compatible l Second) => Length l Double
 planckLength = qSqrt (hbar |*| gravitationalConstant |/| (speedOfLight |^ pThree))
 
 -- eps0
