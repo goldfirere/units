@@ -48,6 +48,14 @@ type MkQu dim = Qu (DimFactorsOf dim) DefaultLCSU Double
 -- | Make a quantity type with a custom numerical type and LCSU.
 type MkGenQu dim = Qu (DimFactorsOf dim)
 
+-- | Make a quantity type with a unit and LCSU.
+--   The quantity will have the dimension corresponding to the unit.
+type QuOfUL unit lcsu = Qu (DimFactorsOf (DimOfUnit unit)) lcsu Double
+
+-- | Make a quantity type with a unit and LCSU with custom numerical type.
+--   The quantity will have the dimension corresponding to the unit.
+type GenQuOfUL unit lcsu = Qu (DimFactorsOf (DimOfUnit unit)) lcsu
+
 
 infixl 6 .+
 -- | Add two compatible quantities

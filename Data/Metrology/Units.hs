@@ -158,3 +158,4 @@ type family Compatible (lcsu :: LCSU *) (unit :: *) :: Constraint where
   Compatible lcsu unit
    = ( UnitFactorsOf unit *~ LookupList (DimFactorsOf (DimOfUnit unit)) lcsu
      , UnitFactor (LookupList (DimFactorsOf (DimOfUnit unit)) lcsu) )
+

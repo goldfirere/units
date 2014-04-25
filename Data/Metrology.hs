@@ -68,7 +68,8 @@ module Data.Metrology (
   Dimension, MkLCSU, LCSU(DefaultLCSU),
 
   -- * Creating new units
-  Unit(type BaseUnit, type DimOfUnit, conversionRatio), MkQu, MkGenQu, 
+  Unit(type BaseUnit, type DimOfUnit, conversionRatio), 
+  MkQu, MkGenQu, QuOfUL, GenQuOfUL, 
   Canonical, Compatible,
 
   -- * Scalars, the only built-in unit
