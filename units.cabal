@@ -45,7 +45,6 @@ library
     Data.Metrology.AltOperators, 
     Data.Metrology.Dimensions,
     Data.Metrology.Show,
-    Data.Metrology.Poly,
     Data.Metrology.Unsafe,
     Data.Metrology.Z
 

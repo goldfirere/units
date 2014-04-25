@@ -115,7 +115,6 @@ type Sec2PerMeter2 = MPerSec :^ MTwo
 type Meter2 = Meter :^ Two
 type Cm2 = (Centi :@ Meter) :^ Two
 
-
 type SIGCUnit =
   (Meter :^ Three) :* ((Kilo :@ Gram) :^ MOne) :* (Second :^ MTwo)
 type SIkBUnit = Joule :/ Kelvin

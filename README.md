@@ -60,13 +60,6 @@ grows over time.
     for you to build your own set of units and operate with them. All modules
     implicitly depend on this one.
 
- -  __`Data.Metrology.Poly`__
-
-    This module exports some more definitions that may be useful when writing
-    functions polymorphic over the choice of dimension. These functions are
-    sometimes challenging (or perhaps impossible) to write, as the system is
-    designed more with _monomorphic_ use than polymorphic use.
-
  -  __`Data.Metrology.Unsafe`__
 
     This module exports the constructor for the central datatype that stores

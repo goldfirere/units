@@ -154,8 +154,12 @@ type family Canonicalize (units :: [Factor *]) :: [Factor *] where
 
 -- | Check if an LCSU has consistent entries for the given unit. i.e. can the lcsu
 --   describe the unit?
-type family Compatible (lcsu :: LCSU *) (unit :: *) :: Constraint where
-  Compatible lcsu unit
+type family CompatibleUnit (lcsu :: LCSU *) (unit :: *) :: Constraint where
+  CompatibleUnit lcsu unit
    = ( UnitFactorsOf unit *~ LookupList (DimFactorsOf (DimOfUnit unit)) lcsu
      , UnitFactor (LookupList (DimFactorsOf (DimOfUnit unit)) lcsu) )
 
+-- | Check if an LCSU can express the given dimension
+type family CompatibleDim (lcsu :: LCSU *) (dim :: *) :: Constraint where
+  CompatibleDim lcsu dim
+    = UnitFactor (LookupList (DimFactorsOf dim) lcsu)

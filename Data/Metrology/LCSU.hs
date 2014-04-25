@@ -32,7 +32,7 @@ type family Lookup (key :: *) (map :: [*]) :: * where
   Lookup key (other ': rest)        = Lookup key rest
 
 type family LookupList (keys :: [Factor *]) (map :: LCSU *) :: [Factor *] where
-  LookupList '[] lcsu = '[]
+  LookupList '[] (MkLCSU_ lcsu) = '[]
   LookupList (F dim z ': rest) (MkLCSU_ lcsu)
     = F (Lookup dim lcsu) z ': LookupList rest (MkLCSU_ lcsu)
   LookupList dims DefaultLCSU = '[F DefaultLCSUUnit Zero]

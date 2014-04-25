@@ -64,7 +64,7 @@ module Data.Metrology (
   nthRoot, qSq, qCube, qSqrt, qCubeRoot,
 
   -- * Nondimensional units, conversion between quantities and numeric values
-  unity, zero, redim, convert,
+  unity, zero, redim, convert, constant,
   numIn, (#), quOf, (%), defaultLCSU,
 
   -- * Type-level unit combinators
@@ -75,15 +75,31 @@ module Data.Metrology (
   type (%*), type (%/), type (%^),
 
   -- * Creating new dimensions
-  Dimension, MkLCSU, LCSU(DefaultLCSU),
+  Dimension,
 
   -- * Creating new units and quantities
   Unit(type BaseUnit, type DimOfUnit, conversionRatio), 
   Qu, MkQu, MkGenQu, QuOfUL, GenQuOfUL, 
-  Canonical, Compatible,
+  Canonical,
 
   -- * Scalars, the only built-in unit
   Dimensionless(..), Number(..), Scalar, scalar,
+
+  -- * LCSUs (locally coherent system of units)
+  MkLCSU, LCSU(DefaultLCSU),
+  LookupList, CompatibleUnit, CompatibleDim,
+
+  -- * Manipulating units and dimensions
+  DimOfUnitIsConsistent, IsCanonical,
+  CanonicalUnit, type (*~), UnitFactor,
+
+  -- * Maniuplating dimension specifications
+  -- | These definitions are meant for expert users who wish to write
+  -- polymorphic definitions. Routine use of this package generally
+  -- should not need these.
+  Factor(..), type ($=), Extract, Reorder, type (@~), Normalize,
+  type (@+), type (@-), NegDim, NegList, type (@*), type (@/),
+  Canonicalize,
 
   -- * Type-level integers
   Z(..), Succ, Pred, type (#+), type (#-), type (#*), type (#/), NegZ,
@@ -158,6 +174,9 @@ infixr 9 %
     => n -> unit -> Qu dim lcsu n
 (%) = quOf
 
+-- | Use this to choose a default LCSU for a dimensioned quantity.
+-- The default LCSU uses the 'Canonical' representation for each
+-- dimension.
 defaultLCSU :: Qu dim DefaultLCSU n -> Qu dim DefaultLCSU n
 defaultLCSU = id
 
@@ -183,6 +202,12 @@ convert :: forall d l1 l2 n.
 convert (Qu x) = Qu $ x * fromRational (
   canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l1))
   / canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l2)))
+
+constant :: ( d @~ e
+            , UnitFactor (LookupList e l)
+            , Fractional n )
+         => Qu d DefaultLCSU n -> Qu e l n
+constant = convert . redim
 
 -------------------------------------------------------------
 --- "Number" unit -------------------------------------------
