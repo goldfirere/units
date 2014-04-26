@@ -65,7 +65,7 @@ module Data.Metrology (
 
   -- * Nondimensional units, conversion between quantities and numeric values
   unity, zero, redim, convert, constant,
-  numIn, (#), quOf, (%), defaultLCSU,
+  numIn, (#), quOf, (%), defaultLCSU, fromDefaultLCSU,
 
   -- * Type-level unit combinators
   (:*)(..), (:/)(..), (:^)(..), (:@)(..),
@@ -189,11 +189,12 @@ unity = Qu 1
 zero :: Num n => Qu dimspec l n
 zero = Qu 0
 
--- | Dimension-safe cast. See the README for more info.
+-- | Cast between equivalent dimension within the same CSU.
+--  for example [kg m s] and [s m kg]. See the README for more info.
 redim :: (d @~ e) => Qu d l n -> Qu e l n
 redim (Qu x) = Qu x
 
--- | Dimension-safe cast between different CSUs.
+-- | Dimension-keeping cast between different CSUs.
 convert :: forall d l1 l2 n. 
   ( UnitFactor (LookupList d l1)
   , UnitFactor (LookupList d l2)  
@@ -203,11 +204,23 @@ convert (Qu x) = Qu $ x * fromRational (
   canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l1))
   / canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l2)))
 
+
+-- | Compute the argument in the DefaultLCSU, and present the result
+-- as lcsu-polymorphic dimension-polymorphic value.
+fromDefaultLCSU :: ( d @~ e
+            , UnitFactor (LookupList e l)
+            , Fractional n )
+         => Qu d DefaultLCSU n -> Qu e l n
+fromDefaultLCSU = convert . redim
+
+-- | A synonym of 'fromDefaultLCSU', for one of its dominant usecase
+-- is to inject constant quantities into dimension-polymorphic
+-- expressions.
 constant :: ( d @~ e
             , UnitFactor (LookupList e l)
             , Fractional n )
          => Qu d DefaultLCSU n -> Qu e l n
-constant = convert . redim
+constant = fromDefaultLCSU
 
 -------------------------------------------------------------
 --- "Number" unit -------------------------------------------
