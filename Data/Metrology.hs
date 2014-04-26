@@ -61,7 +61,7 @@ module Data.Metrology (
   (|^), (|^^),
   (|<|), (|>|), (|<=|), (|>=|), (|==|), (|/=|),
   qApprox, qNapprox,        
-  nthRoot, qSq, qCube, qSqrt, qCubeRoot,
+  qSq, qCube, qSqrt, qCubeRoot,nthRoot, 
 
   -- * Nondimensional units, conversion between quantities and numeric values
   unity, zero, redim, convert, constant,

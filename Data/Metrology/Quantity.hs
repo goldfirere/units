@@ -141,20 +141,22 @@ infix 4 |/=|
 (Qu a) |/=| (Qu b) = a /= b
 
 infix 4 `qApprox` , `qNapprox`
--- | Compare two compatible quantities for approximate equality
+-- | Compare two compatible quantities for approximate equality.  If
+-- the difference between the next two arguments are less than the /epsilon/, they are considered equal.
 qApprox :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
-      => Qu d0 l n  -- ^ If the difference between the next
-                     -- two arguments are less than this 
-                     -- amount, they are considered equal
-      -> Qu d1 l n -> Qu d2 l n -> Bool
+      => Qu d0 l n  -- ^ /epsilon/
+      -> Qu d1 l n  -- ^ left hand side
+      -> Qu d2 l n  -- ^ right hand side
+      -> Bool  
 qApprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) < epsilon
 
--- | Compare two compatible quantities for approixmate inequality
+-- | Compare two compatible quantities for approixmate inequality.  
+-- @qNapprox e a b = not $ qApprox e a b@
 qNapprox :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
-       => Qu d0 l n -- ^ If the difference between the next
-                     -- two arguments are less  than this 
-                     -- amount, they are considered equal
-       -> Qu d1 l n -> Qu d2 l n -> Bool
+       => Qu d0 l n  -- ^ /epsilon/      
+       -> Qu d1 l n  -- ^ left hand side 
+       -> Qu d2 l n  -- ^ right hand side
+       -> Bool
 qNapprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) >= epsilon
 
 -- | Square a quantity
