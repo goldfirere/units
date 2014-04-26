@@ -87,7 +87,7 @@ a *| (Qu b) = Qu (a * b)
 (Qu a) |* b = Qu (a * b)
 
 -- | Divide a scalar by a quantity
-(/|) :: Fractional n => n -> Qu b l n -> Qu ('[] @- b) l n
+(/|) :: Fractional n => n -> Qu b l n -> Qu (NegList b) l n
 a /| (Qu b) = Qu (a / b)
 
 -- | Divide a quantity by a scalar
