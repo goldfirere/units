@@ -43,6 +43,9 @@ kB = constant $ 1.3806488e-23 % (undefined :: SIkBUnit)
 planckLength :: CompatibleDim l D.Length => Length l Double
 planckLength = constant $ qSqrt (hbar |*| gravitationalConstant |/| (speedOfLight |^ pThree))
 
+planckTime :: (CompatibleDim l D.Time) => Time l Double
+planckTime = constant $ planckLength |/| speedOfLight
+
 -- eps0
 vacuumPermittivity :: CompatibleUnit l SIPermittivityUnit
   => QuOfUL SIPermittivityUnit l
