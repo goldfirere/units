@@ -142,7 +142,8 @@ infix 4 |/=|
 
 infix 4 `qApprox` , `qNapprox`
 -- | Compare two compatible quantities for approximate equality.  If
--- the difference between the next two arguments are less than the /epsilon/, they are considered equal.
+-- the difference between the left hand side and the right hand side
+-- arguments are less than the /epsilon/, they are considered equal.
 qApprox :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
       => Qu d0 l n  -- ^ /epsilon/
       -> Qu d1 l n  -- ^ left hand side
