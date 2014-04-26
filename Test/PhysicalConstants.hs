@@ -1,11 +1,13 @@
-{-# LANGUAGE ConstraintKinds, FlexibleContexts #-}
+{-# LANGUAGE ConstraintKinds, DataKinds, FlexibleContexts, TypeFamilies #-}
 module Main where
 
 import Data.Metrology
+import Data.Metrology.Show
 import Data.Metrology.SI.Units
 import Data.Metrology.SI.GenTypes
+import qualified Data.Metrology.SI.Types as SI
 import qualified Data.Metrology.SI.Dims as D
-import Data.Metrology.Poly
+
 
 import MetrologySynonyms
 
@@ -60,6 +62,33 @@ planckConstant =  (6.6260695729e-34) % (undefined :: JouleSecond)
 hbar ::  CompatibleUnit l JouleSecond   => QuOfUL JouleSecond l
 hbar = (1 / 2 / pi) *| planckConstant
 
-main :: IO ()
-main = putStrLn "typechecks!"
 
+-- | A unicornhorn of honor (unicornhorn in short) is the historical
+-- unit of length used in Kingdom of Fantasia. A unicornhorn was
+-- defined as the length of the horn of the King's honored
+-- unicorn. Unfortunately, king's men did not documented their
+-- technology, so today there's no telling how long a unicornhorn was.
+
+data UnicornHorn = UnicornHorn
+instance Unit UnicornHorn where
+  type BaseUnit UnicornHorn = Canonical
+  type DimOfUnit UnicornHorn = D.Length
+instance Show UnicornHorn where
+  show _ = "uhoh"
+
+type KingdomUnit = MkLCSU '[ (D.Length, UnicornHorn) ]
+
+
+main :: IO ()
+main = do
+  putStrLn "typechecks!"
+  print (planckLength :: SI.Length)
+  print (planckLength :: Length KingdomUnit Double)  
+
+{- output --
+
+typechecks!
+1.616199256057012e-35 m
+1.616199256057012e-35 uhoh
+
+-}
