@@ -128,6 +128,10 @@ import Data.Proxy
 --
 --   > inMeters :: Length -> Double
 --   > inMeters x = numIn x Meter
+--
+--   or
+--
+--   > inMeters x = x # Meter   
 numIn :: forall unit dim lcsu n.
          ( Unit unit
          , UnitFactor (LookupList dim lcsu)
@@ -152,6 +156,10 @@ infix 5 #
 --
 --   > height :: Length
 --   > height = quOf 2.0 Meter
+--
+--   or
+--
+--   > height = 2.0 % Meter
 quOf :: forall unit dim lcsu n.
          ( dim ~ DimFactorsOf (DimOfUnit unit)
          , Unit unit
