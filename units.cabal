@@ -43,7 +43,6 @@ library
   exposed-modules:    
     Data.Metrology, 
     Data.Metrology.Internal,
-    Data.Metrology.AltOperators, 
     Data.Metrology.Show,
     Data.Metrology.Unsafe,
     Data.Metrology.Z,
