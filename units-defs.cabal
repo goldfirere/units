@@ -28,7 +28,7 @@ source-repository this
 library
   build-depends:      
       base >= 4.7 && < 5,
-      units >= 1.4
+      units >= 2.0 && < 3
   exposed-modules:
     Data.Metrology.SI,
     Data.Metrology.SI.Prefixes,
