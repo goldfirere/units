@@ -46,15 +46,13 @@ main = do
     (convert fromGLtoED) (convert fuelEfficiency) (convert gasolineDensity) :: MkGenQu D.Mass SI Float)
 
 {---- Execution result ---
-
 46.5 mi
-40.0 mi/gal
+39.999996 mi/gal
 7.29 lb/gal
-8.474625 lb
+8.474626 lb
 
 74.834496 km
-14.160249 km/l
+14.160248 km/l
 0.7273698 kg/l
-3.844025 kg
-
+3.8440251 kg
 -}
