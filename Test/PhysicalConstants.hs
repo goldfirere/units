@@ -9,8 +9,6 @@ import Data.Metrology.SI.GenTypes
 import qualified Data.Metrology.SI.Types as SI
 import qualified Data.Metrology.SI.Dims as D
 import Data.Metrology.SI.Prefixes
-import Data.Metrology.Dimensions
-import Data.Metrology.Units
 
 import MetrologySynonyms
 
@@ -54,8 +52,8 @@ protonMass :: DefaultConvertibleLCSU_D D.Mass l => Mass l Double
 protonMass = constant $ 1.67262178e-24 % Gram
 
 speedOfLight :: DefaultConvertibleLCSU_D D.Velocity l => Velocity l Double
-speedOfLight =  constant $ 299792458 % (Meter :/ Second)
-
+speedOfLight =  constant $ 299792458 % ((Second :^ pMOne) :* Meter)
+{-
 elementaryCharge :: DefaultConvertibleLCSU_D D.Charge l => Charge l Double
 elementaryCharge = constant $ redim $ 1.60217657e-19 % Coulomb
 
@@ -106,3 +104,4 @@ typechecks!
 
 -}
 
+-}

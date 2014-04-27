@@ -64,8 +64,9 @@ module Data.Metrology (
   qSq, qCube, qSqrt, qCubeRoot, nthRoot, 
 
   -- * Nondimensional units, conversion between quantities and numeric values
-  unity, zero, redim, convert, constant,
-  numIn, (#), quOf, (%), defaultLCSU, -- fromDefaultLCSU,
+  unity, zero, redim, convert,
+  numIn, (#), quOf, (%), defaultLCSU, fromDefaultLCSU,
+  constant,
 
   -- * Type-level unit combinators
   (:*)(..), (:/)(..), (:^)(..), (:@)(..),
@@ -201,24 +202,24 @@ convert (Qu x) = Qu $ x * fromRational (
   canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l1))
   / canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l2)))
 
-{-
+
 -- | Compute the argument in the DefaultLCSU, and present the result
 -- as lcsu-polymorphic dimension-polymorphic value.
 fromDefaultLCSU :: ( d @~ e
-                   , UnitFactor (LookupList e l)
-                   , LookupList d DefaultLCSU *~ LookupList e l
+                   , ConvertibleLCSUs e DefaultLCSU l
                    , Fractional n )
          => Qu d DefaultLCSU n -> Qu e l n
 fromDefaultLCSU = convert . redim
--}
+
 
 -- | A synonym of 'fromDefaultLCSU', for one of its dominant usecase
 -- is to inject constant quantities into dimension-polymorphic
 -- expressions.
-constant :: ( ConvertibleLCSUs d DefaultLCSU l
+constant :: ( d @~ e
+            , ConvertibleLCSUs e DefaultLCSU l
             , Fractional n )
-         => Qu d DefaultLCSU n -> Qu d l n
-constant = convert
+         => Qu d DefaultLCSU n -> Qu e l n
+constant = fromDefaultLCSU
 
 -------------------------------------------------------------
 --- "Number" unit -------------------------------------------

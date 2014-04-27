@@ -58,7 +58,7 @@ library
     Data.Metrology.Validity
 
     -- cabal now recommends that TH be explicitly listed in cabal files
-  default-extnesions: TemplateHaskell
+  default-extensions: TemplateHaskell
   default-language:   Haskell2010
 
 
