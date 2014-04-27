@@ -5,7 +5,6 @@
 module Main where
 
 import Data.Metrology
-import Data.Metrology.AltOperators
 import Data.Metrology.SI.Types
 import Data.Metrology.SI.Prefixes
 import Data.Metrology.SI.Units
@@ -28,7 +27,7 @@ gasolineDensity = 7.29 % (Pound :/ Gallon)
 
 gasolineWeight :: (Fractional f) 
   => MkQu_DLN D.Length su f -> PerArea su f -> MkQu_DLN D.Density su f -> MkQu_DLN D.Mass su f
-gasolineWeight len0 ef0 den0 = len0 ./ ef0 .* den0
+gasolineWeight len0 ef0 den0 = len0 |/| ef0 |*| den0
 
 
 main :: IO ()
