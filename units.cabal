@@ -42,19 +42,23 @@ library
       singletons >= 0.9
   exposed-modules:    
     Data.Metrology, 
-    Data.Metrology.AltOperators, 
-    Data.Metrology.Dimensions,
+    Data.Metrology.Internal,
     Data.Metrology.Show,
     Data.Metrology.Unsafe,
-    Data.Metrology.Z
+    Data.Metrology.Z,
+    Data.Metrology.Set
 
   other-modules:     
     Data.Metrology.Factor,
     Data.Metrology.LCSU,
     Data.Metrology.Quantity, 
+    Data.Metrology.Dimensions,
     Data.Metrology.Units,
-    Data.Metrology.Combinators
+    Data.Metrology.Combinators,
+    Data.Metrology.Validity
 
+    -- cabal now recommends that TH be explicitly listed in cabal files
+  default-extensions: TemplateHaskell
   default-language:   Haskell2010
 
 

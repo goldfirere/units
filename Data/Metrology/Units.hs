@@ -10,7 +10,7 @@
 
 {-# LANGUAGE TypeFamilies, DataKinds, DefaultSignatures, MultiParamTypeClasses,
              ConstraintKinds, UndecidableInstances, FlexibleContexts,
-             FlexibleInstances, ScopedTypeVariables, TypeOperators #-}
+             FlexibleInstances, ScopedTypeVariables, TypeOperators, PolyKinds #-}
 
 module Data.Metrology.Units where
 
@@ -24,10 +24,13 @@ import Data.Proxy
 import Data.Singletons
 import GHC.Exts
 
+-----------------------------------------------------------------------
+-- Main Unit definitions (rather user-facing)
+-----------------------------------------------------------------------
+
 -- | Dummy type use just to label canonical units. It does /not/ have a
 -- 'Unit' instance.
 data Canonical
-
 
 class DimOfUnitIsConsistent unit => Unit unit where
   -- | The base unit of this unit: what this unit is defined in terms of.
@@ -77,6 +80,9 @@ type family DimOfUnitIsConsistent unit :: Constraint where
                                     (DimOfUnit unit ~ DimOfUnit (BaseUnit unit)) )
   -- This definition does not use || so that we get better error messages.
 
+-----------------------------------------------------------------------
+-- Internal implementation details
+-----------------------------------------------------------------------
 
 -- | Is this unit a canonical unit?
 type family IsCanonical (unit :: *) where
@@ -118,48 +124,19 @@ instance ( False ~ IsCanonical noncanonical_unit
          => HasConvRatio False noncanonical_unit where
   baseUnitRatio _ = canonicalConvRatio (undefined :: BaseUnit noncanonical_unit)
 
+-----------------------------------------------------------------------
+-- Conversion ratios for lists of units
+-----------------------------------------------------------------------
+
+-- | Classifies well-formed list of unit factors, and permits calculating a
+-- conversion ratio for the purposes of LCSU conversions.
 class UnitFactor (units :: [Factor *]) where
   canonicalConvRatioSpec :: Proxy units -> Rational
 
 instance UnitFactor '[] where
   canonicalConvRatioSpec _ = 1
 
--- the instances for S n and P n must be separate to allow for the Zero case,
--- which comes up for a DefaultLCSU
-instance (UnitFactor rest, Unit unit, SingI n) => UnitFactor (F unit (S n) ': rest) where
+instance (UnitFactor rest, Unit unit, SingI n) => UnitFactor (F unit n ': rest) where
   canonicalConvRatioSpec _ =
-    (canonicalConvRatio (undefined :: unit) ^^ szToInt (sing :: Sing (S n))) *
+    (canonicalConvRatio (undefined :: unit) ^^ szToInt (sing :: Sing n)) *
     canonicalConvRatioSpec (Proxy :: Proxy rest)
-
-instance (UnitFactor rest, Unit unit, SingI n) => UnitFactor (F unit (P n) ': rest) where
-  canonicalConvRatioSpec _ =
-    (canonicalConvRatio (undefined :: unit) ^^ szToInt (sing :: Sing (P n))) *
-    canonicalConvRatioSpec (Proxy :: Proxy rest)
-
-instance UnitFactor '[F DefaultLCSUUnit Zero] where
-  canonicalConvRatioSpec _ = 1
-                                                          
-infix 4 *~
--- | Check if two @[Factor *]@s, representing /units/, should be
--- considered to be equal
-type family units1 *~ units2 where
-  '[F DefaultLCSUUnit Zero] *~ units2 = (() :: Constraint)
-  units1 *~ '[F DefaultLCSUUnit Zero] = (() :: Constraint)
-  units1 *~ units2 = (Canonicalize units1 @~ Canonicalize units2)
-
--- | Given a unit specification, get the canonical units of each component.
-type family Canonicalize (units :: [Factor *]) :: [Factor *] where
-  Canonicalize '[] = '[]
-  Canonicalize (F unit n ': rest) = F (CanonicalUnit unit) n ': Canonicalize rest
-
--- | Check if an LCSU has consistent entries for the given unit. i.e. can the lcsu
---   describe the unit?
-type family CompatibleUnit (lcsu :: LCSU *) (unit :: *) :: Constraint where
-  CompatibleUnit lcsu unit
-   = ( UnitFactorsOf unit *~ LookupList (DimFactorsOf (DimOfUnit unit)) lcsu
-     , UnitFactor (LookupList (DimFactorsOf (DimOfUnit unit)) lcsu) )
-
--- | Check if an LCSU can express the given dimension
-type family CompatibleDim (lcsu :: LCSU *) (dim :: *) :: Constraint where
-  CompatibleDim lcsu dim
-    = UnitFactor (LookupList (DimFactorsOf dim) lcsu)

@@ -95,9 +95,7 @@ infix 1 `showIn`
 
 -- | Show a dimensioned quantity in a given unit. (The default @Show@
 -- instance always uses canonical units.)
-showIn :: ( Unit unit
-          , UnitFactor (LookupList dim lcsu)      
-          , UnitFactorsOf unit *~ LookupList dim lcsu
+showIn :: ( ValidDLU dim lcsu unit
           , Fractional n
           , Show unit
           , Show n )

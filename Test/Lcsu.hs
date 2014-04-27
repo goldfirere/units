@@ -37,5 +37,5 @@ instance Unit Foot where
 
 type LCSU = MkLCSU '[(Length, Meter),  (Time, Second)]
 
-inMeters :: Qu '[D Length One] LCSU Double
+inMeters :: Qu '[F Length One] LCSU Double
 inMeters = quOf 3 Meter

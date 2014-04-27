@@ -42,19 +42,28 @@ type role Qu nominal nominal representational
 --
 -- > data LengthDim = LengthDim
 -- > instance Dimension LengthDim
--- > type Length = MkQu LengthDim
-type MkQu dim = Qu (DimFactorsOf dim) DefaultLCSU Double
+-- > data Meter = Meter
+-- > instance Unit Meter where
+-- >   type BaseUnit Meter = Canonical
+-- >   type DimOfUnit Meter = LengthDim
+-- > type instance DefaultUnitOfDim LengthDim = Meter
+-- > type Length = MkQu_D LengthDim
+--
+-- Note that the dimension /must/ have an instance for the type family
+-- 'DefaultUnitOfDim' for this to work.
+type MkQu_D dim = Qu (DimFactorsOf dim) DefaultLCSU Double
 
 -- | Make a quantity type with a custom numerical type and LCSU.
-type MkGenQu dim = Qu (DimFactorsOf dim)
+type MkQu_DLN dim = Qu (DimFactorsOf dim)
 
--- | Make a quantity type with a unit and LCSU.
---   The quantity will have the dimension corresponding to the unit.
-type QuOfUL unit lcsu = Qu (DimFactorsOf (DimOfUnit unit)) lcsu Double
+-- | Make a quantity type with a given unit. It will be stored as a 'Double'.
+-- Note that the corresponding dimension /must/ have an appropriate instance
+-- for 'DefaultUnitOfDim' for this to work.
+type MkQu_U unit = Qu (DimFactorsOf (DimOfUnit unit)) DefaultLCSU Double
 
 -- | Make a quantity type with a unit and LCSU with custom numerical type.
 --   The quantity will have the dimension corresponding to the unit.
-type GenQuOfUL unit lcsu = Qu (DimFactorsOf (DimOfUnit unit)) lcsu
+type MkQu_ULN unit = Qu (DimFactorsOf (DimOfUnit unit))
 
 
 infixl 6 |+|
@@ -87,7 +96,7 @@ a *| (Qu b) = Qu (a * b)
 (Qu a) |* b = Qu (a * b)
 
 -- | Divide a scalar by a quantity
-(/|) :: Fractional n => n -> Qu b l n -> Qu ('[] @- b) l n
+(/|) :: Fractional n => n -> Qu b l n -> Qu (NegList b) l n
 a /| (Qu b) = Qu (a / b)
 
 -- | Divide a quantity by a scalar
@@ -141,20 +150,23 @@ infix 4 |/=|
 (Qu a) |/=| (Qu b) = a /= b
 
 infix 4 `qApprox` , `qNapprox`
--- | Compare two compatible quantities for approximate equality
+-- | Compare two compatible quantities for approximate equality.  If
+-- the difference between the left hand side and the right hand side
+-- arguments are less than the /epsilon/, they are considered equal.
 qApprox :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
-      => Qu d0 l n  -- ^ If the difference between the next
-                     -- two arguments are less than this 
-                     -- amount, they are considered equal
-      -> Qu d1 l n -> Qu d2 l n -> Bool
+      => Qu d0 l n  -- ^ /epsilon/
+      -> Qu d1 l n  -- ^ left hand side
+      -> Qu d2 l n  -- ^ right hand side
+      -> Bool  
 qApprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) < epsilon
 
--- | Compare two compatible quantities for approixmate inequality
+-- | Compare two compatible quantities for approixmate inequality.  
+-- @qNapprox e a b = not $ qApprox e a b@
 qNapprox :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
-       => Qu d0 l n -- ^ If the difference between the next
-                     -- two arguments are less  than this 
-                     -- amount, they are considered equal
-       -> Qu d1 l n -> Qu d2 l n -> Bool
+       => Qu d0 l n  -- ^ /epsilon/      
+       -> Qu d1 l n  -- ^ left hand side 
+       -> Qu d2 l n  -- ^ right hand side
+       -> Bool
 qNapprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) >= epsilon
 
 -- | Square a quantity
