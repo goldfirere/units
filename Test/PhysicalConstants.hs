@@ -53,9 +53,9 @@ protonMass = constant $ 1.67262178e-24 % Gram
 
 speedOfLight :: DefaultConvertibleLCSU_D D.Velocity l => Velocity l Double
 speedOfLight =  constant $ 299792458 % ((Second :^ pMOne) :* Meter)
-{-
+
 elementaryCharge :: DefaultConvertibleLCSU_D D.Charge l => Charge l Double
-elementaryCharge = constant $ redim $ 1.60217657e-19 % Coulomb
+elementaryCharge = constant $ 1.60217657e-19 % Coulomb
 
 gravitationalConstant :: DefaultConvertibleLCSU_U SIGCUnit l => MkQu_UL SIGCUnit l
 gravitationalConstant = constant $ 6.67384e-11 % (undefined :: SIGCUnit)
@@ -104,4 +104,4 @@ typechecks!
 
 -}
 
--}
+
