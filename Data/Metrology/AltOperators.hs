@@ -8,7 +8,7 @@
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
--- This module defines alternative set of term level operators for
+-- This module defines an alternative set of term level operators for
 -- quantity calculus. These operators have nice, character-efficient
 -- representation, and they are separated here and not in
 -- "Data.Metrology" just to avoid current and future name conflict

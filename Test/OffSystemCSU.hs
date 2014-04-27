@@ -9,7 +9,7 @@ import qualified Data.Metrology.SI.Dims as D
 
 type YardPond = MkLCSU '[ (D.Length, Foot)]
 
-type LengthYP = MkGenQu D.Length YardPond Double
+type LengthYP = MkQu_DLN D.Length YardPond Double
 
 data Foot = Foot
 instance Unit Foot where
@@ -28,5 +28,5 @@ len2 :: LengthYP
 len2 = 1 % Meter
 
 x :: Double
-x = (len1 .+ len2) # Meter
+x = (len1 |+| len2) # Meter
 

@@ -8,11 +8,17 @@ data Meter = Meters
 data Foot = Feet
 data Yard = Yards
 
-type Length = MkQu Meter
-type Time = MkQu Second
+type Length = MkQu_U Meter
+type Time = MkQu_U Second
+
+data LengthD = LengthD
+instance Dimension LengthD
+data TimeD = TimeD
+instance Dimension TimeD
 
 instance Unit Meter where
   type BaseUnit Meter = Canonical
+  type DimOfUnit Meter = LengthD
 
 instance Unit Foot where
   type BaseUnit Foot = Meter
@@ -25,6 +31,7 @@ instance Unit Yard where
 data Second = Seconds
 instance Unit Second where
   type BaseUnit Second = Canonical
+  type DimOfUnit Second = TimeD
 
 data Hertz = Hertz
 instance Unit Hertz where

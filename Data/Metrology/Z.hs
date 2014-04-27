@@ -13,11 +13,21 @@
              EmptyCase #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 
--- | This module defines a datatype and operations to represent type-level
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  Data.Metrology.Z
+-- Copyright   :  (C) 2013 Richard Eisenberg
+-- License     :  BSD-style (see LICENSE)
+-- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Stability   :  experimental
+-- Portability :  non-portable
+--
+-- This module defines a datatype and operations to represent type-level
 -- integers. Though it's defined as part of the units package, it may be
 -- useful beyond dimensional analysis. If you have a compelling non-units
 -- use of this package, please let me (Richard, @eir@ at @cis.upenn.edu@)
 -- know.
+-----------------------------------------------------------------------------
 
 module Data.Metrology.Z where
 

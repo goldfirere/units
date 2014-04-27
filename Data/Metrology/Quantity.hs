@@ -42,19 +42,28 @@ type role Qu nominal nominal representational
 --
 -- > data LengthDim = LengthDim
 -- > instance Dimension LengthDim
--- > type Length = MkQu LengthDim
-type MkQu dim = Qu (DimFactorsOf dim) DefaultLCSU Double
+-- > data Meter = Meter
+-- > instance Unit Meter where
+-- >   type BaseUnit Meter = Canonical
+-- >   type DimOfUnit Meter = LengthDim
+-- > type instance DefaultUnitOfDim LengthDim = Meter
+-- > type Length = MkQu_D LengthDim
+--
+-- Note that the dimension /must/ have an instance for the type family
+-- 'DefaultUnitOfDim' for this to work.
+type MkQu_D dim = Qu (DimFactorsOf dim) DefaultLCSU Double
 
 -- | Make a quantity type with a custom numerical type and LCSU.
-type MkGenQu dim = Qu (DimFactorsOf dim)
+type MkQu_DLN dim = Qu (DimFactorsOf dim)
 
--- | Make a quantity type with a unit and LCSU.
---   The quantity will have the dimension corresponding to the unit.
-type QuOfUL unit lcsu = Qu (DimFactorsOf (DimOfUnit unit)) lcsu Double
+-- | Make a quantity type with a given unit. It will be stored as a 'Double'.
+-- Note that the corresponding dimension /must/ have an appropriate instance
+-- for 'DefaultUnitOfDim' for this to work.
+type MkQu_U unit = Qu (DimFactorsOf (DimOfUnit unit)) DefaultLCSU Double
 
 -- | Make a quantity type with a unit and LCSU with custom numerical type.
 --   The quantity will have the dimension corresponding to the unit.
-type GenQuOfUL unit lcsu = Qu (DimFactorsOf (DimOfUnit unit)) lcsu
+type MkQu_ULN unit = Qu (DimFactorsOf (DimOfUnit unit))
 
 
 infixl 6 |+|

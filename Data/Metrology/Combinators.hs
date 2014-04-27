@@ -20,6 +20,7 @@ import Data.Metrology.Units
 import Data.Metrology.Factor
 import Data.Metrology.Z
 import Data.Type.Equality
+import Data.Metrology.LCSU
 
 infixl 7 :*
 -- | Multiply two units to get another unit.
@@ -40,6 +41,9 @@ instance (Unit u1, Unit u2) => Unit (u1 :* u2) where
   canonicalConvRatio _ = canonicalConvRatio (undefined :: u1) *
                          canonicalConvRatio (undefined :: u2)
 
+type instance DefaultUnitOfDim (d1 :* d2) =
+  DefaultUnitOfDim d1 :* DefaultUnitOfDim d2
+
 infixl 7 :/
 -- | Divide two units to get another unit
 data u1 :/ u2 = u1 :/ u2
@@ -55,6 +59,9 @@ instance (Unit u1, Unit u2) => Unit (u1 :/ u2) where
   canonicalConvRatio _ = canonicalConvRatio (undefined :: u1) /
                          canonicalConvRatio (undefined :: u2)
 
+type instance DefaultUnitOfDim (d1 :/ d2) =
+  DefaultUnitOfDim d1 :/ DefaultUnitOfDim d2
+  
 infixr 8 :^
 -- | Raise a unit to a power, known at compile time
 data unit :^ (power :: Z) = unit :^ Sing power
@@ -69,6 +76,8 @@ instance (Unit unit, SingI power) => Unit (unit :^ power) where
 
   type UnitFactorsOf (unit :^ power) = (UnitFactorsOf unit) @* power
   canonicalConvRatio _ = canonicalConvRatio (undefined :: unit) ^^ (szToInt (sing :: Sing power))
+
+type instance DefaultUnitOfDim (d :^ z) = DefaultUnitOfDim d :^ z
 
 infixr 9 :@
 -- | Multiply a conversion ratio by some constant. Used for defining prefixes.
@@ -85,3 +94,4 @@ instance ( (unit == Canonical) ~ False
          , UnitPrefix prefix ) => Unit (prefix :@ unit) where
   type BaseUnit (prefix :@ unit) = unit
   conversionRatio _ = multiplier (undefined :: prefix)
+

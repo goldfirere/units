@@ -17,8 +17,8 @@
      @     [Factor *]
      @@    [Factor *], where the arguments are ordered similarly
      %     Qu (at the type level)
-     .     Qu (at the term level)
-     :     units, at both type and term levels
+     |     Qu (at the term level)
+     :     units & dimensions, at both type and term levels
 -}
 
 {-# LANGUAGE ExplicitNamespaces, DataKinds, FlexibleInstances, TypeFamilies,
@@ -61,45 +61,38 @@ module Data.Metrology (
   (|^), (|^^),
   (|<|), (|>|), (|<=|), (|>=|), (|==|), (|/=|),
   qApprox, qNapprox,        
-  qSq, qCube, qSqrt, qCubeRoot,nthRoot, 
+  qSq, qCube, qSqrt, qCubeRoot, nthRoot, 
 
   -- * Nondimensional units, conversion between quantities and numeric values
   unity, zero, redim, convert, constant,
-  numIn, (#), quOf, (%), defaultLCSU, fromDefaultLCSU,
+  numIn, (#), quOf, (%), defaultLCSU, -- fromDefaultLCSU,
 
   -- * Type-level unit combinators
   (:*)(..), (:/)(..), (:^)(..), (:@)(..),
   UnitPrefix(..),
 
-  -- * Type-level dimensioned-quantity combinators
+  -- * Type-level quantity combinators
   type (%*), type (%/), type (%^),
+
+  -- * Creating quantity types
+  Qu, MkQu_D, MkQu_DLN, MkQu_U, MkQu_ULN, 
 
   -- * Creating new dimensions
   Dimension,
 
-  -- * Creating new units and quantities
+  -- * Creating new units
   Unit(type BaseUnit, type DimOfUnit, conversionRatio), 
-  Qu, MkQu, MkGenQu, QuOfUL, GenQuOfUL, 
   Canonical,
 
   -- * Scalars, the only built-in unit
   Dimensionless(..), Number(..), Scalar, scalar,
 
   -- * LCSUs (locally coherent system of units)
-  MkLCSU, LCSU(DefaultLCSU),
-  LookupList, CompatibleUnit, CompatibleDim,
+  MkLCSU, LCSU(DefaultLCSU), DefaultUnitOfDim,
 
-  -- * Manipulating units and dimensions
-  DimOfUnitIsConsistent, IsCanonical,
-  CanonicalUnit, type (*~), UnitFactor,
-
-  -- * Maniuplating dimension specifications
-  -- | These definitions are meant for expert users who wish to write
-  -- polymorphic definitions. Routine use of this package generally
-  -- should not need these.
-  Factor(..), type ($=), Extract, Reorder, type (@~), Normalize,
-  type (@+), type (@-), NegDim, NegList, type (@*), type (@/),
-  Canonicalize,
+  -- * Validity checks and assertions
+  CompatibleUnit, CompatibleDim, ConvertibleLCSUs_D,
+  DefaultConvertibleLCSU_D, DefaultConvertibleLCSU_U,
 
   -- * Type-level integers
   Z(..), Succ, Pred, type (#+), type (#-), type (#*), type (#/), NegZ,
@@ -110,7 +103,12 @@ module Data.Metrology (
   -- ** Term-level singletons
   pZero, pOne, pTwo, pThree, pFour, pFive,
   pMOne, pMTwo, pMThree, pMFour, pMFive,
-  pSucc, pPred
+  pSucc, pPred,
+
+  -- * Internal definitions
+  -- | The following module is re-exported solely to prevent noise in error messages;
+  -- we do not recommend trying to use these definitions in user code.
+  module Data.Metrology.Internal
 
   ) where
 
@@ -121,6 +119,8 @@ import Data.Metrology.Factor
 import Data.Metrology.Units
 import Data.Metrology.Combinators
 import Data.Metrology.LCSU
+import Data.Metrology.Validity
+import Data.Metrology.Internal
 import Data.Proxy
 
 -- | Extracts a numerical value from a dimensioned quantity, expressed in
@@ -133,9 +133,7 @@ import Data.Proxy
 --
 --   > inMeters x = x # Meter   
 numIn :: forall unit dim lcsu n.
-         ( Unit unit
-         , UnitFactor (LookupList dim lcsu)
-         , UnitFactorsOf unit *~ LookupList dim lcsu
+         ( ValidDLU dim lcsu unit
          , Fractional n )
       => Qu dim lcsu n -> unit -> n
 numIn (Qu val) u
@@ -145,9 +143,7 @@ numIn (Qu val) u
 
 infix 5 #
 -- | Infix synonym for 'numIn'
-(#) :: ( Unit unit
-       , UnitFactor (LookupList dim lcsu)
-       , UnitFactorsOf unit *~ LookupList dim lcsu
+(#) :: ( ValidDLU dim lcsu unit
        , Fractional n )
     => Qu dim lcsu n -> unit -> n
 (#) = numIn
@@ -161,10 +157,7 @@ infix 5 #
 --
 --   > height = 2.0 % Meter
 quOf :: forall unit dim lcsu n.
-         ( dim ~ DimFactorsOf (DimOfUnit unit)
-         , Unit unit
-         , UnitFactor (LookupList dim lcsu)
-         , UnitFactorsOf unit *~ LookupList dim lcsu
+         ( ValidDLU dim lcsu unit
          , Fractional n )
       => n -> unit -> Qu dim lcsu n
 quOf d u
@@ -174,16 +167,13 @@ quOf d u
 
 infixr 9 %
 -- | Infix synonym for 'quOf'
-(%) :: ( dim ~ DimFactorsOf (DimOfUnit unit)
-       , Unit unit
-       , UnitFactor (LookupList dim lcsu)
-       , UnitFactorsOf unit *~ LookupList dim lcsu
+(%) :: ( ValidDLU dim lcsu unit
        , Fractional n )
     => n -> unit -> Qu dim lcsu n
 (%) = quOf
 
 -- | Use this to choose a default LCSU for a dimensioned quantity.
--- The default LCSU uses the 'Canonical' representation for each
+-- The default LCSU uses the 'DefaultUnitOfDim' representation for each
 -- dimension.
 defaultLCSU :: Qu dim DefaultLCSU n -> Qu dim DefaultLCSU n
 defaultLCSU = id
@@ -204,31 +194,31 @@ redim (Qu x) = Qu x
 
 -- | Dimension-keeping cast between different CSUs.
 convert :: forall d l1 l2 n. 
-  ( UnitFactor (LookupList d l1)
-  , UnitFactor (LookupList d l2)  
-  , Fractional n) 
+  ( ConvertibleLCSUs d l1 l2
+  , Fractional n ) 
   => Qu d l1 n -> Qu d l2 n
 convert (Qu x) = Qu $ x * fromRational (
   canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l1))
   / canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l2)))
 
-
+{-
 -- | Compute the argument in the DefaultLCSU, and present the result
 -- as lcsu-polymorphic dimension-polymorphic value.
 fromDefaultLCSU :: ( d @~ e
-            , UnitFactor (LookupList e l)
-            , Fractional n )
+                   , UnitFactor (LookupList e l)
+                   , LookupList d DefaultLCSU *~ LookupList e l
+                   , Fractional n )
          => Qu d DefaultLCSU n -> Qu e l n
 fromDefaultLCSU = convert . redim
+-}
 
 -- | A synonym of 'fromDefaultLCSU', for one of its dominant usecase
 -- is to inject constant quantities into dimension-polymorphic
 -- expressions.
-constant :: ( d @~ e
-            , UnitFactor (LookupList e l)
+constant :: ( ConvertibleLCSUs d DefaultLCSU l
             , Fractional n )
-         => Qu d DefaultLCSU n -> Qu e l n
-constant = fromDefaultLCSU
+         => Qu d DefaultLCSU n -> Qu d l n
+constant = convert
 
 -------------------------------------------------------------
 --- "Number" unit -------------------------------------------
@@ -240,6 +230,7 @@ constant = fromDefaultLCSU
 data Dimensionless = Dimensionless
 instance Dimension Dimensionless where
   type DimFactorsOf Dimensionless = '[]
+type instance DefaultUnitOfDim Dimensionless = Number
 
 -- | The unit for unitless dimensioned quantities
 data Number = Number -- the unit for unadorned numbers
@@ -251,7 +242,7 @@ instance Unit Number where
 -- | The type of unitless dimensioned quantities.
 -- This is an instance of @Num@, though Haddock doesn't show it.
 -- This uses a @Double@ internally and uses a default LCSU.
-type Scalar = MkQu Number
+type Scalar = MkQu_U Number
 
 -- | Convert a raw number into a unitless dimensioned quantity
 scalar :: n -> Qu '[] l n

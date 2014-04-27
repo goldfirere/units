@@ -13,7 +13,7 @@
 {-# LANGUAGE DataKinds, PolyKinds, TypeFamilies, TypeOperators, UndecidableInstances #-}
 
 module Data.Metrology.LCSU (
-  LCSU(DefaultLCSU), DefaultLCSUUnit,
+  LCSU(DefaultLCSU), DefaultUnitOfDim,
   Lookup, LookupList, MkLCSU
   ) where
 
@@ -25,17 +25,19 @@ import Data.Singletons.Maybe
 data LCSU star = MkLCSU_ [star]
                | DefaultLCSU
 
-data DefaultLCSUUnit
-
-type family Lookup (key :: *) (map :: [*]) :: * where
-  Lookup key ((key, value) ': rest) =  value
-  Lookup key (other ': rest)        = Lookup key rest
+type family Lookup (dim :: *) (lcsu :: LCSU *) :: * where
+  Lookup dim (MkLCSU_ ((dim, unit) ': rest)) = unit
+  Lookup dim (MkLCSU_ ((other, u)  ': rest)) = Lookup dim (MkLCSU_ rest)
+  Lookup dim DefaultLCSU                     = DefaultUnitOfDim dim
 
 type family LookupList (keys :: [Factor *]) (map :: LCSU *) :: [Factor *] where
-  LookupList '[] (MkLCSU_ lcsu) = '[]
-  LookupList (F dim z ': rest) (MkLCSU_ lcsu)
-    = F (Lookup dim lcsu) z ': LookupList rest (MkLCSU_ lcsu)
-  LookupList dims DefaultLCSU = '[F DefaultLCSUUnit Zero]
+  LookupList '[] lcsu = '[]
+  LookupList (F dim z ': rest) lcsu
+    = F (Lookup dim lcsu) z ': LookupList rest lcsu
+
+-- | Assign a default unit for a dimension. Necessary only when using
+-- default LCSUs.
+type family DefaultUnitOfDim (dim :: *) :: *
 
 -- use type family to prevent pattern-matching
 type family MkLCSU pairs where
