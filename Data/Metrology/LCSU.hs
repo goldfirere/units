@@ -22,13 +22,13 @@ import Data.Metrology.Z
 
 import Data.Singletons.Maybe
 
-data LCSU star = MkLCSU_ [star]
+data LCSU star = MkLCSU_ [(star, star)]
                | DefaultLCSU
 
 type family Lookup (dim :: *) (lcsu :: LCSU *) :: * where
-  Lookup dim (MkLCSU_ ((dim, unit) ': rest)) = unit
-  Lookup dim (MkLCSU_ ((other, u)  ': rest)) = Lookup dim (MkLCSU_ rest)
-  Lookup dim DefaultLCSU                     = DefaultUnitOfDim dim
+  Lookup dim (MkLCSU_ ('(dim, unit) ': rest)) = unit
+  Lookup dim (MkLCSU_ ('(other, u)  ': rest)) = Lookup dim (MkLCSU_ rest)
+  Lookup dim DefaultLCSU                      = DefaultUnitOfDim dim
 
 type family LookupList (keys :: [Factor *]) (map :: LCSU *) :: [Factor *] where
   LookupList '[] lcsu = '[]
@@ -40,5 +40,15 @@ type family LookupList (keys :: [Factor *]) (map :: LCSU *) :: [Factor *] where
 type family DefaultUnitOfDim (dim :: *) :: *
 
 -- use type family to prevent pattern-matching
-type family MkLCSU pairs where
-  MkLCSU pairs = MkLCSU_ pairs
+
+-- | Make a local consistent set of units. The argument is a type-level
+-- list of tuple types, to be interpreted as an association list from
+-- dimensions to units. For example:
+--
+-- > type MyLCSU = MkLCSU '[(Length, Foot), (Mass, Gram), (Time, Year)]
+type family MkLCSU pairs where  -- uses unpromoted tuples to make it easier for users
+  MkLCSU pairs = MkLCSU_ (UsePromotedTuples pairs)
+
+type family UsePromotedTuples pairs where
+  UsePromotedTuples '[] = '[]
+  UsePromotedTuples ((dim, unit) ': rest) = ('(dim, unit) ': UsePromotedTuples rest)
