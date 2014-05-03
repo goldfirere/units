@@ -204,19 +204,19 @@ deriving instance RealFloat n => RealFloat (Qu '[] l n)
 -------------------------------------------------------------
 
 infixl 7 %*
--- | Multiply two dimension types to produce a new one. For example:
+-- | Multiply two quantity types to produce a new one. For example:
 --
 -- > type Velocity = Length %/ Time
 type family (d1 :: *) %* (d2 :: *) :: *
 type instance (Qu d1 l n) %* (Qu d2 l n) = Qu (d1 @+ d2) l n
 
 infixl 7 %/
--- | Divide two dimension types to produce a new one
+-- | Divide two quantity types to produce a new one
 type family (d1 :: *) %/ (d2 :: *) :: *
 type instance (Qu d1 l n) %/ (Qu d2 l n) = Qu (d1 @- d2) l n
 
 infixr 8 %^
--- | Exponentiate a dimension type to an integer
+-- | Exponentiate a quantity type to an integer
 type family (d :: *) %^ (z :: Z) :: *
 type instance (Qu d l n) %^ z = Qu (d @* z) l n
 
