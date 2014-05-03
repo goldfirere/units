@@ -31,18 +31,19 @@ import Data.Metrology.Units
 import Data.Metrology
 
 class ShowUnitFactor (dims :: [Factor *]) where
-  showDims :: Proxy dims -> ([String], [String])
+  showDims :: Bool   -- take absolute value of exponents?
+           -> Proxy dims -> ([String], [String])
 
 instance ShowUnitFactor '[] where
-  showDims _ = ([], [])
+  showDims _ _ = ([], [])
 
 instance (ShowUnitFactor rest, Show unit, SingI z)
          => ShowUnitFactor (F unit z ': rest) where
-  showDims _ =
-    let (nums, denoms) = showDims (Proxy :: Proxy rest)
+  showDims take_abs _ =
+    let (nums, denoms) = showDims take_abs (Proxy :: Proxy rest)
         baseStr        = show (undefined :: unit)
         power          = szToInt (sing :: Sing z)
-        abs_power      = abs power
+        abs_power      = if take_abs then abs power else power
         str            = if abs_power == 1
                          then baseStr
                          else baseStr ++ "^" ++ (show abs_power) in
@@ -53,11 +54,11 @@ instance (ShowUnitFactor rest, Show unit, SingI z)
 
 showFactor :: ShowUnitFactor dimspec => Proxy dimspec -> String
 showFactor p
-  = let (nums, denoms) = mapPair (build_string . sort) $ showDims p in
+  = let (nums, denoms) = mapPair (build_string . sort) $ showDims True p in
     case (length nums, length denoms) of
       (0, 0) -> ""
       (_, 0) -> " " ++ nums
-      (0, _) -> " 1/" ++ denoms
+      (0, _) -> build_string (snd (showDims False p))
       (_, _) -> " " ++ nums ++ "/" ++ denoms
   where
     mapPair :: (a -> b) -> (a, a) -> (b, b)
@@ -89,7 +90,8 @@ instance (Show prefix, Show unit) => Show (prefix :@ unit) where
 
 instance (ShowUnitFactor (LookupList dims lcsu), Show n)
            => Show (Qu dims lcsu n) where
-  show (Qu d) = (show d ++ showFactor (Proxy :: Proxy (LookupList dims lcsu)))
+  show (Qu d) = show d ++
+                (' ' : showFactor (Proxy :: Proxy (LookupList dims lcsu)))
 
 infix 1 `showIn`
 
