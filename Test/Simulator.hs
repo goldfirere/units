@@ -3,9 +3,7 @@
 module Test.Simulator where
 
 import Data.Metrology
-import Data.Metrology.SI
-import Data.Metrology.SI.Types
-import Data.Metrology.SI.Prefixes
+import Data.Metrology.SI.Mono
 import Data.Metrology.Show
 
 type Position = Length

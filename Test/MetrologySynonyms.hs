@@ -7,7 +7,7 @@
 module MetrologySynonyms where
 
 import           Data.Metrology
-import           Data.Metrology.SI
+import           Data.Metrology.SI.Poly
 import           Data.Metrology.Unsafe
 import           Text.Printf
 
