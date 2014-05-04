@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Metrology.SI.GenTypes
+-- Module      :  Data.Metrology.SI.PolyTypes
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -13,7 +13,7 @@
 -- SI dimensions, for arbitrary choice of system of units and numerical values.
 -----------------------------------------------------------------------------
 
-module Data.Metrology.SI.GenTypes where
+module Data.Metrology.SI.PolyTypes where
 
 import Data.Metrology
 import qualified Data.Metrology.SI.Dims as D

@@ -31,13 +31,15 @@ library
       units >= 2.0 && < 3
   exposed-modules:
     Data.Metrology.SI,
+    Data.Metrology.SI.Mono,
+    Data.Metrology.SI.Poly,
     Data.Metrology.SI.Prefixes,
-    Data.Metrology.SI.Types, 
+    Data.Metrology.SI.MonoTypes, 
     Data.Metrology.SI.Units,
     Data.Metrology.SI.Dims,
-    Data.Metrology.SI.GenTypes,
-    Data.Metrology.Imperial.Types
-    Data.Metrology.Imperial.Units
+    Data.Metrology.SI.PolyTypes
+--    Data.Metrology.Imperial.Types
+--    Data.Metrology.Imperial.Units
 
   default-language:   Haskell2010
 

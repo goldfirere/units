@@ -1,5 +1,3 @@
-{-# LANGUAGE TypeFamilies, TypeOperators #-}
-
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.Metrology.SI
@@ -14,17 +12,14 @@
 -- <http://www.bipm.org/en/si/> and here:
 -- <http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2012.pdf>.
 --
--- There is one deviation from the definition at that site: To work better
--- with prefixes, the unit of mass is 'Gram'.
+-- This module exports the monomorphic version of the definitions. For
+-- polymorphic versions, use 'Data.Metrology.SI.Poly'.
 -----------------------------------------------------------------------------
 
 module Data.Metrology.SI (
-  module Data.Metrology.SI.Units,
-  module Data.Metrology.SI.Types,
-  module Data.Metrology.SI.Prefixes
+  module Data.Metrology.SI.Mono
   ) where
 
-import Data.Metrology.SI.Units
-import Data.Metrology.SI.Types
-import Data.Metrology.SI.Prefixes
+import Data.Metrology.SI.Mono
+
 
