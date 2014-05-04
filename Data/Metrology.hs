@@ -65,7 +65,7 @@ module Data.Metrology (
 
   -- * Nondimensional units, conversion between quantities and numeric values
   unity, zero, redim, convert,
-  numIn, (#), quOf, (%), defaultLCSU, fromDefaultLCSU,
+  numIn, (#), (##), quOf, (%), (%%), defaultLCSU, fromDefaultLCSU,
   constant,
 
   -- * Type-level unit combinators
@@ -149,6 +149,14 @@ infix 5 #
     => Qu dim lcsu n -> unit -> n
 (#) = numIn
 
+infix 5 ##
+-- | Like '#', but uses a default LCSU. This operator is recommended
+-- for users who wish not to worry about LCSUs.
+(##) :: ( ValidDLU dim DefaultLCSU unit
+        , Fractional n )
+     => Qu dim DefaultLCSU n -> unit -> n
+(##) = numIn
+
 -- | Creates a dimensioned quantity in the given unit. For example:
 --
 --   > height :: Length
@@ -172,6 +180,14 @@ infixr 9 %
        , Fractional n )
     => n -> unit -> Qu dim lcsu n
 (%) = quOf
+
+infixr 9 %%
+-- | Like '%', but uses a default LCSU. This operator is recommended
+-- for users who wish not to worry about LCSUs.
+(%%) :: ( ValidDLU dim DefaultLCSU unit
+        , Fractional n )
+     => n -> unit -> Qu dim DefaultLCSU n
+(%%) = quOf
 
 -- | Use this to choose a default LCSU for a dimensioned quantity.
 -- The default LCSU uses the 'DefaultUnitOfDim' representation for each
