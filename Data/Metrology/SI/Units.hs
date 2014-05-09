@@ -87,7 +87,7 @@ instance Show Liter where
 
 data Newton = Newton
 instance Unit Newton where
-  type BaseUnit Newton = Meter :* Gram :/ (Second :^ Two)
+  type BaseUnit Newton = Gram :* Meter :/ (Second :^ Two)
   conversionRatio _ = 1000
 instance Show Newton where
   show _ = "N"
