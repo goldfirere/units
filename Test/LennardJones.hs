@@ -175,17 +175,24 @@ main = do
 
 
 {--- output ---
-$ runhaskell LennardJones.hs
 A chemist said his favorite system of unit (CU) consists of an Ångstrom, a proton mass, and a picosecond. They are 1.0e-8 m, 1.6726218e-27 kg, and 1.0e-12 s, respectively.
 He insists that it's better to do chemistry in CU than SI.
 For example, the attractive force between two Argon atom at the distance of 4Å is:
 NaN N
-Oops, it is:
+Oops, let's do it polymorphically:
 NaN N
 I can't do it in SI! On the other hand in CU we can:
 9.3407324e-14 N
 We compare again:
 NaN N
 9.3407324e-14 N
-
+Let's optimize the computation by precomputing all the constants.
+NaN N
+9.3407324e-14 N
+We cannot use the default LCSU for calculating constants in this case.
+NaN N
+NaN N
+We must pay attention in which LCSU the constants are computed in.
+NaN N
+9.3407324e-14 N
 -}
