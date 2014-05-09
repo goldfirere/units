@@ -75,10 +75,60 @@ ljForce r = redim $ 24 *| epsAr |*| sigmaAr|^ pSix |/| r |^ pSeven
                 |-| 48 *| epsAr |*| sigmaAr|^ pTwelve |/| r |^ pThirteen
 
 
+type AParameterDim = D.Energy :* D.Length :^ Twelve
+type BParameterDim = D.Energy :* D.Length :^ Six
+
+type APara = MkQu_DLN AParameterDim
+type BPara = MkQu_DLN BParameterDim
+
 ljForceP :: Energy l Float -> Length l Float -> Length l Float -> Force l Float
 ljForceP eps sigma r 
   = redim $ 24 *| eps |*| sigma|^ pSix |/| r |^ pSeven
         |-| 48 *| eps |*| sigma|^ pTwelve |/| r |^ pThirteen
+
+
+aParaAr :: (ConvertibleLCSUs_D D.Length SI l , ConvertibleLCSUs_D D.Energy SI l )=> APara l Float
+aParaAr = 48 *|  convert epsAr  |*| convert sigmaAr|^ pTwelve
+
+bParaAr :: (ConvertibleLCSUs_D D.Length SI l , ConvertibleLCSUs_D D.Energy SI l )=>  BPara l Float
+bParaAr = 24 *|  convert epsAr  |*| convert sigmaAr|^ pSix
+
+
+
+
+
+ljForcePOpt :: APara l Float -> BPara l Float -> Length l Float -> Force l Float
+ljForcePOpt a b r 
+  = redim $ b |/| r |^ pSeven
+        |-| a |/| r |^ pThirteen
+
+
+sigmaAr' :: (DefaultConvertibleLCSU_D D.Length l) => Length l Float
+sigmaAr' = constant $ 3.4e-8 % Meter
+epsAr' :: (DefaultConvertibleLCSU_D D.Energy l) => Energy l Float
+epsAr' = constant $ 1.68e-21 % Joule
+
+
+aParaAr' :: (DefaultConvertibleLCSU_D AParameterDim l) => APara l Float
+aParaAr' = constant $ 48 *|  epsAr'  |*| sigmaAr'|^ pTwelve
+
+bParaAr' :: (DefaultConvertibleLCSU_D BParameterDim l) => BPara l Float
+bParaAr' = constant $ 24 *|  epsAr'  |*| sigmaAr'|^ pSix
+
+
+
+sigmaAr'' :: (ConvertibleLCSUs_D D.Length CU l) => Length l Float
+sigmaAr'' = convert $ (3.4e-8 % Meter :: Length CU Float)
+epsAr'' :: (ConvertibleLCSUs_D D.Energy CU l) => Energy l Float
+epsAr'' = convert $ (1.68e-21 % Joule :: Energy CU Float)
+
+aParaAr'' :: (ConvertibleLCSUs_D AParameterDim CU l) => APara l Float
+aParaAr'' = convert $ (48 *|  epsAr'  |*| sigmaAr'|^ pTwelve :: APara CU Float)
+
+bParaAr'' :: (ConvertibleLCSUs_D BParameterDim CU l) => BPara l Float
+bParaAr'' = convert $ (24 *|  epsAr'  |*| sigmaAr'|^ pSix :: BPara CU Float)
+
+
 
 
 main :: IO ()
@@ -95,7 +145,7 @@ main = do
   putStrLn "He insists that it's better to do chemistry in CU than SI."
   putStrLn "For example, the attractive force between two Argon atom at the distance of 4Å is:"
   putStrLn $ ljForce (4 % Å) `showIn` (Newton)
-  putStrLn "Oops, it is:"
+  putStrLn "Oops, let's do it polymorphically:"
   putStrLn $ (ljForceP (convert epsAr) (convert sigmaAr) (4 % Å) :: Force SI Float) `showIn` (Newton)
   putStrLn "I can't do it in SI! On the other hand in CU we can:"
   putStrLn $ (ljForceP (convert epsAr) (convert sigmaAr) (4 % Å) :: Force CU Float) `showIn` (Newton)
@@ -108,6 +158,19 @@ main = do
   putStrLn "We compare again:"  
   putStrLn $ (ans :: Force SI Float) `showIn` (Newton)
   putStrLn $ (ans :: Force CU Float) `showIn` (Newton)
+
+
+  putStrLn $ "Let's optimize the computation by precomputing all the constants."
+  putStrLn $ (ljForcePOpt aParaAr bParaAr (4%Å):: Force SI Float) `showIn` Newton
+  putStrLn $ (ljForcePOpt aParaAr bParaAr (4%Å):: Force CU Float) `showIn` Newton
+
+  putStrLn $ "We cannot use the default LCSU for calculating constants in this case."
+  putStrLn $ (ljForcePOpt aParaAr' bParaAr' (4%Å):: Force SI Float) `showIn` Newton
+  putStrLn $ (ljForcePOpt aParaAr' bParaAr' (4%Å):: Force CU Float) `showIn` Newton
+  
+  putStrLn $ "We must pay attention in which LCSU the constants are computed in."
+  putStrLn $ (ljForcePOpt aParaAr'' bParaAr'' (4%Å):: Force SI Float) `showIn` Newton
+  putStrLn $ (ljForcePOpt aParaAr'' bParaAr'' (4%Å):: Force CU Float) `showIn` Newton  
 
 
 
