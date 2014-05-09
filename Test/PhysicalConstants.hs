@@ -4,11 +4,8 @@ module Main where
 
 import Data.Metrology
 import Data.Metrology.Show
-import Data.Metrology.SI.Units
-import Data.Metrology.SI.GenTypes
-import qualified Data.Metrology.SI.Types as SI
+import Data.Metrology.SI.Poly
 import qualified Data.Metrology.SI.Dims as D
-import Data.Metrology.SI.Prefixes
 
 import MetrologySynonyms
 
@@ -93,7 +90,7 @@ hbar = (1 / 2 / pi) *| planckConstant
 main :: IO ()
 main = do
   putStrLn "typechecks!"
-  print (planckLength :: SI.Length)
+  print (planckLength :: Length SI Double)
 --  print (planckLength :: Length KingdomUnit Double)
 -- last line does not typecheck -- good!
 
