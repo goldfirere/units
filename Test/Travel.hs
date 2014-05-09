@@ -5,7 +5,7 @@
 module Main where
 
 import Data.Metrology
-import Data.Metrology.SI.Types
+import Data.Metrology.SI.PolyTypes
 import Data.Metrology.SI.Prefixes
 import Data.Metrology.SI.Units
 import Data.Metrology.SI (SI)
