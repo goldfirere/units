@@ -39,7 +39,7 @@ source-repository this
 library
   build-depends:      
       base >= 4.7 && < 5,
-      singletons >= 0.9
+      singletons >= 0.9 && < 1
   exposed-modules:    
     Data.Metrology, 
     Data.Metrology.Internal,
