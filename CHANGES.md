@@ -1,3 +1,15 @@
+Version 2.0
+-----------
+
+This is a major update. `units` now supports the notion of a local unit set
+and of separable dimensions and units. See the description in the
+[draft paper](http://www.cis.upenn.edu/~eir/papers/2014/units/units.pdf) for
+more info.
+
+This update will very likely break any code that used `units-1.x`.
+
+The update was written in partnership with Takayuki Muranushi.
+
 Version 1.1
 -----------
 
