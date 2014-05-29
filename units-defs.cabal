@@ -36,6 +36,7 @@ library
     Data.Metrology.SI.Prefixes,
     Data.Metrology.SI.MonoTypes, 
     Data.Metrology.SI.Units,
+    Data.Metrology.SI.Units.Derived,
     Data.Metrology.SI.Dims,
     Data.Metrology.SI.PolyTypes
 --    Data.Metrology.Imperial.Types
