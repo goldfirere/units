@@ -56,21 +56,21 @@ instance Unit Minute where
 instance Show Minute where
   show _ = "min"
 
--- | 1 hour = 60 min = 3600 s
+-- | 1 hour = 60 min
 data Hour = Hour
 instance Unit Hour where
-  type BaseUnit Hour = Second
-  conversionRatio _ = 60 * 60
+  type BaseUnit Hour = Minute
+  conversionRatio _ = 60
 instance Show Hour where
-  show _ = "hour"
+  show _ = "h"
 
 -- | 1 day = 24 h = 86400 s
 data Day = Day
 instance Unit Day where
-  type BaseUnit Day = Second
-  conversionRatio _ = 24 * 60 * 60
+  type BaseUnit Day = Hour
+  conversionRatio _ = 24
 instance Show Day where
-  show _ = "day"
+  show _ = "d"
 
 data Ampere = Ampere
 instance Unit Ampere where
@@ -222,4 +222,20 @@ instance Unit Katal where
   type BaseUnit Katal = Mole :/ Second
 instance Show Katal where
   show _ = "kat"
+
+-- | Derived SI unit
+data Hectare = Hectare
+instance Unit Hectare where
+  type BaseUnit Hectare = Meter :^ Two
+  conversionRatio _ = 10000
+instance Show Hectare where
+  show _ = "ha"
+
+-- | Derived SI unit
+data Ton = Ton
+instance Unit Ton where
+  type BaseUnit Ton = Kilo :@ Gram
+  conversionRatio _ = 1000
+instance Show Ton where
+  show _ = "t"
 
