@@ -12,6 +12,11 @@
 -- This module exports unit definitions according to the SI system of units.
 -- The definitions were taken from here: <http://www.bipm.org/en/si/>.
 --
+-- Some additional units were added base on
+-- <http://www.bipm.org/en/si/si_brochure/chapter4/table6.html this link>:
+-- "Non-SI units accepted for use with the SI,
+-- and units based on fundamental constants".
+--
 -- There is one deviation from the definition at that site: To work better
 -- with prefixes, the unit of mass is 'Gram'.
 -----------------------------------------------------------------------------
@@ -42,6 +47,30 @@ instance Unit Second where
   type DimOfUnit Second = Time
 instance Show Second where
   show _ = "s"
+
+-- | 1 min = 60 s
+data Minute = Minute
+instance Unit Minute where
+  type BaseUnit Minute = Second
+  conversionRatio _ = 60
+instance Show Minute where
+  show _ = "min"
+
+-- | 1 hour = 60 min = 3600 s
+data Hour = Hour
+instance Unit Hour where
+  type BaseUnit Hour = Second
+  conversionRatio _ = 60 * 60
+instance Show Hour where
+  show _ = "hour"
+
+-- | 1 day = 24 h = 86400 s
+data Day = Day
+instance Unit Day where
+  type BaseUnit Day = Second
+  conversionRatio _ = 24 * 60 * 60
+instance Show Day where
+  show _ = "day"
 
 data Ampere = Ampere
 instance Unit Ampere where
