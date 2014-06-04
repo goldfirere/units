@@ -25,7 +25,7 @@ module Data.Metrology.SI.Units where
 
 import Data.Metrology
 import Data.Metrology.SI.Dims
-import Data.Metrology.SI.Prefixes ( Centi )
+import Data.Metrology.SI.Prefixes ( Kilo, Centi )
 
 data Meter = Meter
 instance Unit Meter where
