@@ -1,4 +1,4 @@
-{-# LANGUAGE TypeFamilies, TypeOperators #-}
+{-# LANGUAGE TypeFamilies, TypeOperators, PatternSynonyms #-}
 
 -----------------------------------------------------------------------------
 -- |
@@ -19,6 +19,10 @@
 --
 -- There is one deviation from the definition at that site: To work better
 -- with prefixes, the unit of mass is 'Gram'.
+--
+-- This module exports both American spellings and British spellings of
+-- units, using pattern synonyms to get the British spellings of data
+-- constructors.
 -----------------------------------------------------------------------------
 
 module Data.Metrology.SI.Units where
@@ -34,6 +38,9 @@ instance Unit Meter where
 instance Show Meter where
   show _ = "m"
 
+type Metre = Meter
+pattern Metre = Meter
+
 data Gram = Gram
 instance Unit Gram where
   type BaseUnit Gram = Canonical
@@ -48,7 +55,7 @@ instance Unit Second where
 instance Show Second where
   show _ = "s"
 
--- | 1 min = 60 s
+-- | Derived SI unit
 data Minute = Minute
 instance Unit Minute where
   type BaseUnit Minute = Second
@@ -56,7 +63,7 @@ instance Unit Minute where
 instance Show Minute where
   show _ = "min"
 
--- | 1 hour = 60 min
+-- | Derived SI unit
 data Hour = Hour
 instance Unit Hour where
   type BaseUnit Hour = Minute
@@ -64,7 +71,6 @@ instance Unit Hour where
 instance Show Hour where
   show _ = "h"
 
--- | 1 day = 24 h = 86400 s
 data Day = Day
 instance Unit Day where
   type BaseUnit Day = Hour
@@ -113,6 +119,9 @@ instance Unit Liter where
   conversionRatio _ = 1000
 instance Show Liter where
   show _ = "l"
+
+type Litre = Liter
+pattern Litre = Liter
 
 data Newton = Newton
 instance Unit Newton where
@@ -239,3 +248,5 @@ instance Unit Ton where
 instance Show Ton where
   show _ = "t"
 
+type Tonne = Ton
+pattern Tonne = Ton
