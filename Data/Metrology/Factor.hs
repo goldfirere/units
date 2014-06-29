@@ -18,7 +18,7 @@ import Data.Metrology.Z
 import Data.Type.Equality
 import Data.Type.Bool
 
-import Data.Singletons.Tuple (Fst, Snd)
+import Data.Singletons.Prelude
 
 -- | This will only be used at the kind level. It holds a dimension or unit
 -- with its exponent.

@@ -20,7 +20,7 @@ module Data.Metrology.LCSU (
 import Data.Metrology.Factor
 import Data.Metrology.Z
 
-import Data.Singletons.Maybe
+import Data.Singletons.Prelude
 
 data LCSU star = MkLCSU_ [(star, star)]
                | DefaultLCSU

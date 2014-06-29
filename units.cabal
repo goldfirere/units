@@ -1,5 +1,5 @@
 name:           units
-version:        2.0
+version:        2.1
 cabal-version:  >= 1.10
 synopsis:       A domain-specific type system for dimensional analysis
 homepage:       http://www.cis.upenn.edu/~eir/packages/units
@@ -34,12 +34,12 @@ description:
 source-repository this
   type:     git
   location: https://github.com/goldfirere/units.git
-  tag:      v2.0
+  tag:      v2.1
 
 library
   build-depends:      
       base >= 4.7 && < 5,
-      singletons >= 0.9 && < 1
+      singletons >= 0.9 && < 2
   exposed-modules:    
     Data.Metrology, 
     Data.Metrology.Internal,
