@@ -3,8 +3,9 @@
 
 # The following enables several GHC versions to be tested; often it's enough to test only against the last release in a major GHC version. Feel free to omit lines listings versions you don't need/want testing for.
 env:
- - GHCVER=7.8.2 
- - GHCVER=head
+ - GHCVER=7.8.2 SINGLETONS="-0.10.0"
+ - GHCVER=7.8.2 SINGLETONS=""          # with SINGLETONS blank, we get "head"
+ - GHCVER=head SINGLETONS=""
 
 # Note: the distinction between `before_install` and `install` is not important.
 before_install:
@@ -17,6 +18,7 @@ before_install:
 
 install:
  - cabal update
+ - cabal install singletons$SINGLETONS
  - cabal install --only-dependencies --enable-tests --enable-benchmarks
 
 # Here starts the actual work to be performed for the package under test; any command which exits with a non-zero exit code causes the build to fail.
