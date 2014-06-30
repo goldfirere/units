@@ -68,13 +68,13 @@ type MkQu_ULN unit = Qu (DimFactorsOf (DimOfUnit unit))
 
 infixl 6 |+|
 -- | Add two compatible quantities
-(|+|) :: (d1 @~ d2, Num n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
-(Qu a) |+| (Qu b) = Qu (a + b)
+(|+|) :: (d1 @~ d2, AdditiveGroup n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
+(Qu a) |+| (Qu b) = Qu (a ^+^ b)
 
 infixl 6 |-|
 -- | Subtract two compatible quantities
-(|-|) :: (d1 @~ d2, Num n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
-(Qu a) |-| (Qu b) = Qu (a - b)
+(|-|) :: (d1 @~ d2, AdditiveGroup n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
+(Qu a) |-| (Qu b) = Qu (a ^-^ b)
 
 infixl 7 |*|
 -- | Multiply two quantities
