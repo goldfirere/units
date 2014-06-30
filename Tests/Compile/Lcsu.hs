@@ -1,6 +1,6 @@
 {-# LANGUAGE TypeFamilies, DataKinds #-}
 
-module Test.Lcsu where
+module Tests.Compile.Lcsu where
 
 import Data.Metrology hiding (LCSU)
 import Data.Metrology.Units

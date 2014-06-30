@@ -1,6 +1,6 @@
 {-# LANGUAGE DataKinds, TypeOperators #-}
 
-module Test.CGS where
+module Tests.Compile.CGS where
 
 import Data.Metrology
 import Data.Metrology.SI

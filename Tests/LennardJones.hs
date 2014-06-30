@@ -3,8 +3,9 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE ImplicitParams #-}
 
-module Main where
+module Tests.LennardJones where
 
 import Data.Metrology
 import Data.Metrology.Z
@@ -15,7 +16,10 @@ import Data.Metrology.SI.Units
 import Data.Metrology.SI.Poly (SI)
 import qualified Data.Metrology.SI.Dims as D
 import Data.Metrology.Show
-import Data.Metrology.Unsafe -- forgive me!
+
+import Test.Tasty
+import Test.Tasty.HUnit
+import Test.HUnit.Approx
 
 type Six      = S Five
 type Seven    = S Six
@@ -130,17 +134,28 @@ bParaAr'' = convert $ (24 *|  epsAr'  |*| sigmaAr'|^ pSix :: BPara CU Float)
 
 
 
+tests :: TestTree
+tests =
+  let ?epsilon = 0.0001 in
+  let ans :: (ConvertibleLCSUs_D D.Length SI l, ConvertibleLCSUs_D D.Energy SI l) => Force l Float
+      ans = ljForceP (convert epsAr) (convert sigmaAr) (4 % Å)
+      val = 9.3407324e-14
+  in
+  testGroup "LennardJones"
+  [ testCase "NaN" (assert (isNaN $ ljForce (4 % Å) # Newton))
+  , testCase "NaNPoly" (assert (isNaN $ (ljForceP (convert epsAr) (convert sigmaAr) (4 % Å) :: Force SI Float) # Newton))
+  , testCase "CU" ((ljForceP (convert epsAr) (convert sigmaAr) (4 % Å) :: Force CU Float) # Newton @?~ val)
+  , testCase "ansNaN" (assert $ isNaN $ (ans :: Force SI Float) # Newton)
+  , testCase "ansCU" ((ans :: Force CU Float) # Newton @?~ val)
+  , testCase "optNaN" (assert $ isNaN $ (ljForcePOpt aParaAr bParaAr (4%Å) :: Force SI Float) # Newton)
+  , testCase "optCU" ((ljForcePOpt aParaAr bParaAr (4%Å) :: Force CU Float) # Newton @?~ val)
+  , testCase "precompNaN" (assert $ isNaN $ (ljForcePOpt aParaAr' bParaAr' (4%Å) :: Force SI Float) # Newton)
+  , testCase "precompNaN2" (assert $ isNaN $ (ljForcePOpt aParaAr' bParaAr' (4%Å) :: Force CU Float) # Newton)
+  , testCase "precompPolyNaN" (assert $ isNaN $ (ljForcePOpt aParaAr'' bParaAr'' (4%Å) :: Force SI Float) # Newton)
+  , testCase "precompPolyCU" ((ljForcePOpt aParaAr'' bParaAr'' (4%Å) :: Force CU Float) # Newton @?~ val) ]
 
 main :: IO ()
 main = do
-  putStrLn $ concat
-     [ "A chemist said his favorite system of unit (CU) consists of "
-     , "an Ångstrom, a proton mass, and a picosecond. They are "
-     , ((Qu 1) :: Length CU Float) `showIn` Meter   , ", "
-     , ((Qu 1) :: Mass CU Float) `showIn` kilo Gram , ", and "
-     , ((Qu 1) :: Time CU Float) `showIn` Second    , ", respectively."
-     ]
-  
 
   putStrLn "He insists that it's better to do chemistry in CU than SI."
   putStrLn "For example, the attractive force between two Argon atom at the distance of 4Å is:"
