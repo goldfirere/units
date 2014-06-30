@@ -84,4 +84,4 @@ test-suite main
 
     -- GHC 7.10 requires this in more places, and I don't feel like ferreting out exactly
     -- where.
-  default-extensions: -XFlexibleContexts
+  default-extensions: FlexibleContexts
