@@ -1,3 +1,10 @@
+Version 2.1
+-----------
+
+* Separated monomorphic and polymorphic interface.
+
+* Includes a decently comprehensive test suite.
+
 Version 2.0
 -----------
 
