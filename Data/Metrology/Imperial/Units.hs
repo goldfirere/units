@@ -17,9 +17,7 @@
 module Data.Metrology.Imperial.Units where
 
 import Data.Metrology
-import Data.Metrology.SI.Dims
 import Data.Metrology.SI.Units (Meter(..), Gram(..))
-import Data.Proxy
 
 ---------------------------------
 -- Lengths
