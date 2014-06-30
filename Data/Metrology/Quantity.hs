@@ -11,7 +11,7 @@
 
 {-# LANGUAGE TypeFamilies, TypeOperators, DataKinds, UndecidableInstances,
              ConstraintKinds, StandaloneDeriving, GeneralizedNewtypeDeriving,
-             FlexibleInstances, RoleAnnotations #-}
+             FlexibleInstances, RoleAnnotations, FlexibleContexts #-}
 
 module Data.Metrology.Quantity where
 
@@ -21,6 +21,11 @@ import Data.Metrology.Factor
 import Data.Metrology.Units
 import Data.Metrology.Z
 import Data.Metrology.LCSU
+
+import Data.AdditiveGroup
+import Data.VectorSpace
+
+import Data.Foldable as F
 
 -------------------------------------------------------------
 --- Internal ------------------------------------------------
@@ -65,16 +70,36 @@ type MkQu_U unit = Qu (DimFactorsOf (DimOfUnit unit)) DefaultLCSU Double
 --   The quantity will have the dimension corresponding to the unit.
 type MkQu_ULN unit = Qu (DimFactorsOf (DimOfUnit unit))
 
+---------------------------------------
+-- Additive operations
+---------------------------------------
+
+-- | The number 0, polymorphic in its dimension. Use of this will
+-- often require a type annotation.
+zero :: AdditiveGroup n => Qu dimspec l n
+zero = Qu zeroV
 
 infixl 6 |+|
 -- | Add two compatible quantities
 (|+|) :: (d1 @~ d2, AdditiveGroup n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
 (Qu a) |+| (Qu b) = Qu (a ^+^ b)
 
+-- | Negate a quantity
+qNegate :: AdditiveGroup n => Qu d l n -> Qu d l n
+qNegate (Qu x) = Qu (negateV x)
+
 infixl 6 |-|
 -- | Subtract two compatible quantities
 (|-|) :: (d1 @~ d2, AdditiveGroup n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
-(Qu a) |-| (Qu b) = Qu (a ^-^ b)
+a |-| b = a |+| qNegate b
+
+-- | Take the sum of a list of quantities
+qSum :: (Foldable f, AdditiveGroup n) => f (Qu d l n) -> Qu d l n
+qSum = F.foldr (|+|) zero
+
+---------------------------------------
+-- Multiplicative operations
+---------------------------------------
 
 infixl 7 |*|
 -- | Multiply two quantities
@@ -88,24 +113,24 @@ infixl 7 |/|
 
 infixl 7 *| , |* , /| , |/
 -- | Multiply a quantity by a scalar from the left
-(*|) :: Num n => n -> Qu b l n -> Qu b l n
-a *| (Qu b) = Qu (a * b)
+(*|) :: VectorSpace n => Scalar n -> Qu b l n -> Qu b l n
+a *| (Qu b) = Qu (a *^ b)
 
 -- | Multiply a quantity by a scalar from the right
-(|*) :: Num n => Qu a l n -> n -> Qu a l n
-(Qu a) |* b = Qu (a * b)
+(|*) :: VectorSpace n => Qu a l n -> Scalar n -> Qu a l n
+(Qu a) |* b = Qu (a ^* b)
 
 -- | Divide a scalar by a quantity
 (/|) :: Fractional n => n -> Qu b l n -> Qu (NegList b) l n
 a /| (Qu b) = Qu (a / b)
 
 -- | Divide a quantity by a scalar
-(|/) :: Fractional n => Qu a l n -> n -> Qu a l n
-(Qu a) |/ b = Qu (a / b)
+(|/) :: (VectorSpace n, Fractional (Scalar n)) => Qu a l n -> Scalar n -> Qu a l n
+(Qu a) |/ b = Qu (a ^/ b)
 
 infixr 8 |^
 -- | Raise a quantity to a integer power, knowing at compile time that the integer is non-negative.
-(|^) :: Fractional n => Qu a l n -> Sing z -> Qu (a @* z) l n -- TODO: type level proof here
+(|^) :: (NonNegative z, Num n) => Qu a l n -> Sing z -> Qu (a @* z) l n
 (Qu a) |^ sz = Qu (a ^ szToInt sz)
 
 infixr 8 |^^
@@ -113,11 +138,16 @@ infixr 8 |^^
 (|^^) :: Fractional n => Qu a l n -> Sing z -> Qu (a @* z) l n
 (Qu a) |^^ sz = Qu (a ^^ szToInt sz)
 
+infixr 7 |.|
+-- | Take a inner (dot) product between two quantities.
+(|.|) :: InnerSpace n => Qu d1 l n -> Qu d2 l n -> Qu (Normalize (d1 @+ d2)) l (Scalar n)
+(Qu a) |.| (Qu b) = Qu (a <.> b)
+
 -- | Take the n'th root of a quantity, where n is known at compile
 -- time
-nthRoot :: ((Zero < z) ~ True, Floating n)
+qNthRoot :: ((Zero < z) ~ True, Floating n)
         => Sing z -> Qu a l n -> Qu (a @/ z) l n
-nthRoot sz (Qu a) = Qu (a ** (1.0 / (fromIntegral $ szToInt sz)))
+qNthRoot sz (Qu a) = Qu (a ** (1.0 / (fromIntegral $ szToInt sz)))
 
 infix 4 |<|
 -- | Check if one quantity is less than a compatible one
@@ -150,15 +180,15 @@ infix 4 |/=|
 (Qu a) |/=| (Qu b) = a /= b
 
 infix 4 `qApprox` , `qNapprox`
--- | Compare two compatible quantities for approximate equality.  If
--- the difference between the left hand side and the right hand side
--- arguments are less than the /epsilon/, they are considered equal.
+-- | Compare two compatible quantities for approximate equality. If the
+-- difference between the left hand side and the right hand side arguments are
+-- less than or equal to the /epsilon/, they are considered equal.
 qApprox :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
       => Qu d0 l n  -- ^ /epsilon/
       -> Qu d1 l n  -- ^ left hand side
       -> Qu d2 l n  -- ^ right hand side
       -> Bool  
-qApprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) < epsilon
+qApprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) <= epsilon
 
 -- | Compare two compatible quantities for approixmate inequality.  
 -- @qNapprox e a b = not $ qApprox e a b@
@@ -167,7 +197,7 @@ qNapprox :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
        -> Qu d1 l n  -- ^ left hand side 
        -> Qu d2 l n  -- ^ right hand side
        -> Bool
-qNapprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) >= epsilon
+qNapprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) > epsilon
 
 -- | Square a quantity
 qSq :: Num n => Qu a l n -> Qu (Normalize (a @+ a)) l n
@@ -179,11 +209,11 @@ qCube x = x |*| x |*| x
 
 -- | Take the square root of a quantity
 qSqrt :: Floating n => Qu a l n -> Qu (a @/ Two) l n
-qSqrt = nthRoot pTwo
+qSqrt = qNthRoot pTwo
 
 -- | Take the cubic root of a quantity
 qCubeRoot :: Floating n => Qu a l n -> Qu (a @/ Three) l n
-qCubeRoot = nthRoot pThree
+qCubeRoot = qNthRoot pThree
 
 
 -------------------------------------------------------------

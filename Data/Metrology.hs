@@ -54,14 +54,22 @@ module Data.Metrology (
 
   -- | The term-level arithmetic operators are defined by
   -- applying vertical bar(s) to the sides the dimensioned 
-  -- quantities acts on. 
-  -- See also "Data.Metrology.AltOperators" for an alternative system of operators.
-  (|+|), (|-|), 
-  (|*|), (|/|), (*|),  (|*), (/|), (|/), 
+  -- quantities acts on.
+
+  -- ** Additive operations
+  (|+|), (|-|), qSum, qNegate,
+
+  -- ** Multiplicative operations between non-vector quantities
+  (|*|), (|/|),
+
+  -- ** Multiplicative operations between vector quantities
+  (|*^|), (|^*|), (|^/|),
+  (|.|)(*|),  (|*), (/|), (|/), 
   (|^), (|^^),
   (|<|), (|>|), (|<=|), (|>=|), (|==|), (|/=|),
   qApprox, qNapprox,        
-  qSq, qCube, qSqrt, qCubeRoot, nthRoot, 
+  qSq, qCube, qSqrt, qCubeRoot, qNthRoot,
+  qSum, 
 
   -- * Nondimensional units, conversion between quantities and numeric values
   unity, zero, redim, convert,
@@ -198,11 +206,6 @@ defaultLCSU = id
 -- | The number 1, expressed as a unitless dimensioned quantity.
 unity :: Num n => Qu '[] l n
 unity = Qu 1
-
--- | The number 0, polymorphic in its dimension. Use of this will
--- often require a type annotation.
-zero :: Num n => Qu dimspec l n
-zero = Qu 0
 
 -- | Cast between equivalent dimension within the same CSU.
 --  for example [kg m s] and [s m kg]. See the README for more info.

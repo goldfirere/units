@@ -32,6 +32,7 @@
 module Data.Metrology.Z where
 
 import Data.Singletons.TH
+import GHC.Exts ( Constraint )
 
 -- | The datatype for type-level integers.
 $(singletons [d| data Z = Zero | S Z | P Z deriving Eq |])
@@ -113,6 +114,12 @@ type family (a :: Z) < (b :: Z) :: Bool where
   (P n) < Zero   = True
   (P n) < (S n') = True
   (P n) < (P n') = n < n'
+
+-- | Check if a type-level integer is in fact a natural number
+type family NonNegative z :: Constraint where
+  NonNegative (P z) = Error "Trying to prove a negative type-level integer is non-negative"
+  NonNegative Zero  = ()
+  NonNegative (S z) = ()
 
 type One   = S Zero
 type Two   = S One
