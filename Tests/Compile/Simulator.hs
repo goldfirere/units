@@ -1,10 +1,12 @@
 {-# LANGUAGE TypeOperators, TypeFamilies #-}
 
-module Test.Simulator where
+module Tests.Compile.Simulator where
+
+import Prelude hiding (sum)
 
 import Data.Metrology
 import Data.Metrology.SI.Mono
-import Data.Metrology.Show
+import Data.Metrology.Show ()
 
 type Position = Length
 
@@ -45,14 +47,14 @@ updateNoColls dt univ obj@(Object { mass = m, pos = (x, y), vel = (dx, dy) })
     in obj { pos = new_pos, vel = v2 }
 
 gravityAt :: Universe -> (Position, Position) -> Mass -> (Force, Force)
-gravityAt univ pos m = sum (map gravity_at_1 univ)
+gravityAt univ p m = sum (map gravity_at_1 univ)
   where
     gravity_at_1 (Object { mass = m1, pos = pos1 })
-      = let r = mag (pos1 !- pos)
+      = let r = mag (pos1 !- p)
             f = g_universe |*| m1 |*| m |/| r |^ pTwo
         in
         if r |>| (zero :: Length)
-        then dimPair $ f !* ((pos1 !- pos) !/ r)
+        then dimPair $ f !* ((pos1 !- p) !/ r)
         else (zero, zero)
 
     sum :: [(Force, Force)] -> (Force, Force)

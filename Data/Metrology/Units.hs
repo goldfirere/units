@@ -17,7 +17,6 @@ module Data.Metrology.Units where
 import Data.Metrology.Z
 import Data.Metrology.Factor
 import Data.Metrology.Dimensions
-import Data.Metrology.LCSU
 import Data.Type.Bool
 import Data.Type.Equality
 import Data.Proxy

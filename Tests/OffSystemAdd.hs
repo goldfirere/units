@@ -1,10 +1,14 @@
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeFamilies, NoMonomorphismRestriction #-}
 
-module Test.OffSystemAdd where
+module Tests.OffSystemAdd where
 
 import Data.Metrology
 import Data.Metrology.SI
 import qualified Data.Metrology.SI.Dims as D
+
+import Test.Tasty
+import Test.Tasty.HUnit
+import Test.HUnit.Approx
 
 data Foot = Foot
 instance Unit Foot where
@@ -49,3 +53,9 @@ type instance DefaultUnitOfDim D.Length = Meter
 -- that only requires relative relation between units.
 len12InM' :: Double
 len12InM' = (defaultLCSU $ (1 % Meter) |+| (3 % Foot)) # Meter
+
+tests = testGroup "OffSystemAdd"
+  [ testCase "vel1inMS" (vel1InMS @?~ 0.00965873546)
+  , testCase "vel2inMS" (vel2InMS @?~ 0.01)
+  , testCase "vel12inMS" (vel12InMS @?~ 0.01965873)
+  , testCase "len12InM" (len12InM @?~ 1.9144) ]

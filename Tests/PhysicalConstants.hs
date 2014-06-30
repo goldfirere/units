@@ -1,13 +1,16 @@
 {-# LANGUAGE ConstraintKinds, DataKinds, FlexibleContexts, TypeFamilies,
-             TypeOperators #-}
-module Main where
+             TypeOperators, ImplicitParams #-}
+module Tests.PhysicalConstants where
 
 import Data.Metrology
-import Data.Metrology.Show
+import Data.Metrology.Show ()
 import Data.Metrology.SI.Poly
 import qualified Data.Metrology.SI.Dims as D
 
-import MetrologySynonyms
+import Tests.Compile.MetrologySynonyms
+
+import Test.Tasty.HUnit
+import Test.HUnit.Approx
 
 ----------------------------------------------------------------
 -- Mass units
@@ -86,6 +89,9 @@ planckConstant =  (6.6260695729e-34) % (undefined :: JouleSecond)
 hbar ::  CompatibleUnit l JouleSecond   => MkQu_UL JouleSecond l
 hbar = (1 / 2 / pi) *| planckConstant
 
+tests =
+  let ?epsilon = 1e-40 in
+  testCase "PhysicalConstants" ((planckLength :: Length SI Double) # Meter @?~ 1.616199e-35)
 
 main :: IO ()
 main = do

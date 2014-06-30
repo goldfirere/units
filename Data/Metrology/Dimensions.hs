@@ -16,13 +16,6 @@ module Data.Metrology.Dimensions where
 
 import Data.Metrology.Z
 import Data.Metrology.Factor
-import Data.Metrology.LCSU
-import Data.Type.Bool
-import Data.Type.Equality
-import Data.Proxy
-import Data.Singletons
-import GHC.Exts
-
 
 -- | This class is used to mark abstract dimensions, such as @Length@, or
 -- @Mass@.

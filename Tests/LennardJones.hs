@@ -15,7 +15,7 @@ import Data.Metrology.SI.Prefixes
 import Data.Metrology.SI.Units
 import Data.Metrology.SI.Poly (SI)
 import qualified Data.Metrology.SI.Dims as D
-import Data.Metrology.Show
+-- import Data.Metrology.Show
 
 import Test.Tasty
 import Test.Tasty.HUnit
@@ -127,16 +127,14 @@ epsAr'' :: (ConvertibleLCSUs_D D.Energy CU l) => Energy l Float
 epsAr'' = convert $ (1.68e-21 % Joule :: Energy CU Float)
 
 aParaAr'' :: (ConvertibleLCSUs_D AParameterDim CU l) => APara l Float
-aParaAr'' = convert $ (48 *|  epsAr'  |*| sigmaAr'|^ pTwelve :: APara CU Float)
+aParaAr'' = convert $ ((48 :: Float) *|  epsAr'  |*| sigmaAr'|^ pTwelve :: APara CU Float)
 
 bParaAr'' :: (ConvertibleLCSUs_D BParameterDim CU l) => BPara l Float
-bParaAr'' = convert $ (24 *|  epsAr'  |*| sigmaAr'|^ pSix :: BPara CU Float)
-
-
+bParaAr'' = convert $ ((24 :: Float) *|  epsAr'  |*| sigmaAr'|^ pSix :: BPara CU Float)
 
 tests :: TestTree
 tests =
-  let ?epsilon = 0.0001 in
+  let ?epsilon = 0.0001 in -- need this because we need Floats, not Doubles!
   let ans :: (ConvertibleLCSUs_D D.Length SI l, ConvertibleLCSUs_D D.Energy SI l) => Force l Float
       ans = ljForceP (convert epsAr) (convert sigmaAr) (4 % Å)
       val = 9.3407324e-14
@@ -153,7 +151,7 @@ tests =
   , testCase "precompNaN2" (assert $ isNaN $ (ljForcePOpt aParaAr' bParaAr' (4%Å) :: Force CU Float) # Newton)
   , testCase "precompPolyNaN" (assert $ isNaN $ (ljForcePOpt aParaAr'' bParaAr'' (4%Å) :: Force SI Float) # Newton)
   , testCase "precompPolyCU" ((ljForcePOpt aParaAr'' bParaAr'' (4%Å) :: Force CU Float) # Newton @?~ val) ]
-
+{-
 main :: IO ()
 main = do
 
@@ -210,4 +208,5 @@ NaN N
 We must pay attention in which LCSU the constants are computed in.
 NaN N
 9.3407324e-14 N
+-}
 -}

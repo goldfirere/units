@@ -7,27 +7,24 @@
    This is the main testing file for the units package.
 -}
 
+{-# LANGUAGE ImplicitParams #-}
+
 module Tests.Main where
 
-import qualified Tests.Compile.CGS
-import qualified Tests.Compile.Lcsu
-{-
-import qualified Test.Compile.MetrologySynonyms
-import qualified Test.Compile.OffSystem
-import qualified Test.Compile.OffSystemAdd
-import qualified Test.Compile.OffSystemCSU
-import qualified Test.Compile.PhysicalConstants
-import qualified Test.Compile.Physics
-import qualified Test.Compile.Readme
-import qualified Test.Compile.Simulator
-import qualified Test.Compile.Spec
-import qualified Test.Compile.Travel
-import qualified Test.Compile.Units
--}
+import qualified Tests.Compile.CGS               ()
+import qualified Tests.Compile.Lcsu              ()
+import qualified Tests.Compile.MetrologySynonyms ()
+import qualified Tests.Compile.Physics           ()
+import qualified Tests.Compile.Readme            ()
+import qualified Tests.Compile.Simulator         ()
+import qualified Tests.Compile.Units             ()
 
 import qualified Tests.Imperial
 import qualified Tests.LennardJones
-
+import qualified Tests.OffSystemAdd
+import qualified Tests.OffSystemCSU
+import qualified Tests.PhysicalConstants
+import qualified Tests.Travel
 
 import Test.Tasty
 
@@ -35,6 +32,13 @@ main :: IO ()
 main = defaultMain tests
 
 tests :: TestTree
-tests = testGroup "Tests"
+tests =
+  let ?epsilon = 0.0000001 in
+  testGroup "Tests"
   [ Tests.Imperial.tests
-  , Tests.LennardJones.tests ]
+  , Tests.LennardJones.tests
+  , Tests.OffSystemAdd.tests
+  , Tests.OffSystemCSU.tests
+  , Tests.PhysicalConstants.tests
+  , Tests.Travel.tests
+  ]

@@ -18,9 +18,6 @@ module Data.Metrology.LCSU (
   ) where
 
 import Data.Metrology.Factor
-import Data.Metrology.Z
-
-import Data.Singletons.Prelude
 
 data LCSU star = MkLCSU_ [(star, star)]
                | DefaultLCSU

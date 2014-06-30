@@ -1,11 +1,13 @@
-{-# LANGUAGE TypeOperators, DataKinds, TypeFamilies #-}
+{-# LANGUAGE TypeOperators, DataKinds, TypeFamilies, NoMonomorphismRestriction #-}
 
-module Test.OffSystemCSU where
+module Tests.OffSystemCSU where
 
 import Data.Metrology
 import Data.Metrology.SI
 import qualified Data.Metrology.SI.Dims as D
 
+import Test.Tasty.HUnit
+import Test.HUnit.Approx
 
 type YardPond = MkLCSU '[ (D.Length, Foot)]
 
@@ -30,3 +32,4 @@ len2 = 1 % Meter
 x :: Double
 x = (len1 |+| len2) # Meter
 
+tests = testCase "OffSystemCSU" (x @?~ 1.9144)

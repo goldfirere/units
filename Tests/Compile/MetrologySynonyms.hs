@@ -4,7 +4,7 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 
-module MetrologySynonyms where
+module Tests.Compile.MetrologySynonyms where
 
 import           Data.Metrology
 import           Data.Metrology.SI.Poly

@@ -1,6 +1,6 @@
 {-# LANGUAGE DataKinds, TypeFamilies, TypeOperators #-}
 
-module Test.Units where
+module Tests.Compile.Units where
 
 import Data.Metrology
 

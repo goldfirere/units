@@ -27,7 +27,6 @@ import Data.Metrology.Quantity
 import Data.Metrology.Z
 import Data.Metrology.LCSU
 import Data.Metrology.Combinators
-import Data.Metrology.Units
 import Data.Metrology
 
 class ShowUnitFactor (dims :: [Factor *]) where

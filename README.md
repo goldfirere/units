@@ -175,7 +175,7 @@ We now show some example computations on the defined types:
     inMeters = (# Meter)                  -- more on this later
 
     conversion :: Length                  -- mixing units
-    conversion = (4 % Meter) |+| (10 % Feet)
+    conversion = (4 % Meter) |+| (10 % Foot)
 
     vel :: Length %/ Time                 -- The `%*` and `%/` operators allow
                                           -- you to combine types
@@ -291,7 +291,7 @@ Units can be multiplied and divided with the operators `:*` and `:/`, at either
 the term or type level. For example:
 
     type MetersPerSecond = Meter :/ Second
-    type Velocity1 = MkQu_DLN MetersPerSecond LCSU Double
+    type Velocity1 = MkQu_ULN MetersPerSecond LCSU Double
 
     speed :: Velocity1
     speed = 20 % (Meter :/ Second)
@@ -308,7 +308,7 @@ negative numbers `MOne` through `MFive`. At the term level, precede the number
 with a `p` (mnemonic: "power"). For example:
 
     type MetersSquared = Meter :^ Two
-    type Area1 = MkQu MetersSquared
+    type Area1 = MkQu_ULN MetersSquared LCSU Double
     type Area2 = Length %^ Two        -- same type as Area1
 
     roomSize :: Area1
@@ -340,7 +340,7 @@ runtime. When providing type annotations, it is good practice to start your
 function with a `redim $` to prevent the possibility of type errors. For
 example, say we redefine velocity a different way:
 
-    type Velocity3 = Scalar %/ Time %* Length
+    type Velocity3 = (MkQu_ULN Number LCSU Double) %/ Time %* Length
     addVels :: Velocity1 -> Velocity1 -> Velocity3
     addVels v1 v2 = redim $ v1 |+| v2
 
@@ -360,14 +360,14 @@ need to worry about numerical precision. The facility is through the type
 family `DefaultUnitOfDim`. For example, with the definitions above, we could
 say
 
-   type instance DefaultUnitOfDim LengthDim = Meter
-   type instance DefaultUnitOfDim TimeDim   = Second
+    type instance DefaultUnitOfDim LengthDim = Meter
+    type instance DefaultUnitOfDim TimeDim   = Second
 
 and then use the `DefaultLCSU` for our LCSU. To make the use of the default
 LCSU even easier, the `MkQu_xxx` operators that don't mention an LCSU all
 use the default one. So, we can say
 
-   type Length = MkQu_D LengthDim
+    type Length = MkQu_D LengthDim
 
 and get to work. (This uses `Double` as the underlying numerical representation.)
 
