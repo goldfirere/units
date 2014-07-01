@@ -45,7 +45,7 @@
 -- synonym declarations are always included.) If a symbol is not exported,
 -- you do /not/ need to know anything about it to use this package.
 --
--- Though it doesn't appear here, @Scalar@ is an instance of @Num@, and
+-- Though it doesn't appear here, @Number@ is an instance of @Num@, and
 -- generally has all the numeric instances that @Double@ has.
 -----------------------------------------------------------------------------
 
@@ -57,22 +57,24 @@ module Data.Metrology (
   -- quantities acts on.
 
   -- ** Additive operations
-  (|+|), (|-|), qSum, qNegate,
+  zero, (|+|), (|-|), qSum, qNegate,
 
   -- ** Multiplicative operations between non-vector quantities
-  (|*|), (|/|),
+  (|*|), (|/|), (/|),
 
-  -- ** Multiplicative operations between vector quantities
-  (|*^|), (|^*|), (|^/|),
-  (|.|)(*|),  (|*), (/|), (|/), 
-  (|^), (|^^),
-  (|<|), (|>|), (|<=|), (|>=|), (|==|), (|/=|),
+  -- ** Multiplicative operations between a vector and a scalar
+  (*|), (|*), (|/),
+
+  -- ** Exponentiation
+  (|^), (|^^), qNthRoot,
+  qSq, qCube, qSqrt, qCubeRoot,
+
+  -- ** Comparison
+  qCompare, (|<|), (|>|), (|<=|), (|>=|), (|==|), (|/=|),
   qApprox, qNapprox,        
-  qSq, qCube, qSqrt, qCubeRoot, qNthRoot,
-  qSum, 
 
   -- * Nondimensional units, conversion between quantities and numeric values
-  unity, zero, redim, convert,
+  unity, redim, convert,
   numIn, (#), (##), quOf, (%), (%%), defaultLCSU, fromDefaultLCSU,
   constant,
 
@@ -93,8 +95,8 @@ module Data.Metrology (
   Unit(type BaseUnit, type DimOfUnit, conversionRatio), 
   Canonical,
 
-  -- * Scalars, the only built-in unit
-  Dimensionless(..), Number(..), Scalar, quantity,
+  -- * Numbers, the only built-in unit
+  Dimensionless(..), Count(..), Number, quantity,
 
   -- * LCSUs (locally coherent system of units)
   MkLCSU, LCSU(DefaultLCSU), DefaultUnitOfDim,
@@ -132,6 +134,8 @@ import Data.Metrology.Validity
 import Data.Metrology.Internal
 import Data.Proxy
 
+import Data.VectorSpace
+
 -- | Extracts a numerical value from a dimensioned quantity, expressed in
 --   the given unit. For example:
 --
@@ -143,17 +147,19 @@ import Data.Proxy
 --   > inMeters x = x # Meter   
 numIn :: forall unit dim lcsu n.
          ( ValidDLU dim lcsu unit
-         , Fractional n )
+         , VectorSpace n
+         , Fractional (Scalar n) )
       => Qu dim lcsu n -> unit -> n
 numIn (Qu val) u
-  = val * fromRational
-            (canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))
-             / canonicalConvRatio u)
+  = val ^* fromRational
+             (canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))
+              / canonicalConvRatio u)
 
 infix 5 #
 -- | Infix synonym for 'numIn'
 (#) :: ( ValidDLU dim lcsu unit
-       , Fractional n )
+       , VectorSpace n
+       , Fractional (Scalar n) )
     => Qu dim lcsu n -> unit -> n
 (#) = numIn
 
@@ -161,7 +167,8 @@ infix 5 ##
 -- | Like '#', but uses a default LCSU. This operator is recommended
 -- for users who wish not to worry about LCSUs.
 (##) :: ( ValidDLU dim DefaultLCSU unit
-        , Fractional n )
+        , VectorSpace n
+        , Fractional (Scalar n) )
      => Qu dim DefaultLCSU n -> unit -> n
 (##) = numIn
 
@@ -175,17 +182,19 @@ infix 5 ##
 --   > height = 2.0 % Meter
 quOf :: forall unit dim lcsu n.
          ( ValidDLU dim lcsu unit
-         , Fractional n )
+         , VectorSpace n
+         , Fractional (Scalar n) )
       => n -> unit -> Qu dim lcsu n
 quOf d u
-  = Qu (d * fromRational
+  = Qu (d ^* fromRational
                (canonicalConvRatio u
                 / canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))))
 
 infixr 9 %
 -- | Infix synonym for 'quOf'
 (%) :: ( ValidDLU dim lcsu unit
-       , Fractional n )
+       , VectorSpace n
+       , Fractional (Scalar n) )
     => n -> unit -> Qu dim lcsu n
 (%) = quOf
 
@@ -193,7 +202,8 @@ infixr 9 %%
 -- | Like '%', but uses a default LCSU. This operator is recommended
 -- for users who wish not to worry about LCSUs.
 (%%) :: ( ValidDLU dim DefaultLCSU unit
-        , Fractional n )
+        , VectorSpace n
+        , Fractional (Scalar n) )
      => n -> unit -> Qu dim DefaultLCSU n
 (%%) = quOf
 
@@ -250,16 +260,16 @@ constant = fromDefaultLCSU
 data Dimensionless = Dimensionless
 instance Dimension Dimensionless where
   type DimFactorsOf Dimensionless = '[]
-type instance DefaultUnitOfDim Dimensionless = Number
+type instance DefaultUnitOfDim Dimensionless = Count
 
 -- | The unit for unitless dimensioned quantities
-data Number = Number -- the unit for unadorned numbers
-instance Unit Number where
-  type BaseUnit Number = Canonical
-  type DimOfUnit Number = Dimensionless
-  type UnitFactorsOf Number = '[]
+data Count = Count -- the unit for unadorned numbers
+instance Unit Count where
+  type BaseUnit Count = Canonical
+  type DimOfUnit Count = Dimensionless
+  type UnitFactorsOf Count = '[]
 
 -- | The type of unitless dimensioned quantities.
 -- This is an instance of @Num@, though Haddock doesn't show it.
 -- This uses a @Double@ internally and uses a default LCSU.
-type Scalar = MkQu_U Number
+type Number = MkQu_U Count

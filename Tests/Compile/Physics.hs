@@ -10,6 +10,8 @@ import Data.Metrology.SI.Prefixes
 import Data.Metrology.SI.Units
 import Tests.Compile.CGS
 
+import Data.AdditiveGroup
+
 type Position = Length
 
 cur_pos :: MkQu_DLN Position lcsu Double
@@ -69,7 +71,7 @@ distance :: MkQu_DLN Velocity lcsu Double
          -> MkQu_DLN Length lcsu Double
 distance v a t = redim $ v |*| t |+| (0.5 *| a |*| t |*| t)
 
-sum :: Num n => [Qu dims l n] -> Qu dims l n
+sum :: AdditiveGroup n => [Qu dims l n] -> Qu dims l n
 sum = foldr (|+|) zero
 
 squareAll :: Fractional n => [Qu dims l n] -> [Qu (dims @* Two) l n]

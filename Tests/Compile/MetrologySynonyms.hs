@@ -39,7 +39,7 @@ ppValE d (Qu x) = ret
 -- Nonweighted units
 ----------------------------------------------------------------
 
-type PerSecond =  Number :/ Second
+type PerSecond =  Count :/ Second
 type PerCm3 =  Second :^ MThree
 type PerCm2 =  Second :^ MTwo
 type PerCm = (Centi :@ Meter) :^ MTwo 

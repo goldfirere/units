@@ -29,6 +29,8 @@ import Data.Metrology.LCSU
 import Data.Metrology.Combinators
 import Data.Metrology
 
+import Data.VectorSpace
+
 class ShowUnitFactor (dims :: [Factor *]) where
   showDims :: Bool   -- take absolute value of exponents?
            -> Proxy dims -> ([String], [String])
@@ -97,7 +99,8 @@ infix 1 `showIn`
 -- | Show a dimensioned quantity in a given unit. (The default @Show@
 -- instance always uses canonical units.)
 showIn :: ( ValidDLU dim lcsu unit
-          , Fractional n
+          , VectorSpace n
+          , Fractional (Scalar n)
           , Show unit
           , Show n )
        => Qu dim lcsu n -> unit -> String

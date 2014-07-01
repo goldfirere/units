@@ -35,6 +35,6 @@ instance Unit Second where
 
 data Hertz = Hertz
 instance Unit Hertz where
-  type BaseUnit Hertz = Number :/ Second
+  type BaseUnit Hertz = Count :/ Second
   conversionRatio _ = 1
 

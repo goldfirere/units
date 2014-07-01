@@ -46,13 +46,15 @@ library
   ghc-options: -Wall
   build-depends: base >= 4.7 && < 5
                , singletons >= 0.9 && < 2
+               , vector-space >= 0.8
   exposed-modules:    
     Data.Metrology, 
     Data.Metrology.Internal,
     Data.Metrology.Show,
     Data.Metrology.Unsafe,
     Data.Metrology.Z,
-    Data.Metrology.Set
+    Data.Metrology.Set,
+    Data.Metrology.Vector
 
   other-modules:     
     Data.Metrology.Factor,
@@ -74,6 +76,7 @@ test-suite main
   build-depends:    units
                   , base >= 4.7 && < 5
                   , singletons >= 0.9 && < 2
+                  , vector-space >= 0.8
                   , tasty >= 0.8
                   , tasty-hunit >= 0.8
                   , HUnit-approx >= 1.0

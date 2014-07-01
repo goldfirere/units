@@ -5,7 +5,7 @@ The _units_ package provides a mechanism for compile-time dimensional analysis
 in Haskell programs. It defines an embedded type system based on
 units-of-measure. The units and dimensions defined are fully extensible, and
 need not relate to physical properties. This package exports definitions
-only for `Dimensionless` and `Number`. The set of units and dimensions from
+only for `Dimensionless` and `Count`. The set of units and dimensions from
 the International System (SI) are exported from the companion package `units-defs`.
 
 This package supports independent notions of _dimension_ and _unit_. Examples
@@ -340,7 +340,7 @@ runtime. When providing type annotations, it is good practice to start your
 function with a `redim $` to prevent the possibility of type errors. For
 example, say we redefine velocity a different way:
 
-    type Velocity3 = (MkQu_ULN Number LCSU Double) %/ Time %* Length
+    type Velocity3 = (MkQu_ULN Count LCSU Double) %/ Time %* Length
     addVels :: Velocity1 -> Velocity1 -> Velocity3
     addVels v1 v2 = redim $ v1 |+| v2
 

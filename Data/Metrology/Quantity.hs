@@ -156,11 +156,6 @@ infixr 8 |^^
 (|^^) :: Fractional n => Qu a l n -> Sing z -> Qu (a @* z) l n
 (Qu a) |^^ sz = Qu (a ^^ szToInt sz)
 
-infixr 7 |.|
--- | Take a inner (dot) product between two quantities.
-(|.|) :: InnerSpace n => Qu d1 l n -> Qu d2 l n -> Qu (Normalize (d1 @+ d2)) l (Scalar n)
-(Qu a) |.| (Qu b) = Qu (a <.> b)
-
 -- | Take the n'th root of a quantity, where n is known at compile
 -- time
 qNthRoot :: ((Zero < z) ~ True, Floating n)
