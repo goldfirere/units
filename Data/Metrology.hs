@@ -94,7 +94,7 @@ module Data.Metrology (
   Canonical,
 
   -- * Scalars, the only built-in unit
-  Dimensionless(..), Number(..), Scalar, scalar,
+  Dimensionless(..), Number(..), Scalar, quantity,
 
   -- * LCSUs (locally coherent system of units)
   MkLCSU, LCSU(DefaultLCSU), DefaultUnitOfDim,
@@ -263,7 +263,3 @@ instance Unit Number where
 -- This is an instance of @Num@, though Haddock doesn't show it.
 -- This uses a @Double@ internally and uses a default LCSU.
 type Scalar = MkQu_U Number
-
--- | Convert a raw number into a unitless dimensioned quantity
-scalar :: n -> Qu '[] l n
-scalar = Qu

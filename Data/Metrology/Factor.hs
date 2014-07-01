@@ -89,6 +89,7 @@ type family Extract (s :: Factor *)
 -- @
 type family Reorder (a :: [Factor *]) (b :: [Factor *]) :: [Factor *] where
   Reorder x x = x
+  Reorder '[] x = '[]
   Reorder x '[] = x
   Reorder x (h ': t) = Reorder' (Extract h x) t
 

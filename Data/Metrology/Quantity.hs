@@ -71,6 +71,20 @@ type MkQu_U unit = Qu (DimFactorsOf (DimOfUnit unit)) DefaultLCSU Double
 type MkQu_ULN unit = Qu (DimFactorsOf (DimOfUnit unit))
 
 ---------------------------------------
+---------------------------------------
+-- Privileged operations
+---------------------------------------
+---------------------------------------
+
+---------------------------------------
+-- Quantities of dimension one
+---------------------------------------
+
+-- | Convert a raw number into a unitless dimensioned quantity
+quantity :: n -> Qu '[] l n
+quantity = Qu
+
+---------------------------------------
 -- Additive operations
 ---------------------------------------
 
@@ -88,15 +102,6 @@ infixl 6 |+|
 qNegate :: AdditiveGroup n => Qu d l n -> Qu d l n
 qNegate (Qu x) = Qu (negateV x)
 
-infixl 6 |-|
--- | Subtract two compatible quantities
-(|-|) :: (d1 @~ d2, AdditiveGroup n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
-a |-| b = a |+| qNegate b
-
--- | Take the sum of a list of quantities
-qSum :: (Foldable f, AdditiveGroup n) => f (Qu d l n) -> Qu d l n
-qSum = F.foldr (|+|) zero
-
 ---------------------------------------
 -- Multiplicative operations
 ---------------------------------------
@@ -111,22 +116,35 @@ infixl 7 |/|
 (|/|) :: Fractional n => Qu a l n -> Qu b l n -> Qu (Normalize (a @- b)) l n
 (Qu a) |/| (Qu b) = Qu (a / b)
 
-infixl 7 *| , |* , /| , |/
--- | Multiply a quantity by a scalar from the left
-(*|) :: VectorSpace n => Scalar n -> Qu b l n -> Qu b l n
-a *| (Qu b) = Qu (a *^ b)
+---------------------------------------
+-- Vector multiplicative operations
+---------------------------------------
 
--- | Multiply a quantity by a scalar from the right
-(|*) :: VectorSpace n => Qu a l n -> Scalar n -> Qu a l n
-(Qu a) |* b = Qu (a ^* b)
+infixl 7 |*^|, |^*|, |^/|
+-- | Multiply a scalar quantity by a vector quantity
+(|*^|) :: VectorSpace n => Qu d1 l (Scalar n) -> Qu d2 l n -> Qu (Normalize (d1 @+ d2)) l n
+(Qu a) |*^| (Qu b) = Qu (a *^ b)
 
--- | Divide a scalar by a quantity
-(/|) :: Fractional n => n -> Qu b l n -> Qu (NegList b) l n
-a /| (Qu b) = Qu (a / b)
+-- | Multiply a vector quantity by a scalar quantity
+(|^*|) :: VectorSpace n => Qu d1 l n -> Qu d2 l (Scalar n) -> Qu (Normalize (d1 @+ d2)) l n
+(Qu a) |^*| (Qu b) = Qu (a ^* b)
+
+-- | Divide a vector quantity by a scalar quantity
+(|^/|) :: (VectorSpace n, Fractional (Scalar n))
+       => Qu d1 l n -> Qu d2 l (Scalar n) -> Qu (Normalize (d1 @- d2)) l n
+(Qu a) |^/| (Qu b) = Qu (a ^/ b)
 
 -- | Divide a quantity by a scalar
-(|/) :: (VectorSpace n, Fractional (Scalar n)) => Qu a l n -> Scalar n -> Qu a l n
+(|/) :: (VectorSpace n, Fractional (Scalar n)) => Qu a l n -> Scalar n -> Qu (Normalize a) l n
 (Qu a) |/ b = Qu (a ^/ b)
+-- The above function should *not* need to be privileged. But, GHC can't figure
+-- out that a @@- '[] ~ a. Urgh.
+
+---------------------------------------
+-- Exponentiation
+---------------------------------------
+
+-- The following are privileged for efficiency.
 
 infixr 8 |^
 -- | Raise a quantity to a integer power, knowing at compile time that the integer is non-negative.
@@ -148,6 +166,14 @@ infixr 7 |.|
 qNthRoot :: ((Zero < z) ~ True, Floating n)
         => Sing z -> Qu a l n -> Qu (a @/ z) l n
 qNthRoot sz (Qu a) = Qu (a ** (1.0 / (fromIntegral $ szToInt sz)))
+
+---------------------------------------
+-- Comparison
+---------------------------------------
+
+-- | Compare two quantities
+qCompare :: (d1 @~ d2, Ord n) => Qu d1 l n -> Qu d2 l n -> Ordering
+qCompare (Qu a) (Qu b) = compare a b
 
 infix 4 |<|
 -- | Check if one quantity is less than a compatible one
@@ -199,6 +225,34 @@ qNapprox :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
        -> Bool
 qNapprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) > epsilon
 
+---------------------------------------
+---------------------------------------
+-- Unprivileged operations
+---------------------------------------
+---------------------------------------
+
+infixl 6 |-|
+-- | Subtract two compatible quantities
+(|-|) :: (d1 @~ d2, AdditiveGroup n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
+a |-| b = a |+| qNegate b
+
+-- | Take the sum of a list of quantities
+qSum :: (Foldable f, AdditiveGroup n) => f (Qu d l n) -> Qu d l n
+qSum = F.foldr (|+|) zero
+
+infixl 7 *| , |* , /| , |/
+-- | Multiply a quantity by a scalar from the left
+(*|) :: VectorSpace n => Scalar n -> Qu b l n -> Qu (Normalize b) l n
+a *| b = quantity a |*^| b
+
+-- | Multiply a quantity by a scalar from the right
+(|*) :: VectorSpace n => Qu a l n -> Scalar n -> Qu (Normalize a) l n
+a |* b = a |^*| quantity b
+
+-- | Divide a scalar by a quantity
+(/|) :: Fractional n => n -> Qu b l n -> Qu (Normalize (NegList b)) l n
+a /| b = quantity a |/| b
+
 -- | Square a quantity
 qSq :: Num n => Qu a l n -> Qu (Normalize (a @+ a)) l n
 qSq x = x |*| x
@@ -214,7 +268,6 @@ qSqrt = qNthRoot pTwo
 -- | Take the cubic root of a quantity
 qCubeRoot :: Floating n => Qu a l n -> Qu (a @/ Three) l n
 qCubeRoot = qNthRoot pThree
-
 
 -------------------------------------------------------------
 --- Instances for dimensionless quantities ------------------
