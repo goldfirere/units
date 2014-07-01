@@ -117,7 +117,6 @@ type family (a :: Z) < (b :: Z) :: Bool where
 
 -- | Check if a type-level integer is in fact a natural number
 type family NonNegative z :: Constraint where
-  NonNegative (P z) = Error "Trying to prove a negative type-level integer is non-negative"
   NonNegative Zero  = ()
   NonNegative (S z) = ()
 
