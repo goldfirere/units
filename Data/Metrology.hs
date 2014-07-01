@@ -96,7 +96,7 @@ module Data.Metrology (
   Canonical,
 
   -- * Numbers, the only built-in unit
-  Dimensionless(..), Count(..), Number, quantity,
+  Dimensionless(..), Number(..), Count, quantity,
 
   -- * LCSUs (locally coherent system of units)
   MkLCSU, LCSU(DefaultLCSU), DefaultUnitOfDim,
@@ -260,16 +260,16 @@ constant = fromDefaultLCSU
 data Dimensionless = Dimensionless
 instance Dimension Dimensionless where
   type DimFactorsOf Dimensionless = '[]
-type instance DefaultUnitOfDim Dimensionless = Count
+type instance DefaultUnitOfDim Dimensionless = Number
 
 -- | The unit for unitless dimensioned quantities
-data Count = Count -- the unit for unadorned numbers
-instance Unit Count where
-  type BaseUnit Count = Canonical
-  type DimOfUnit Count = Dimensionless
-  type UnitFactorsOf Count = '[]
+data Number = Number -- the unit for unadorned numbers
+instance Unit Number where
+  type BaseUnit Number = Canonical
+  type DimOfUnit Number = Dimensionless
+  type UnitFactorsOf Number = '[]
 
 -- | The type of unitless dimensioned quantities.
 -- This is an instance of @Num@, though Haddock doesn't show it.
 -- This uses a @Double@ internally and uses a default LCSU.
-type Number = MkQu_U Count
+type Count = MkQu_U Number

@@ -87,7 +87,7 @@ module Tests.Compile.Readme where
     roomSize' :: Area1
     roomSize' = 100 % (Meter :* Meter)
 
-    type Velocity3 = (MkQu_ULN Count LCSU Double) %/ Time %* Length
+    type Velocity3 = (MkQu_ULN Number LCSU Double) %/ Time %* Length
     addVels :: Velocity1 -> Velocity1 -> Velocity3
     addVels v1 v2 = redim $ (v1 |+| v2)
 
