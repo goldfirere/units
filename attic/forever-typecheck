@@ -1,7 +1,0 @@
-#!/bin/sh
-
-while :
-do
-    runhaskell Test/Travel.hs
-    inotifywait -e modify  ./Test/Travel.hs
-done
