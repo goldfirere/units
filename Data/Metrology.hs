@@ -112,6 +112,11 @@ module Data.Metrology (
   One, Two, Three, Four, Five, MOne, MTwo, MThree, MFour, MFive,
 
   -- ** Term-level singletons
+  sZero, sOne, sTwo, sThree, sFour, sFive,
+  sMOne, sMTwo, sMThree, sMFour, sMFive,
+  sSucc, sPred, sNegate,
+
+  -- ** Deprecated synonyms for the ones above
   pZero, pOne, pTwo, pThree, pFour, pFive,
   pMOne, pMTwo, pMThree, pMFour, pMFive,
   pSucc, pPred,

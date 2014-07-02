@@ -82,7 +82,7 @@ module Tests.Compile.Readme where
     type Area2 = Length %^ Two        -- same type as Area1
 
     roomSize :: Area1
-    roomSize = 100 % (Meter :^ pTwo)
+    roomSize = 100 % (Meter :^ sTwo)
 
     roomSize' :: Area1
     roomSize' = 100 % (Meter :* Meter)

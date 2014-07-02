@@ -19,7 +19,7 @@ cur_pos :: MkQu_DLN Position lcsu Double
         -> MkQu_DLN Acceleration lcsu Double
         -> MkQu_DLN Time lcsu Double
         -> MkQu_DLN Position lcsu Double
-cur_pos x0 v a t = x0 |+| (v |*| t) |+| (0.5 *| a |*| (t |^ pTwo))
+cur_pos x0 v a t = x0 |+| (v |*| t) |+| (0.5 *| a |*| (t |^ sTwo))
 
 siPos :: MkQu_DLN Position SI Double
 siPos = 3 % Meter
@@ -63,7 +63,7 @@ momentum m v = redim $ m |*| v
 
 g_earth :: CompatibleUnit lcsu (Meter :/ (Second :^ Two))
         => MkQu_DLN Acceleration lcsu Double
-g_earth = 9.8 % (Meter :/ (Second :^ pTwo))
+g_earth = 9.8 % (Meter :/ (Second :^ sTwo))
 
 distance :: MkQu_DLN Velocity lcsu Double
          -> MkQu_DLN Acceleration lcsu Double
@@ -75,4 +75,4 @@ sum :: AdditiveGroup n => [Qu dims l n] -> Qu dims l n
 sum = foldr (|+|) zero
 
 squareAll :: Fractional n => [Qu dims l n] -> [Qu (dims @* Two) l n]
-squareAll = map (|^ pTwo)
+squareAll = map (|^ sTwo)

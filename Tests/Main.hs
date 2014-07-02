@@ -23,6 +23,7 @@ import qualified Tests.Imperial
 import qualified Tests.LennardJones
 import qualified Tests.OffSystemAdd
 import qualified Tests.OffSystemCSU
+import qualified Tests.Parser
 import qualified Tests.PhysicalConstants
 import qualified Tests.Travel
 
@@ -39,6 +40,7 @@ tests =
   , Tests.LennardJones.tests
   , Tests.OffSystemAdd.tests
   , Tests.OffSystemCSU.tests
+  , Tests.Parser.tests
   , Tests.PhysicalConstants.tests
   , Tests.Travel.tests
   ]

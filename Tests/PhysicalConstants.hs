@@ -52,7 +52,7 @@ protonMass :: DefaultConvertibleLCSU_D D.Mass l => Mass l Double
 protonMass = constant $ 1.67262178e-24 % Gram
 
 speedOfLight :: DefaultConvertibleLCSU_D D.Velocity l => Velocity l Double
-speedOfLight =  constant $ 299792458 % ((Second :^ pMOne) :* Meter)
+speedOfLight =  constant $ 299792458 % ((Second :^ sMOne) :* Meter)
 
 elementaryCharge :: DefaultConvertibleLCSU_D D.Charge l => Charge l Double
 elementaryCharge = constant $ 1.60217657e-19 % Coulomb
@@ -65,7 +65,7 @@ kB = constant $ 1.3806488e-23 % (undefined :: SIkBUnit)
 
 -- RAE: problem solved. :)
 planckLength :: DefaultConvertibleLCSU_D D.Length l => Length l Double
-planckLength = constant $ qSqrt (hbar |*| gravitationalConstant |/| (speedOfLight |^ pThree))
+planckLength = constant $ qSqrt (hbar |*| gravitationalConstant |/| (speedOfLight |^ sThree))
 
 planckTime :: DefaultConvertibleLCSU_D D.Time l => Time l Double
 planckTime = constant $ planckLength |/| speedOfLight

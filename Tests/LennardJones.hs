@@ -31,14 +31,14 @@ type Twelve   = S Eleven
 type Thirteen = S Twelve
 
 
-pSix     = SS pFive
-pSeven   = SS pSix     
-pEight   = SS pSeven   
-pNine    = SS pEight   
-pTen     = SS pNine    
-pEleven  = SS pTen     
-pTwelve  = SS pEleven  
-pThirteen= SS pTwelve  
+sSix     = SS sFive
+sSeven   = SS sSix     
+sEight   = SS sSeven   
+sNine    = SS sEight   
+sTen     = SS sNine    
+sEleven  = SS sTen     
+sTwelve  = SS sEleven  
+sThirteen= SS sTwelve  
 
 
 data EV = EV
@@ -75,8 +75,8 @@ epsAr :: Energy SI Float
 epsAr = 1.68e-21 % Joule
 
 ljForce :: Length SI Float -> Force SI Float
-ljForce r = redim $ 24 *| epsAr |*| sigmaAr|^ pSix |/| r |^ pSeven
-                |-| 48 *| epsAr |*| sigmaAr|^ pTwelve |/| r |^ pThirteen
+ljForce r = redim $ 24 *| epsAr |*| sigmaAr|^ sSix |/| r |^ sSeven
+                |-| 48 *| epsAr |*| sigmaAr|^ sTwelve |/| r |^ sThirteen
 
 
 type AParameterDim = D.Energy :* D.Length :^ Twelve
@@ -87,15 +87,15 @@ type BPara = MkQu_DLN BParameterDim
 
 ljForceP :: Energy l Float -> Length l Float -> Length l Float -> Force l Float
 ljForceP eps sigma r 
-  = redim $ 24 *| eps |*| sigma|^ pSix |/| r |^ pSeven
-        |-| 48 *| eps |*| sigma|^ pTwelve |/| r |^ pThirteen
+  = redim $ 24 *| eps |*| sigma|^ sSix |/| r |^ sSeven
+        |-| 48 *| eps |*| sigma|^ sTwelve |/| r |^ sThirteen
 
 
 aParaAr :: (ConvertibleLCSUs_D D.Length SI l , ConvertibleLCSUs_D D.Energy SI l )=> APara l Float
-aParaAr = 48 *|  convert epsAr  |*| convert sigmaAr|^ pTwelve
+aParaAr = 48 *|  convert epsAr  |*| convert sigmaAr|^ sTwelve
 
 bParaAr :: (ConvertibleLCSUs_D D.Length SI l , ConvertibleLCSUs_D D.Energy SI l )=>  BPara l Float
-bParaAr = 24 *|  convert epsAr  |*| convert sigmaAr|^ pSix
+bParaAr = 24 *|  convert epsAr  |*| convert sigmaAr|^ sSix
 
 
 
@@ -103,8 +103,8 @@ bParaAr = 24 *|  convert epsAr  |*| convert sigmaAr|^ pSix
 
 ljForcePOpt :: APara l Float -> BPara l Float -> Length l Float -> Force l Float
 ljForcePOpt a b r 
-  = redim $ b |/| r |^ pSeven
-        |-| a |/| r |^ pThirteen
+  = redim $ b |/| r |^ sSeven
+        |-| a |/| r |^ sThirteen
 
 
 sigmaAr' :: (DefaultConvertibleLCSU_D D.Length l) => Length l Float
@@ -114,10 +114,10 @@ epsAr' = constant $ 1.68e-21 % Joule
 
 
 aParaAr' :: (DefaultConvertibleLCSU_D AParameterDim l) => APara l Float
-aParaAr' = constant $ 48 *|  epsAr'  |*| sigmaAr'|^ pTwelve
+aParaAr' = constant $ 48 *|  epsAr'  |*| sigmaAr'|^ sTwelve
 
 bParaAr' :: (DefaultConvertibleLCSU_D BParameterDim l) => BPara l Float
-bParaAr' = constant $ 24 *|  epsAr'  |*| sigmaAr'|^ pSix
+bParaAr' = constant $ 24 *|  epsAr'  |*| sigmaAr'|^ sSix
 
 
 
@@ -127,10 +127,10 @@ epsAr'' :: (ConvertibleLCSUs_D D.Energy CU l) => Energy l Float
 epsAr'' = convert $ (1.68e-21 % Joule :: Energy CU Float)
 
 aParaAr'' :: (ConvertibleLCSUs_D AParameterDim CU l) => APara l Float
-aParaAr'' = convert $ ((48 :: Float) *|  epsAr'  |*| sigmaAr'|^ pTwelve :: APara CU Float)
+aParaAr'' = convert $ ((48 :: Float) *|  epsAr'  |*| sigmaAr'|^ sTwelve :: APara CU Float)
 
 bParaAr'' :: (ConvertibleLCSUs_D BParameterDim CU l) => BPara l Float
-bParaAr'' = convert $ ((24 :: Float) *|  epsAr'  |*| sigmaAr'|^ pSix :: BPara CU Float)
+bParaAr'' = convert $ ((24 :: Float) *|  epsAr'  |*| sigmaAr'|^ sSix :: BPara CU Float)
 
 tests :: TestTree
 tests =

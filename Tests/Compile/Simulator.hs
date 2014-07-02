@@ -31,10 +31,10 @@ type Universe = [Object]
 -- fail if three objects were to collide in a row all at once.
 
 g :: Vec2D Acceleration
-g = (0,-9.8)%(Meter :/ (Second :^ pTwo))
+g = (0,-9.8)%(Meter :/ (Second :^ sTwo))
 
 g_universe :: Force %* Length %^ Two %/ (Mass %^ Two)
-g_universe = 6.67e-11 % (Newton :* Meter :^ pTwo :/ (Kilo :@ Gram :^ pTwo))
+g_universe = 6.67e-11 % (Newton :* Meter :^ sTwo :/ (Kilo :@ Gram :^ sTwo))
 
 update :: Time -> Universe -> Universe
 update dt objs
@@ -55,7 +55,7 @@ gravityAt univ p m = qSum (map gravity_at_1 univ)
   where
     gravity_at_1 (Object { mass = m1, pos = pos1 })
       = let r = p |.-.| pos1
-            f = g_universe |*| m1 |*| m |*^| r |^/| (qMagnitude r |^ pThree)
+            f = g_universe |*| m1 |*| m |*^| r |^/| (qMagnitude r |^ sThree)
         in
         if qMagnitude r |>| (zero :: Length)
         then redim f 

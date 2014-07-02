@@ -47,6 +47,12 @@ library
   build-depends: base >= 4.7 && < 5
                , singletons >= 0.9 && < 2
                , vector-space >= 0.8
+               , template-haskell
+               , mtl >= 1.1
+               , multimap >= 1.2
+               , syb >= 0.3
+               , containers >= 0.4
+               , parsec >= 3
   exposed-modules:    
     Data.Metrology, 
     Data.Metrology.Internal,
@@ -63,7 +69,8 @@ library
     Data.Metrology.Dimensions,
     Data.Metrology.Units,
     Data.Metrology.Combinators,
-    Data.Metrology.Validity
+    Data.Metrology.Validity,
+    Data.Metrology.Parser
 
     -- cabal now recommends that TH be explicitly listed in cabal files
   default-extensions: TemplateHaskell
@@ -80,6 +87,12 @@ test-suite main
                   , tasty >= 0.8
                   , tasty-hunit >= 0.8
                   , HUnit-approx >= 1.0
+                  , template-haskell
+                  , mtl >= 1.1
+                  , multimap >= 1.2
+                  , syb >= 0.3
+                  , containers >= 0.4
+                  , parsec >= 3
   hs-source-dirs:   units-defs, .
 
     -- optimize compile time, not runtime!
