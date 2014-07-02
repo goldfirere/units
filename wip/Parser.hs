@@ -20,6 +20,8 @@ import Data.Metrology.SI
 
 import Language.Haskell.TH
 
+import Test.HUnit
+
 data Op = Neg | Mult | Div | Pow | OpenP | CloseP
 
 instance Show Op where
@@ -80,8 +82,8 @@ appPrefix = ConE '(:@)
 
 justUnitP :: Parser Exp
 justUnitP =
-  (char 'm' >> return (ConE 'Meter)) <|>
-  (char 's' >> return (ConE 'Second))
+  (char 'm' >> eof >> return (ConE 'Meter)) <|>
+  (char 's' >> eof >> return (ConE 'Second))
 
 prefixP :: Parser Exp
 prefixP =
@@ -109,7 +111,9 @@ unitP = do
   unit_str <- uToken $ \case
     Unit unit_str -> Just unit_str
     _             -> Nothing
-  unitStringP unit_str
+  result <- unitStringP unit_str
+  maybe_pow <- powP
+  return $ maybe_pow result
 
 lparenP :: TokParser ()
 lparenP = uToken $ \case
@@ -133,6 +137,16 @@ numP =
        _      -> Nothing
      n <- numP
      return $ (VarE 'sNegate) `AppE` n
+  <|>
+  do uToken $ \case
+       Number i -> Just (mkSingZExp i)
+       _        -> Nothing
+
+mkSingZExp :: Integer -> Exp
+mkSingZExp n
+  | n < 0     = VarE 'sPred `AppE` mkSingZExp (n + 1)
+  | n > 0     = VarE 'sSucc `AppE` mkSingZExp (n - 1)
+  | otherwise = VarE 'sZero
 
 powP :: TokParser (Exp -> Exp)
 powP = option id $ do
@@ -161,9 +175,46 @@ opP = do
   return $ \l r -> ConE op `AppE` l `AppE` r
 
 parser :: TokParser Exp
-parser = chainl1 unitFactorP opP
+parser = do
+  result <- chainl1 unitFactorP opP
+  return result
+
+consumeAll :: (Stream s m t, Show t) => ParsecT s u m a -> ParsecT s u m a
+consumeAll p = do
+  result <- p
+  eof
+  return result
   
 parseUnit :: String -> Either ParseError Exp
 parseUnit s = do
   toks <- lex s
-  parse parser "" toks
+  parse (consumeAll parser) "" toks
+
+parseUnitTest :: String -> String
+parseUnitTest s =
+  case parseUnit s of
+    Left error -> show error
+    Right exp  -> pprint exp
+
+testCases :: [(String, String)]
+testCases =
+  [ ("m", "Data.Metrology.SI.Units.Meter")
+  , ("s", "Data.Metrology.SI.Units.Second")
+  , ("ms", "(Data.Metrology.Combinators.:@) Data.Metrology.SI.Prefixes.Milli Data.Metrology.SI.Units.Second")
+  , ("mm", "(Data.Metrology.Combinators.:@) Data.Metrology.SI.Prefixes.Milli Data.Metrology.SI.Units.Meter")
+  , ("mmm", "(line 1, column 4):\n(line 1, column 3):\nunexpected 'm'\nexpecting end of input")
+  , ("km", "(Data.Metrology.Combinators.:@) Data.Metrology.SI.Prefixes.Kilo Data.Metrology.SI.Units.Meter")
+  , ("m s", "(Data.Metrology.Combinators.:*) Data.Metrology.SI.Units.Meter Data.Metrology.SI.Units.Second")
+  , ("m/s", "(Data.Metrology.Combinators.:/) Data.Metrology.SI.Units.Meter Data.Metrology.SI.Units.Second")
+  , ("m/s^2", "(Data.Metrology.Combinators.:/) Data.Metrology.SI.Units.Meter ((Data.Metrology.Combinators.:^) Data.Metrology.SI.Units.Second (Data.Metrology.Z.sSucc (Data.Metrology.Z.sSucc Data.Metrology.Z.sZero)))")
+  , ("s/m m", "(Data.Metrology.Combinators.:/) Data.Metrology.SI.Units.Second ((Data.Metrology.Combinators.:*) Data.Metrology.SI.Units.Meter Data.Metrology.SI.Units.Meter)")
+  , ("s s/m m", "(Data.Metrology.Combinators.:/) ((Data.Metrology.Combinators.:*) Data.Metrology.SI.Units.Second Data.Metrology.SI.Units.Second) ((Data.Metrology.Combinators.:*) Data.Metrology.SI.Units.Meter Data.Metrology.SI.Units.Meter)")
+  , ("s*s/m*m", "(Data.Metrology.Combinators.:*) ((Data.Metrology.Combinators.:/) ((Data.Metrology.Combinators.:*) Data.Metrology.SI.Units.Second Data.Metrology.SI.Units.Second) Data.Metrology.SI.Units.Meter) Data.Metrology.SI.Units.Meter")
+  , ("s*s/(m*m)", "(Data.Metrology.Combinators.:/) ((Data.Metrology.Combinators.:*) Data.Metrology.SI.Units.Second Data.Metrology.SI.Units.Second) ((Data.Metrology.Combinators.:*) Data.Metrology.SI.Units.Meter Data.Metrology.SI.Units.Meter)")
+  , ("m^-1", "(Data.Metrology.Combinators.:^) Data.Metrology.SI.Units.Meter (Data.Metrology.Z.sNegate (Data.Metrology.Z.sSucc Data.Metrology.Z.sZero))")
+  , ("m^(-1)", "(Data.Metrology.Combinators.:^) Data.Metrology.SI.Units.Meter (Data.Metrology.Z.sNegate (Data.Metrology.Z.sSucc Data.Metrology.Z.sZero))")
+  , ("m^(-(1))", "(Data.Metrology.Combinators.:^) Data.Metrology.SI.Units.Meter (Data.Metrology.Z.sNegate (Data.Metrology.Z.sSucc Data.Metrology.Z.sZero))")
+  ]
+
+tests :: Test
+tests = TestList $ map (\(str, out) -> TestCase $ parseUnitTest str @?= out) testCases
