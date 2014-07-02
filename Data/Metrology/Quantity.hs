@@ -258,11 +258,11 @@ qCube x = x |*| x |*| x
 
 -- | Take the square root of a quantity
 qSqrt :: Floating n => Qu a l n -> Qu (a @/ Two) l n
-qSqrt = qNthRoot pTwo
+qSqrt = qNthRoot sTwo
 
 -- | Take the cubic root of a quantity
 qCubeRoot :: Floating n => Qu a l n -> Qu (a @/ Three) l n
-qCubeRoot = qNthRoot pThree
+qCubeRoot = qNthRoot sThree
 
 -------------------------------------------------------------
 --- Instances for dimensionless quantities ------------------

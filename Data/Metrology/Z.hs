@@ -134,31 +134,56 @@ type MFive  = P MFour
 
 -- | This is the singleton value representing @Zero@ at the term level and
 -- at the type level, simultaneously. Used for raising units to powers.
-pZero  = SZero
-pOne   = SS pZero
-pTwo   = SS pOne
-pThree = SS pTwo
-pFour  = SS pThree
-pFive  = SS pFour
+sZero  = SZero
+sOne   = SS sZero
+sTwo   = SS sOne
+sThree = SS sTwo
+sFour  = SS sThree
+sFive  = SS sFour
 
-pMOne   = SP pZero
-pMTwo   = SP pMOne
-pMThree = SP pMTwo
-pMFour  = SP pMThree
-pMFive  = SP pMFour
+sMOne   = SP sZero
+sMTwo   = SP sMOne
+sMThree = SP sMTwo
+sMFour  = SP sMThree
+sMFive  = SP sMFour
 
 -- | Add one to a singleton @Z@.
-pSucc :: Sing z -> Sing (Succ z)
-pSucc SZero   = pOne
-pSucc (SS z') = SS (SS z')
-pSucc (SP z') = z'
+sSucc :: Sing z -> Sing (Succ z)
+sSucc SZero   = sOne
+sSucc (SS z') = SS (SS z')
+sSucc (SP z') = z'
 
 -- | Subtract one from a singleton @Z@.
-pPred :: Sing z -> Sing (Pred z)
-pPred SZero   = pMOne
-pPred (SS z') = z'
-pPred (SP z') = SP (SP z')
+sPred :: Sing z -> Sing (Pred z)
+sPred SZero   = sMOne
+sPred (SS z') = z'
+sPred (SP z') = SP (SP z')
+
+-- | Negate a singleton @Z@.
+sNegate :: Sing z -> Sing (NegZ z)
+sNegate SZero = SZero
+sNegate (SS z') = SP (sNegate z')
+sNegate (SP z') = SS (sNegate z')
 
 -- | Convert a singleton @Z@ to an @Int@.
 szToInt :: Sing (z :: Z) -> Int
 szToInt = zToInt . fromSing
+
+{-# DEPRECATED pZero, pOne, pTwo, pThree, pFour, pFive, pMOne, pMTwo, pMThree, pMFour, pMFive, pSucc, pPred "The singleton prefix is changing from 'p' to 's'. The 'p' versions will be removed in a future release." #-}
+
+pZero  = sZero
+pOne   = sOne
+pTwo   = sTwo
+pThree = sThree
+pFour  = sFour
+pFive  = sFive
+
+pMOne   = sMOne
+pMTwo   = sMTwo
+pMThree = sMThree
+pMFour  = sMFour
+pMFive  = sMFive
+
+pSucc = sSucc
+pPred = sPred
+
