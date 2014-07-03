@@ -64,7 +64,8 @@ library
     Data.Metrology.Vector,
     Data.Metrology.UnitParser,
     Data.Metrology.Poly,
-    Data.Metrology.TH
+    Data.Metrology.TH,
+    Data.Metrology.Quantity
 
   other-modules:     
     Data.Metrology.Factor,
