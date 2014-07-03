@@ -12,7 +12,7 @@
 -- Portability :  non-portable
 --
 -- This module defines 'Show' instance for quantities. The show instance
--- prints out the number stored internally with its canonical units. To print
+-- prints out the number stored internally with its correct units. To print
 -- out quantities with specific units use the function `showIn`.
 -----------------------------------------------------------------------------
 
@@ -97,7 +97,7 @@ instance (ShowUnitFactor (LookupList dims lcsu), Show n)
 infix 1 `showIn`
 
 -- | Show a dimensioned quantity in a given unit. (The default @Show@
--- instance always uses canonical units.)
+-- instance always uses units as specified in the LCSU.)
 showIn :: ( ValidDLU dim lcsu unit
           , VectorSpace n
           , Fractional (Scalar n)
