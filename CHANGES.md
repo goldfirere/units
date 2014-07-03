@@ -24,6 +24,8 @@ Version 2.1
 * New function `evalType` that evaluates a type, using Template Haskell. This
   allows for easier instance declarations for quantities.
 
+* New class `Quantity` that allows for easy conversions with non-`units` types.
+
 Version 2.0
 -----------
 

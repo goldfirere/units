@@ -99,6 +99,11 @@ The _units_ package exports several key modules:
     This module exports several functions, written with Template Haskell, that
     make programming with `units` somewhat easier.
 
+ -  __`Data.Metrology.Quantity`__
+
+    This module defines a `Quantity` class to enable easy, safe conversions with
+    non-`units` types. See the module for more documentation.
+
 Examples
 ========
 

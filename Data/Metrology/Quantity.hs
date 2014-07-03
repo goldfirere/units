@@ -17,6 +17,16 @@ module Data.Metrology.Quantity where
 
 import Data.Metrology.Poly
 
+-- | 'Quantity' allows for easy conversions in and out of quantities. For example,
+-- say you are working with an outside library for time that defines `UTCTime`, where
+-- that stores the time measured in seconds. You could say
+--
+-- > instance Quantity UTCTime where
+-- >   type QuantityUnit = Second
+-- >   fromQuantity = ...
+-- >   toQuantity = ...
+--
+-- Then, conversions are easy and unit-safe.
 class Quantity t where
   -- | The unit associated with @t@.
   type QuantityUnit t :: *
@@ -32,6 +42,7 @@ class Quantity t where
   fromQuantity :: QuantityQu t -> t
   toQuantity :: t -> QuantityQu t
 
+-- | The 'Qu' type associated with a member of the 'Quantity' class
 type QuantityQu t = MkQu_ULN (QuantityUnit t) (QuantityLCSU t) (QuantityRep t)
 
 instance ValidDL d l =>
