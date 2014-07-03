@@ -13,7 +13,7 @@
 
 module Data.Metrology.Combinators where
 
-import Data.Singletons ( Sing, SingI, sing )
+import Data.Singletons ( SingI, sing )
 
 import Data.Metrology.Dimensions
 import Data.Metrology.Units

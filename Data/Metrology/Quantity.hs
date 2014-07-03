@@ -15,7 +15,6 @@
 
 module Data.Metrology.Quantity where
 
-import Data.Singletons ( Sing )
 import Data.Metrology.Dimensions
 import Data.Metrology.Factor
 import Data.Metrology.Units

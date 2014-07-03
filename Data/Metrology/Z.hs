@@ -10,7 +10,7 @@
 
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances,
              GADTs, PolyKinds, TemplateHaskell, ScopedTypeVariables,
-             EmptyCase #-}
+             EmptyCase, CPP #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 
 -----------------------------------------------------------------------------
@@ -29,7 +29,39 @@
 -- know.
 -----------------------------------------------------------------------------
 
-module Data.Metrology.Z where
+-- allow compilation even without Cabal
+#ifndef MIN_VERSION_singletons
+#define MIN_VERSION_singletons(a,b,c) 1
+#endif
+
+module Data.Metrology.Z (
+  -- * The 'Z' datatype
+  Z(..), Sing(..), SZ,
+
+#if MIN_VERSION_singletons(1,0,0)
+  -- ** Defunctionalization symbols (these can be ignored)
+  ZeroSym0, SSym0, SSym1, PSym0, PSym1,
+#endif
+
+  -- * Conversions
+  zToInt, szToInt,
+
+  -- * Type-level operations
+  -- ** Arithmetic
+  Succ, Pred, Negate, type (#+), type (#-), type (#*), type (#/),
+  sSucc, sPred, sNegate,
+
+  -- ** Comparisons
+  type (<), NonNegative,
+
+  -- * Synonyms for certain numbers
+  One, Two, Three, Four, Five, MOne, MTwo, MThree, MFour, MFive,
+  sZero, sOne, sTwo, sThree, sFour, sFive, sMOne, sMTwo, sMThree, sMFour, sMFive,
+
+  -- * Deprecated synonyms
+  pZero, pOne, pTwo, pThree, pFour, pFive, pMOne, pMTwo, pMThree, pMFour, pMFive,
+  pSucc, pPred
+  ) where
 
 import Data.Singletons.TH
 import GHC.Exts ( Constraint )
@@ -85,15 +117,15 @@ type family (a :: Z) #* (b :: Z) :: Z where
   (P z1) #* z2 = (z1 #* z2) #- z2
 
 -- | Negate an integer
-type family NegZ (z :: Z) :: Z where
-  NegZ Zero = Zero
-  NegZ (S z) = P (NegZ z)
-  NegZ (P z) = S (NegZ z)
+type family Negate (z :: Z) :: Z where
+  Negate Zero = Zero
+  Negate (S z) = P (Negate z)
+  Negate (P z) = S (Negate z)
 
 -- | Divide two integers
 type family (a :: Z) #/ (b :: Z) :: Z where
   Zero #/ b      = Zero
-  a    #/ (P b') = NegZ (a #/ (NegZ (P b')))
+  a    #/ (P b') = Negate (a #/ (Negate (P b')))
   a    #/ b      = ZDiv b b a
 
 -- | Helper function for division
@@ -160,7 +192,7 @@ sPred (SS z') = z'
 sPred (SP z') = SP (SP z')
 
 -- | Negate a singleton @Z@.
-sNegate :: Sing z -> Sing (NegZ z)
+sNegate :: Sing z -> Sing (Negate z)
 sNegate SZero = SZero
 sNegate (SS z') = SP (sNegate z')
 sNegate (SP z') = SS (sNegate z')

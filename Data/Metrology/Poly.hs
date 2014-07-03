@@ -84,7 +84,7 @@ module Data.Metrology.Poly (
   DefaultConvertibleLCSU_D, DefaultConvertibleLCSU_U,
 
   -- * Type-level integers
-  Z(..), Succ, Pred, type (#+), type (#-), type (#*), type (#/), NegZ,
+  Z(..), Succ, Pred, type (#+), type (#-), type (#*), type (#/), Negate,
 
   -- ** Synonyms for small numbers
   One, Two, Three, Four, Five, MOne, MTwo, MThree, MFour, MFive,

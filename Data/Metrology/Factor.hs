@@ -14,7 +14,7 @@
 module Data.Metrology.Factor where
 
 import GHC.Exts (Constraint)
-import Data.Metrology.Z
+import Data.Metrology.Z as Z
 import Data.Type.Equality
 import Data.Type.Bool
 
@@ -149,7 +149,7 @@ type family (a :: [Factor *]) @- (b :: [Factor *]) :: [Factor *] where
 
 -- | negate a single @Factor@
 type family NegDim (a :: Factor *) :: Factor * where
-  NegDim (F n z) = F n (NegZ z)
+  NegDim (F n z) = F n (Z.Negate z)
 
 -- | negate a list of @Factor@s
 type family NegList (a :: [Factor *]) :: [Factor *] where

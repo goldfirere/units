@@ -20,7 +20,7 @@ module Data.Metrology.Show () where
 
 import Data.Proxy (Proxy(..))
 import Data.List
-import Data.Singletons (Sing, sing, SingI)
+import Data.Singletons (sing, SingI)
 
 import Data.Metrology.Factor
 import Data.Metrology.Quantity
