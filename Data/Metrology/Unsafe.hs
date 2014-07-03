@@ -19,5 +19,5 @@ module Data.Metrology.Unsafe (
   Qu(..),
   ) where
 
-import Data.Metrology.Quantity
+import Data.Metrology.Qu
 

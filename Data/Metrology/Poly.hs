@@ -107,7 +107,7 @@ module Data.Metrology.Poly (
   ) where
 
 import Data.Metrology.Z
-import Data.Metrology.Quantity
+import Data.Metrology.Qu
 import Data.Metrology.Dimensions
 import Data.Metrology.Factor
 import Data.Metrology.Units

@@ -23,7 +23,7 @@ import Data.List
 import Data.Singletons (sing, SingI)
 
 import Data.Metrology.Factor
-import Data.Metrology.Quantity
+import Data.Metrology.Qu
 import Data.Metrology.Z
 import Data.Metrology.LCSU
 

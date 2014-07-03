@@ -26,7 +26,7 @@ module Data.Metrology.Vector (
   ) where
 
 import Data.Metrology.Z as Z
-import Data.Metrology.Quantity
+import Data.Metrology.Qu
 import Data.Metrology.Factor
 
 import Data.VectorSpace

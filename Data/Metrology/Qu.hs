@@ -1,4 +1,4 @@
-{- Data/Metrology.Quantity.hs
+{- Data/Metrology/Qu.hs
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
@@ -13,7 +13,7 @@
              ConstraintKinds, StandaloneDeriving, GeneralizedNewtypeDeriving,
              FlexibleInstances, RoleAnnotations, FlexibleContexts #-}
 
-module Data.Metrology.Quantity where
+module Data.Metrology.Qu where
 
 import Data.Metrology.Dimensions
 import Data.Metrology.Factor
