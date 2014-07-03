@@ -54,11 +54,16 @@ Modules
 
 The _units_ package exports several key modules:
 
- -  __`Data.Metrology`__
+ -  __`Data.Metrology.Poly`__
 
     This is the main exported module. It exports all the necessary functionality
-    for you to build your own set of units and operate with them. All modules
-    implicitly depend on this one.
+    for you to build your own set of units and operate with them.
+
+ -  __`Data.Metrology`__
+
+    This re-exports most of the definitions from `Data.Metrology.Poly`, but
+    restricts a few operators to work only with the default LCSU, as this is
+    simpler for new users to `units`.
 
  -  __`Data.Metrology.Internal`__
 

@@ -11,6 +11,9 @@ Version 2.1
 
   See `Data.Metrology.UnitParser`.
 
+* Now, `Data.Metrology` exports operators that work with the default
+  LCSU. Use `Data.Metrology.Poly` to get the old, more flexible operators.
+
 Version 2.0
 -----------
 
