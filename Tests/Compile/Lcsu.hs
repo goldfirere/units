@@ -2,7 +2,7 @@
 
 module Tests.Compile.Lcsu where
 
-import Data.Metrology hiding (LCSU)
+import Data.Metrology.Poly hiding (LCSU)
 
 data Length = Length
 data Time = Time

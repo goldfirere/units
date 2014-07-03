@@ -7,7 +7,7 @@
 
 module Tests.LennardJones where
 
-import Data.Metrology
+import Data.Metrology.Poly
 import Data.Metrology.Z
 import Data.Metrology.SI.MonoTypes()
 import Data.Metrology.SI.PolyTypes

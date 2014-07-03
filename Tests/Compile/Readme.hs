@@ -2,7 +2,7 @@
 
 module Tests.Compile.Readme where
 
-    import Data.Metrology hiding (LCSU)
+    import Data.Metrology.Poly hiding (LCSU)
 
     data LengthDim = LengthDim  -- each dimension is a datatype that acts as its own proxy
     instance Dimension LengthDim

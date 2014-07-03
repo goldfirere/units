@@ -3,7 +3,7 @@
 
 module Tests.Compile.Physics where
 
-import Data.Metrology
+import Data.Metrology.Poly
 import Data.Metrology.SI.Poly ( SI )
 import Data.Metrology.SI.Dims
 import Data.Metrology.SI.Prefixes

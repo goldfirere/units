@@ -27,7 +27,7 @@ import Data.Metrology.Quantity
 import Data.Metrology.Z
 import Data.Metrology.LCSU
 import Data.Metrology.Combinators
-import Data.Metrology
+import Data.Metrology.Poly
 
 import Data.VectorSpace
 

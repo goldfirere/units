@@ -67,10 +67,11 @@ The _units_ package exports several key modules:
 
  -  __`Data.Metrology.Internal`__
 
-    This module contains mostly-internal definitions that may appear in GHC's error
-    messages. Users will generally not need to use these definitions in their code.
-    However, by exporting this module from within `Data.Metrology`, we can reduce
-    the module-prefix clutter in error messages.
+    This module contains mostly-internal definitions that may appear in GHC's
+    error messages. Users will generally not need to use these definitions in
+    their code. However, by exporting this module from within
+    `Data.Metrology.Poly`, we can reduce the module-prefix clutter in error
+    messages.
 
  -  __`Data.Metrology.Unsafe`__
 

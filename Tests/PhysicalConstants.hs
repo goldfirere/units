@@ -2,7 +2,7 @@
              TypeOperators, ImplicitParams #-}
 module Tests.PhysicalConstants where
 
-import Data.Metrology
+import Data.Metrology.Poly
 import Data.Metrology.Show ()
 import Data.Metrology.SI.Poly
 import qualified Data.Metrology.SI.Dims as D

@@ -5,7 +5,7 @@
 
 module Tests.Travel where
 
-import Data.Metrology
+import Data.Metrology.Poly
 import Data.Metrology.SI.Poly
 import Data.Metrology.Imperial.Types (Imperial)
 import Data.Metrology.Imperial.Units
