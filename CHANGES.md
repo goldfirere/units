@@ -19,6 +19,8 @@ Version 2.1
   the `vector-space` library. This changes the type signature of a few functions,
   and users writing their own combinators may need to update.
 
+* Some documentation cleanup.
+
 Version 2.0
 -----------
 
