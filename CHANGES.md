@@ -5,6 +5,12 @@ Version 2.1
 
 * Includes a decently comprehensive test suite.
 
+* Add support for unit parsing within expressions:
+
+      g = 9.8 % [si| m/s^2 |]
+
+  See `Data.Metrology.UnitParser`.
+
 Version 2.0
 -----------
 

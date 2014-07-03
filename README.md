@@ -82,6 +82,12 @@ The _units_ package exports several key modules:
     because it allows you to inspect (in a round-about way) how your quantities
     are stored.
 
+ -  __`Data.Metrology.UnitParser`__
+
+    This module allows users to create custom unit parsers. The user specifies
+    a set of prefixes and a set of units to parse, and then a quasi-quoting parser
+    is generated. See the module documentation for details.
+
 Examples
 ========
 
