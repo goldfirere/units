@@ -6,19 +6,6 @@
 
    This file gathers and exports all user-visible pieces of the units package.
    It also defines the main creators and consumers of dimensioned objects.
-
-   This package declares many closely-related types. The following naming
-   conventions should be helpful:
-
-   Prefix  Target type/kind
-   ------------------------
-     #     Z
-     $     Factor *
-     @     [Factor *]
-     @@    [Factor *], where the arguments are ordered similarly
-     %     Qu (at the type level)
-     |     Qu (at the term level)
-     :     units & dimensions, at both type and term levels
 -}
 
 {-# LANGUAGE ExplicitNamespaces, DataKinds, FlexibleInstances, TypeFamilies,
@@ -34,19 +21,10 @@
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
--- The units package is a framework for strongly-typed dimensional analysis.
--- This haddock documentation is generally /not/ enough to be able to use this
--- package effectively. Please see the readme at
--- <http://www.cis.upenn.edu/~eir/packages/units/README.html>.
---
--- Some of the types below refer to declarations that are not exported and
--- not documented here. This is because Haddock does not allow finely-tuned
--- abstraction in documentation. (In particular, right-hand sides of type 
--- synonym declarations are always included.) If a symbol is not exported,
--- you do /not/ need to know anything about it to use this package.
---
--- Though it doesn't appear here, @Count@ is an instance of @Num@, and
--- generally has all the numeric instances that @Double@ has.
+-- This module exports all the gubbins needed for type-checking your
+-- dimensioned quantities. See 'Data.Metrology' for some functions
+-- restricted to using a default LCSU, which is suitable for many
+-- applications.
 -----------------------------------------------------------------------------
 
 module Data.Metrology.Poly (
