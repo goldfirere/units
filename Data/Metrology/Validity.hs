@@ -17,7 +17,30 @@ import Data.Metrology.Factor
 import Data.Metrology.Dimensions
 import Data.Metrology.Units
 import Data.Metrology.Set
+import Data.Metrology.Combinators
 import GHC.Exts ( Constraint )
+
+------------------------------------------------
+-- Helper functions
+------------------------------------------------
+
+-- | Extract a dimension specifier from a list of factors
+type family MultDimFactors (facts :: [Factor *]) where
+  MultDimFactors '[] = Dimensionless
+  MultDimFactors (F d z ': ds) = (d :^ z) :* MultDimFactors ds
+
+-- | Extract a unit specifier from a list of factors
+type family MultUnitFactors (facts :: [Factor *]) where
+  MultUnitFactors '[] = Number
+  MultUnitFactors (F unit z ': units) = (unit :^ z) :* MultUnitFactors units
+  
+-- | Extract a unit from a dimension factor list and an LCSU
+type family UnitOfDimFactors (dims :: [Factor *]) (lcsu :: LCSU *) :: * where
+  UnitOfDimFactors dims lcsu = MultUnitFactors (LookupList dims lcsu)
+
+------------------------------------------------
+-- Main validity functions
+------------------------------------------------
 
 -- | Check if a (dimension factors, LCSU, unit) triple are all valid to be used together.
 type family ValidDLU (dfactors :: [Factor *]) (lcsu :: LCSU *) (unit :: *) where
@@ -30,8 +53,7 @@ type family ValidDLU (dfactors :: [Factor *]) (lcsu :: LCSU *) (unit :: *) where
 -- | Check if a (dimension factors, LCSU) pair are valid to be used together. This
 -- checks that each dimension maps to a unit of the correct dimension.
 type family ValidDL (dfactors :: [Factor *]) (lcsu :: LCSU *) :: Constraint where
-  ValidDL '[] lcsu             = (() :: Constraint)
-  ValidDL (F d z ': rest) lcsu = (DimOfUnit (Lookup d lcsu) ~ d, ValidDL rest lcsu)
+  ValidDL dfactors lcsu = ValidDLU dfactors lcsu (UnitOfDimFactors dfactors lcsu)
 
 -- | Are two LCSUs inter-convertible at the given dimension?
 type family ConvertibleLCSUs (dfactors :: [Factor *])

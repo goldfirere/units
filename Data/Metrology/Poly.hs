@@ -10,7 +10,7 @@
 
 {-# LANGUAGE ExplicitNamespaces, DataKinds, FlexibleInstances, TypeFamilies,
              TypeOperators, ConstraintKinds, ScopedTypeVariables,
-             FlexibleContexts #-}
+             FlexibleContexts, UndecidableInstances #-}
 
 -----------------------------------------------------------------------------
 -- |
@@ -82,6 +82,7 @@ module Data.Metrology.Poly (
   -- * Validity checks and assertions
   CompatibleUnit, CompatibleDim, ConvertibleLCSUs_D,
   DefaultConvertibleLCSU_D, DefaultConvertibleLCSU_U,
+  MultDimFactors, MultUnitFactors, UnitOfDimFactors,
 
   -- * Type-level integers
   Z(..), Succ, Pred, type (#+), type (#-), type (#*), type (#/), Negate,
@@ -226,25 +227,6 @@ showIn :: ( ValidDLU dim lcsu unit
           , Show n )
        => Qu dim lcsu n -> unit -> String
 showIn x u = show (x # u) ++ " " ++ show u
-
--------------------------------------------------------------
---- "Number" unit -------------------------------------------
--------------------------------------------------------------
-
--- | The dimension for the dimensionless quantities.
--- It is also called "quantities of dimension one", but
--- @One@ is confusing with the type-level integer One.
-data Dimensionless = Dimensionless
-instance Dimension Dimensionless where
-  type DimFactorsOf Dimensionless = '[]
-type instance DefaultUnitOfDim Dimensionless = Number
-
--- | The unit for unitless dimensioned quantities
-data Number = Number -- the unit for unadorned numbers
-instance Unit Number where
-  type BaseUnit Number = Canonical
-  type DimOfUnit Number = Dimensionless
-  type UnitFactorsOf Number = '[]
 
 -- | The type of unitless dimensioned quantities.
 -- This is an instance of @Num@, though Haddock doesn't show it.

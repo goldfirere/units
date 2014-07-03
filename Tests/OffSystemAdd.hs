@@ -2,7 +2,7 @@
 
 module Tests.OffSystemAdd where
 
-import Data.Metrology
+import Data.Metrology.Poly
 import Data.Metrology.SI
 import qualified Data.Metrology.SI.Dims as D
 

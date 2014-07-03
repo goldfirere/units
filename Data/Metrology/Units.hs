@@ -17,6 +17,7 @@ module Data.Metrology.Units where
 import Data.Metrology.Z
 import Data.Metrology.Factor
 import Data.Metrology.Dimensions
+import Data.Metrology.LCSU
 import Data.Type.Bool
 import Data.Type.Equality
 import Data.Proxy
@@ -139,3 +140,22 @@ instance (UnitFactor rest, Unit unit, SingI n) => UnitFactor (F unit n ': rest) 
   canonicalConvRatioSpec _ =
     (canonicalConvRatio (undefined :: unit) ^^ szToInt (sing :: Sing n)) *
     canonicalConvRatioSpec (Proxy :: Proxy rest)
+
+-------------------------------------------------------------
+--- "Number" unit -------------------------------------------
+-------------------------------------------------------------
+
+-- | The dimension for the dimensionless quantities.
+-- It is also called "quantities of dimension one", but
+-- @One@ is confusing with the type-level integer One.
+data Dimensionless = Dimensionless
+instance Dimension Dimensionless where
+  type DimFactorsOf Dimensionless = '[]
+type instance DefaultUnitOfDim Dimensionless = Number
+
+-- | The unit for unitless dimensioned quantities
+data Number = Number -- the unit for unadorned numbers
+instance Unit Number where
+  type BaseUnit Number = Canonical
+  type DimOfUnit Number = Dimensionless
+  type UnitFactorsOf Number = '[]

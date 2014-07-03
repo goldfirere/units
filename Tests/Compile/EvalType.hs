@@ -3,6 +3,7 @@
 -}
 
 {-# LANGUAGE TemplateHaskell, FlexibleInstances, DataKinds #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module Tests.Compile.EvalType where
 
