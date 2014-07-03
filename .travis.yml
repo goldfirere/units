@@ -19,6 +19,9 @@ before_install:
 
 install:
  - cabal update
+ - git clone https://github.com/goldfirere/th-desugar.git
+# get the HEAD version of th-desugar always
+ - cd th-desugar; cabal install; cd ..
  - cabal install "singletons$SINGLETONS"
  - cabal install --only-dependencies --enable-tests --enable-benchmarks
 
