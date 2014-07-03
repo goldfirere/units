@@ -9,7 +9,7 @@ import Data.Metrology.Poly
 import Data.Metrology.SI.Poly
 import Data.Metrology.Imperial.Types (Imperial)
 import Data.Metrology.Imperial.Units
-import Data.Metrology.Show
+import Data.Metrology.Show ()
 import qualified Data.Metrology.SI.Dims as D
 
 import Test.Tasty

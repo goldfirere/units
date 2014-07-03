@@ -16,7 +16,7 @@
 -- out quantities with specific units use the function `showIn`.
 -----------------------------------------------------------------------------
 
-module Data.Metrology.Show (showIn) where
+module Data.Metrology.Show () where
 
 import Data.Proxy (Proxy(..))
 import Data.List
@@ -26,10 +26,6 @@ import Data.Metrology.Factor
 import Data.Metrology.Quantity
 import Data.Metrology.Z
 import Data.Metrology.LCSU
-import Data.Metrology.Combinators
-import Data.Metrology.Poly
-
-import Data.VectorSpace
 
 class ShowUnitFactor (dims :: [Factor *]) where
   showDims :: Bool   -- take absolute value of exponents?
@@ -75,33 +71,8 @@ showFactor p
     build_string_helper [s] = s
     build_string_helper (h:t) = h ++ " * " ++ build_string_helper t
 
--- enable showing of compound units:
-instance (Show u1, Show u2) => Show (u1 :* u2) where
-  show _ = show (undefined :: u1) ++ " " ++ show (undefined :: u2)
-
-instance (Show u1, Show u2) => Show (u1 :/ u2) where
-  show _ = show (undefined :: u1) ++ "/" ++ show (undefined :: u2)
-
-instance (Show u1, SingI power) => Show (u1 :^ (power :: Z)) where
-  show _ = show (undefined :: u1) ++ "^" ++ show (szToInt (sing :: Sing power))
-
--- enable showing of units with prefixes:
-instance (Show prefix, Show unit) => Show (prefix :@ unit) where
-  show _ = show (undefined :: prefix) ++ show (undefined :: unit)
-
 instance (ShowUnitFactor (LookupList dims lcsu), Show n)
            => Show (Qu dims lcsu n) where
   show (Qu d) = show d ++
                 (' ' : showFactor (Proxy :: Proxy (LookupList dims lcsu)))
 
-infix 1 `showIn`
-
--- | Show a dimensioned quantity in a given unit. (The default @Show@
--- instance always uses units as specified in the LCSU.)
-showIn :: ( ValidDLU dim lcsu unit
-          , VectorSpace n
-          , Fractional (Scalar n)
-          , Show unit
-          , Show n )
-       => Qu dim lcsu n -> unit -> String
-showIn x u = show (x # u) ++ " " ++ show u

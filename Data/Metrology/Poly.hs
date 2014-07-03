@@ -54,7 +54,7 @@ module Data.Metrology.Poly (
   -- * Nondimensional units, conversion between quantities and numeric values
   unity, redim, convert,
   numIn, (#), quOf, (%), defaultLCSU, fromDefaultLCSU,
-  constant,
+  constant, showIn,
 
   -- * Type-level unit combinators
   (:*)(..), (:/)(..), (:^)(..), (:@)(..),
@@ -214,6 +214,18 @@ constant :: ( d @~ e
             , Fractional n )
          => Qu d DefaultLCSU n -> Qu e l n
 constant = fromDefaultLCSU
+
+infix 1 `showIn`
+
+-- | Show a dimensioned quantity in a given unit. (The default @Show@
+-- instance always uses units as specified in the LCSU.)
+showIn :: ( ValidDLU dim lcsu unit
+          , VectorSpace n
+          , Fractional (Scalar n)
+          , Show unit
+          , Show n )
+       => Qu dim lcsu n -> unit -> String
+showIn x u = show (x # u) ++ " " ++ show u
 
 -------------------------------------------------------------
 --- "Number" unit -------------------------------------------

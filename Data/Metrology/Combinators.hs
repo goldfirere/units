@@ -44,6 +44,10 @@ instance (Unit u1, Unit u2) => Unit (u1 :* u2) where
 type instance DefaultUnitOfDim (d1 :* d2) =
   DefaultUnitOfDim d1 :* DefaultUnitOfDim d2
 
+instance (Show u1, Show u2) => Show (u1 :* u2) where
+  show _ = show (undefined :: u1) ++ " " ++ show (undefined :: u2)
+
+
 infixl 7 :/
 -- | Divide two units to get another unit
 data u1 :/ u2 = u1 :/ u2
@@ -61,7 +65,11 @@ instance (Unit u1, Unit u2) => Unit (u1 :/ u2) where
 
 type instance DefaultUnitOfDim (d1 :/ d2) =
   DefaultUnitOfDim d1 :/ DefaultUnitOfDim d2
-  
+
+instance (Show u1, Show u2) => Show (u1 :/ u2) where
+  show _ = show (undefined :: u1) ++ "/" ++ show (undefined :: u2)
+
+
 infixr 8 :^
 -- | Raise a unit to a power, known at compile time
 data unit :^ (power :: Z) = unit :^ Sing power
@@ -79,6 +87,10 @@ instance (Unit unit, SingI power) => Unit (unit :^ power) where
 
 type instance DefaultUnitOfDim (d :^ z) = DefaultUnitOfDim d :^ z
 
+instance (Show u1, SingI power) => Show (u1 :^ (power :: Z)) where
+  show _ = show (undefined :: u1) ++ "^" ++ show (szToInt (sing :: Sing power))
+
+
 infixr 9 :@
 -- | Multiply a conversion ratio by some constant. Used for defining prefixes.
 data prefix :@ unit = prefix :@ unit
@@ -95,3 +107,5 @@ instance ( (unit == Canonical) ~ False
   type BaseUnit (prefix :@ unit) = unit
   conversionRatio _ = multiplier (undefined :: prefix)
 
+instance (Show prefix, Show unit) => Show (prefix :@ unit) where
+  show _ = show (undefined :: prefix) ++ show (undefined :: unit)
