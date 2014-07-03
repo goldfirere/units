@@ -7,7 +7,13 @@
 {-# LANGUAGE LambdaCase, TemplateHaskell, NoMonomorphismRestriction,
              FlexibleContexts #-}
 
-module Data.Metrology.Parser where
+module Data.Metrology.Parser (
+  parseUnit,
+  PrefixTable, UnitTable, SymbolTable(..), mkSymbolTable,
+
+  -- only for testing purposes:
+  lex, unitStringParser                                           
+  ) where
 
 import Prelude hiding ( lex )
 
@@ -17,7 +23,6 @@ import Text.Parsec.Pos
 import qualified Data.Map.Strict as Map
 import qualified Data.MultiMap as MM
 import Control.Monad.Reader
-import Data.Generics
 import Control.Arrow
 import Data.Maybe
 
@@ -36,17 +41,6 @@ partitionWith f (x:xs) = case f x of
                          Left  b -> (b:bs, cs)
                          Right c -> (bs, c:cs)
     where (bs,cs) = partitionWith f xs
-
-leftOnly :: Either a b -> Maybe a
-leftOnly (Left a) = Just a
-leftOnly (Right _) = Nothing
-
-----------------------------------------------------------------------
--- TH functions
-----------------------------------------------------------------------
-
-pprintUnqualified :: (Ppr a, Data a) => a -> String
-pprintUnqualified = pprint . everywhere (mkT (mkName . nameBase))
 
 ----------------------------------------------------------------------
 -- Extra parser combinators
@@ -314,8 +308,8 @@ parser = do
   return result
 
 -- top-level interface
-parseUnit :: SymbolTable -> String -> Either ParseError Exp
-parseUnit tab s = do
+parseUnit :: SymbolTable -> String -> Either String Exp
+parseUnit tab s = left show $ do
   toks <- lex s
   flip runReader tab $ runParserT (consumeAll parser) () "" toks
 

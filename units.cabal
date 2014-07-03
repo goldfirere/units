@@ -60,7 +60,8 @@ library
     Data.Metrology.Unsafe,
     Data.Metrology.Z,
     Data.Metrology.Set,
-    Data.Metrology.Vector
+    Data.Metrology.Vector,
+    Data.Metrology.UnitParser
 
   other-modules:     
     Data.Metrology.Factor,

@@ -14,9 +14,26 @@ import Data.Metrology.SI
 import Control.Monad.Reader
 import qualified Data.Map.Strict as Map
 import Text.Parsec
+import Language.Haskell.TH
+import Data.Generics
 
 import Test.Tasty
 import Test.Tasty.HUnit
+
+leftOnly :: Either a b -> Maybe a
+leftOnly (Left a) = Just a
+leftOnly (Right _) = Nothing
+
+----------------------------------------------------------------------
+-- TH functions
+----------------------------------------------------------------------
+
+pprintUnqualified :: (Ppr a, Data a) => a -> String
+pprintUnqualified = pprint . everywhere (mkT (mkName . nameBase))
+
+----------------------------------------------------------------------
+-- Lexer
+----------------------------------------------------------------------
 
 lexTest :: String -> String
 lexTest s =
@@ -38,6 +55,10 @@ lexTestCases = [ ( "m", "[m]" )
 lexTests :: TestTree
 lexTests = testGroup "Lexer" $
   map (\(str, out) -> testCase ("`" ++ str ++ "'") $ lexTest str @?= out) lexTestCases
+
+----------------------------------------------------------------------
+-- Unit strings
+----------------------------------------------------------------------
 
 unitStringTestCases :: [(String, String)]
 unitStringTestCases = [ ("m", "Meter")
@@ -73,6 +94,10 @@ unitStringTests = testGroup "UnitStrings" $
   map (\(str, out) -> testCase ("`" ++ str ++ "'") $ parseUnitStringTest str @?= out)
     unitStringTestCases
 
+----------------------------------------------------------------------
+-- Symbol tables
+----------------------------------------------------------------------
+
 mkSymbolTableTests :: TestTree
 mkSymbolTableTests = testGroup "mkSymbolTable"
   [ testCase "Unambiguous1" (Map.keys (prefixTable testSymbolTable) @?= ["d","da","k","m"])
@@ -92,6 +117,11 @@ Right testSymbolTable =
                  , ("s", 'Second)
                  , ("min", 'Minute)
                  , ("am", 'Ampere) ]
+
+----------------------------------------------------------------------
+-- Overall parser
+----------------------------------------------------------------------
+
 
 parseUnitTest :: String -> String
 parseUnitTest s =
@@ -123,6 +153,10 @@ parseUnitTests :: TestTree
 parseUnitTests = testGroup "ParseUnit" $
   map (\(str, out) -> testCase ("`" ++ str ++ "'") $ parseUnitTest str @?= out)
     parseTestCases
+
+----------------------------------------------------------------------
+-- Conclusion
+----------------------------------------------------------------------
 
 tests :: TestTree
 tests = testGroup "Parser"
