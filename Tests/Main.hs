@@ -12,6 +12,7 @@
 module Tests.Main where
 
 import qualified Tests.Compile.CGS               ()
+import qualified Tests.Compile.EvalType          ()
 import qualified Tests.Compile.Lcsu              ()
 import qualified Tests.Compile.MetrologySynonyms ()
 import qualified Tests.Compile.Physics           ()

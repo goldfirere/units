@@ -94,6 +94,11 @@ The _units_ package exports several key modules:
     a set of prefixes and a set of units to parse, and then a quasi-quoting parser
     is generated. See the module documentation for details.
 
+ -  __`Data.Metrology.TH`__
+
+    This module exports several functions, written with Template Haskell, that
+    make programming with `units` somewhat easier.
+
 Examples
 ========
 
