@@ -126,12 +126,12 @@ type family (a :: [Factor *]) @@+ (b :: [Factor *]) :: [Factor *] where
   '[]                 @@+ b                   = b
   a                   @@+ '[]                 = a
   ((F name z1) ': t1) @@+ ((F name z2) ': t2) = (F name (z1 #+ z2)) ': (t1 @@+ t2)
-  a                   @@+ (h ': t)            = h ': (a @@+ t)
+  (h ': t)            @@+ b                   = h ': (t @@+ b)
 
 infixl 6 @+
--- | Adds corresponding exponents in two dimension
+-- | Adds corresponding exponents in two dimension, preserving order
 type family (a :: [Factor *]) @+ (b :: [Factor *]) :: [Factor *] where
-  a @+ b = (Reorder a b) @@+ b
+  a @+ b = a @@+ (Reorder b a)
 
 infixl 6 @@-
 -- | Subtract exponents in two dimensions, assuming the lists are ordered
@@ -140,12 +140,12 @@ type family (a :: [Factor *]) @@- (b :: [Factor *]) :: [Factor *] where
   '[]                 @@- b                   = NegList b
   a                   @@- '[]                 = a
   ((F name z1) ': t1) @@- ((F name z2) ': t2) = (F name (z1 #- z2)) ': (t1 @@- t2)
-  a                   @@- (h ': t)            = (NegDim h) ': (a @@- t)
+  (h ': t)            @@- b                   = h ': (t @@- b)
 
 infixl 6 @-
 -- | Subtract exponents in two dimensions
 type family (a :: [Factor *]) @- (b :: [Factor *]) :: [Factor *] where
-  a @- b = (Reorder a b) @@- b
+  a @- b = a @@- (Reorder b a)
 
 -- | negate a single @Factor@
 type family NegDim (a :: Factor *) :: Factor * where
