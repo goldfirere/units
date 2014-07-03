@@ -1,8 +1,6 @@
 Version 2.1
 -----------
 
-* Separated monomorphic and polymorphic interface.
-
 * Includes a decently comprehensive test suite.
 
 * Add support for unit parsing within expressions:
@@ -13,6 +11,13 @@ Version 2.1
 
 * Now, `Data.Metrology` exports operators that work with the default
   LCSU. Use `Data.Metrology.Poly` to get the old, more flexible operators.
+
+* Moved `showIn` from `Data.Metrology.Show` to `Data.Metrology.Poly`. This
+  allows users to import `showIn` without a `Show` instance for quantities.
+
+* Now, numeric operations are based on vector spaces, as implemented in
+  the `vector-space` library. This changes the type signature of a few functions,
+  and users writing their own combinators may need to update.
 
 Version 2.0
 -----------
