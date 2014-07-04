@@ -52,7 +52,9 @@ new package), please write me!
 Modules
 -------
 
-The _units_ package exports several key modules:
+The _units_ package exports several key modules. Note that you will generally
+import only *one* of `Data.Metrology`, `Data.Metrology.Poly`, or
+`Data.Metrology.Vector`.
 
  -  __`Data.Metrology.Poly`__
 
@@ -64,6 +66,12 @@ The _units_ package exports several key modules:
     This re-exports most of the definitions from `Data.Metrology.Poly`, but
     restricts a few operators to work only with the default LCSU, as this is
     simpler for new users to `units`.
+
+ -  __`Data.Metrology.Vector`__
+
+    This also re-exports a similar set of definitions as `Data.Metrology.Poly`,
+    but provides numerical operations based on `vector-space` instead of the
+    standard numerical classes.
 
  -  __`Data.Metrology.Internal`__
 
@@ -103,11 +111,6 @@ The _units_ package exports several key modules:
 
     This module defines a `Quantity` class to enable easy, safe conversions with
     non-`units` types. See the module for more documentation.
-
- -  __`Data.Metrology.NoVector`__
-
-    This module (and its `Data.Metrology.NoVector.Poly` variant) export combinators
-    that do *not* depend on the definitions in vector-spaces.
 
 Examples
 ========

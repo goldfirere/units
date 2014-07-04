@@ -15,10 +15,8 @@ Version 2.1
 * Moved `showIn` from `Data.Metrology.Show` to `Data.Metrology.Poly`. This
   allows users to import `showIn` without a `Show` instance for quantities.
 
-* Now, numeric operations are based on vector spaces, as implemented in
-  the `vector-space` library. This changes the type signature of a few functions,
-  and users writing their own combinators may need to update. If you liked
-  the old behavior, see Data.Metrology.NoVector and Data.Metrology.NoVector.Poly.
+* Numeric operations are available based on vector spaces, as implemented in
+  the `vector-space` library. See `Data.Metrology.Vector`.
 
 * Some documentation cleanup.
 

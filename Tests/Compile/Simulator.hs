@@ -4,7 +4,6 @@ module Tests.Compile.Simulator where
 
 import Prelude hiding (sum)
 
-import Data.Metrology
 import Data.Metrology.SI.Mono
 import Data.Metrology.Show ()
 import Data.Metrology.Vector

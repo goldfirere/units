@@ -1,4 +1,4 @@
-{- Data/Metrology/Poly.hs
+{- Data/Metrology.hs
 
    The units Package
    Copyright (c) 2014 Richard Eisenberg
@@ -20,8 +20,6 @@
      |     Qu (at the term level)
      :     units & dimensions, at both type and term levels
 -}
-
-{-# LANGUAGE DataKinds, ConstraintKinds, FlexibleContexts #-}
 
 -----------------------------------------------------------------------------
 -- |
@@ -45,7 +43,14 @@
 --
 -- Though it doesn't appear here, @Count@ is an instance of @Num@, and
 -- generally has all the numeric instances that @Double@ has.
+--
+-- This module exports definitions that lack unit-polymorphism. If you wish
+-- to write more polymorphic code, see 'Data.Metrology.Poly'. If you wish
+-- to use the numerical hierarchy from the @vector-space@ package, see
+-- 'Data.Metrology.Vector'.
 -----------------------------------------------------------------------------
+
+{-# LANGUAGE TypeOperators, ConstraintKinds, DataKinds #-}
 
 module Data.Metrology (
   -- * Operators working with a default LCSU
@@ -61,8 +66,6 @@ module Data.Metrology (
 import Data.Metrology.Poly hiding ( numIn, (#), quOf, (%), Count )
 import qualified Data.Metrology.Poly as Poly
 
-import Data.VectorSpace
-
 -- | Extracts a numerical value from a dimensioned quantity, expressed in
 --   the given unit. For example:
 --
@@ -73,16 +76,14 @@ import Data.VectorSpace
 --
 --   > inMeters x = x # Meter   
 numIn :: ( ValidDLU dim DefaultLCSU unit
-         , VectorSpace n
-         , Fractional (Scalar n) )
+         , Fractional n )
       => Qu dim DefaultLCSU n -> unit -> n
 numIn = Poly.numIn
 
 infix 5 #
 -- | Infix synonym for 'numIn'
 (#) :: ( ValidDLU dim DefaultLCSU unit
-       , VectorSpace n
-       , Fractional (Scalar n) )
+       , Fractional n )
     => Qu dim DefaultLCSU n -> unit -> n
 (#) = numIn
 
@@ -95,16 +96,14 @@ infix 5 #
 --
 --   > height = 2.0 % Meter
 quOf :: ( ValidDLU dim DefaultLCSU unit
-        , VectorSpace n
-        , Fractional (Scalar n) )
+        , Fractional n )
       => n -> unit -> Qu dim DefaultLCSU n
 quOf = Poly.quOf
 
 infixr 9 %
 -- | Infix synonym for 'quOf'
 (%) :: ( ValidDLU dim DefaultLCSU unit
-       , VectorSpace n
-       , Fractional (Scalar n) )
+       , Fractional n )
     => n -> unit -> Qu dim DefaultLCSU n
 (%) = quOf
 

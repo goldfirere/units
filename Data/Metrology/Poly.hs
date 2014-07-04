@@ -24,7 +24,9 @@
 -- This module exports all the gubbins needed for type-checking your
 -- dimensioned quantities. See 'Data.Metrology' for some functions
 -- restricted to using a default LCSU, which is suitable for many
--- applications.
+-- applications. See also 'Data.Metrology.Vector' for polymorphic
+-- functions suitable for use with the numerical classes from the
+-- @vector-space@ package.
 -----------------------------------------------------------------------------
 
 module Data.Metrology.Poly (
@@ -37,11 +39,11 @@ module Data.Metrology.Poly (
   -- ** Additive operations
   zero, (|+|), (|-|), qSum, qNegate,
 
-  -- ** Multiplicative operations between non-vector quantities
-  (|*|), (|/|), (/|),
+  -- ** Multiplicative operations between quantities
+  (|*|), (|/|),
 
-  -- ** Multiplicative operations between a vector and a scalar
-  (*|), (|*), (|/),
+  -- ** Multiplicative operations between a quantity and a non-quantity
+  (*|), (|*), (/|), (|/),
 
   -- ** Exponentiation
   (|^), (|^^), qNthRoot,
@@ -116,9 +118,9 @@ import Data.Metrology.Combinators
 import Data.Metrology.LCSU
 import Data.Metrology.Validity
 import Data.Metrology.Internal
-import Data.Proxy
 
-import Data.VectorSpace
+import Data.Foldable as F
+import Data.Proxy
 
 -- | Extracts a numerical value from a dimensioned quantity, expressed in
 --   the given unit. For example:
@@ -131,19 +133,17 @@ import Data.VectorSpace
 --   > inMeters x = x # Meter   
 numIn :: forall unit dim lcsu n.
          ( ValidDLU dim lcsu unit
-         , VectorSpace n
-         , Fractional (Scalar n) )
+         , Fractional n ) 
       => Qu dim lcsu n -> unit -> n
 numIn (Qu val) u
-  = val ^* fromRational
+  = val * fromRational
              (canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))
               / canonicalConvRatio u)
 
 infix 5 #
 -- | Infix synonym for 'numIn'
 (#) :: ( ValidDLU dim lcsu unit
-       , VectorSpace n
-       , Fractional (Scalar n) )
+       , Fractional n )
     => Qu dim lcsu n -> unit -> n
 (#) = numIn
 
@@ -157,47 +157,38 @@ infix 5 #
 --   > height = 2.0 % Meter
 quOf :: forall unit dim lcsu n.
          ( ValidDLU dim lcsu unit
-         , VectorSpace n
-         , Fractional (Scalar n) )
+         , Fractional n )
       => n -> unit -> Qu dim lcsu n
 quOf d u
-  = Qu (d ^* fromRational
+  = Qu (d * fromRational
                (canonicalConvRatio u
                 / canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))))
 
 infixr 9 %
 -- | Infix synonym for 'quOf'
 (%) :: ( ValidDLU dim lcsu unit
-       , VectorSpace n
-       , Fractional (Scalar n) )
+       , Fractional n )
     => n -> unit -> Qu dim lcsu n
 (%) = quOf
 
--- | Use this to choose a default LCSU for a dimensioned quantity.
--- The default LCSU uses the 'DefaultUnitOfDim' representation for each
--- dimension.
-defaultLCSU :: Qu dim DefaultLCSU n -> Qu dim DefaultLCSU n
-defaultLCSU = id
-
--- | The number 1, expressed as a unitless dimensioned quantity.
-unity :: Num n => Qu '[] l n
-unity = Qu 1
-
--- | Cast between equivalent dimension within the same CSU.
---  for example [kg m s] and [s m kg]. See the README for more info.
-redim :: (d @~ e) => Qu d l n -> Qu e l n
-redim (Qu x) = Qu x
+infix 1 `showIn`
+-- | Show a dimensioned quantity in a given unit. (The default @Show@
+-- instance always uses units as specified in the LCSU.)
+showIn :: ( ValidDLU dim lcsu unit
+          , Fractional n
+          , Show unit
+          , Show n )
+       => Qu dim lcsu n -> unit -> String
+showIn x u = show (x # u) ++ " " ++ show u
 
 -- | Dimension-keeping cast between different CSUs.
 convert :: forall d l1 l2 n. 
   ( ConvertibleLCSUs d l1 l2
-  , VectorSpace n
-  , Fractional (Scalar n) ) 
+  , Fractional n )
   => Qu d l1 n -> Qu d l2 n
-convert (Qu x) = Qu $ x ^* fromRational (
+convert (Qu x) = Qu $ x * fromRational (
   canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l1))
   / canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l2)))
-
 
 -- | Compute the argument in the @DefaultLCSU@, and present the result as
 -- lcsu-polymorphic dimension-polymorphic value. Named 'constant' because one
@@ -205,23 +196,47 @@ convert (Qu x) = Qu $ x ^* fromRational (
 -- dimension-polymorphic expressions.
 constant :: ( d @~ e
             , ConvertibleLCSUs e DefaultLCSU l
-            , VectorSpace n
-            , Fractional (Scalar n) )
+            , Fractional n )
          => Qu d DefaultLCSU n -> Qu e l n
 constant = convert . redim
 
-infix 1 `showIn`
--- | Show a dimensioned quantity in a given unit. (The default @Show@
--- instance always uses units as specified in the LCSU.)
-showIn :: ( ValidDLU dim lcsu unit
-          , VectorSpace n
-          , Fractional (Scalar n)
-          , Show unit
-          , Show n )
-       => Qu dim lcsu n -> unit -> String
-showIn x u = show (x # u) ++ " " ++ show u
+----------------------------------------------------
+-- Qu operations
+----------------------------------------------------
 
--- | The type of unitless dimensioned quantities.
--- This is an instance of @Num@, though Haddock doesn't show it.
--- This is parameterized by an LCSU and a number representation.
-type Count = MkQu_ULN Number
+-- | The number 0, polymorphic in its dimension. Use of this will
+-- often require a type annotation.
+zero :: Num n => Qu dimspec l n
+zero = Qu 0
+
+infixl 6 |+|
+-- | Add two compatible quantities
+(|+|) :: (d1 @~ d2, Num n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
+(Qu a) |+| (Qu b) = Qu (a + b)
+
+infixl 6 |-|
+-- | Subtract two compatible quantities
+(|-|) :: (d1 @~ d2, Num n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
+a |-| b = a |+| qNegate b
+
+-- | Take the sum of a list of quantities
+qSum :: (Foldable f, Num n) => f (Qu d l n) -> Qu d l n
+qSum = F.foldr (|+|) zero
+
+-- | Negate a quantity
+qNegate :: Num n => Qu d l n -> Qu d l n
+qNegate (Qu x) = Qu (negate x)
+
+infixl 7 *| , |* , |/
+-- | Multiply a quantity by a scalar from the left
+(*|) :: Num n => n -> Qu b l n -> Qu (Normalize b) l n
+a *| (Qu b) = Qu (a * b)
+
+-- | Multiply a quantity by a scalar from the right
+(|*) :: Num n => Qu a l n -> n -> Qu (Normalize a) l n
+(Qu a) |* b = Qu (a * b)
+
+-- | Divide a quantity by a scalar
+(|/) :: Fractional n => Qu a l n -> n -> Qu (Normalize a) l n
+(Qu a) |/ b = Qu (a / b)
+

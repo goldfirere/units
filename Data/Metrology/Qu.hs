@@ -6,7 +6,8 @@
 
    This file defines the 'Qu' type that represents quantity
    (a number paired with its measurement reference).
-   This file also defines operations on 'Qu' types.
+   This file also defines operations on 'Qu's that are shared between
+   the vector and non-vector interfaces.
 -}
 
 {-# LANGUAGE TypeFamilies, TypeOperators, DataKinds, UndecidableInstances,
@@ -20,11 +21,6 @@ import Data.Metrology.Factor
 import Data.Metrology.Units
 import Data.Metrology.Z
 import Data.Metrology.LCSU
-
-import Data.AdditiveGroup
-import Data.VectorSpace
-
-import Data.Foldable as F
 
 -------------------------------------------------------------
 --- Internal ------------------------------------------------
@@ -84,24 +80,6 @@ quantity :: n -> Qu '[] l n
 quantity = Qu
 
 ---------------------------------------
--- Additive operations
----------------------------------------
-
--- | The number 0, polymorphic in its dimension. Use of this will
--- often require a type annotation.
-zero :: AdditiveGroup n => Qu dimspec l n
-zero = Qu zeroV
-
-infixl 6 |+|
--- | Add two compatible quantities
-(|+|) :: (d1 @~ d2, AdditiveGroup n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
-(Qu a) |+| (Qu b) = Qu (a ^+^ b)
-
--- | Negate a quantity
-qNegate :: AdditiveGroup n => Qu d l n -> Qu d l n
-qNegate (Qu x) = Qu (negateV x)
-
----------------------------------------
 -- Multiplicative operations
 ---------------------------------------
 
@@ -114,31 +92,6 @@ infixl 7 |/|
 -- | Divide two quantities
 (|/|) :: Fractional n => Qu a l n -> Qu b l n -> Qu (Normalize (a @- b)) l n
 (Qu a) |/| (Qu b) = Qu (a / b)
-
----------------------------------------
--- Vector multiplicative operations
----------------------------------------
-
-infixl 7 |*^|, |^*|, |^/|
--- | Multiply a scalar quantity by a vector quantity
-(|*^|) :: VectorSpace n => Qu d1 l (Scalar n) -> Qu d2 l n -> Qu (Normalize (d1 @+ d2)) l n
-(Qu a) |*^| (Qu b) = Qu (a *^ b)
-
--- | Multiply a vector quantity by a scalar quantity
-(|^*|) :: VectorSpace n => Qu d1 l n -> Qu d2 l (Scalar n) -> Qu (Normalize (d1 @+ d2)) l n
-(Qu a) |^*| (Qu b) = Qu (a ^* b)
-
--- | Divide a vector quantity by a scalar quantity
-(|^/|) :: (VectorSpace n, Fractional (Scalar n))
-       => Qu d1 l n -> Qu d2 l (Scalar n) -> Qu (Normalize (d1 @- d2)) l n
-(Qu a) |^/| (Qu b) = Qu (a ^/ b)
-
-infixl 7 |/
--- | Divide a quantity by a scalar
-(|/) :: (VectorSpace n, Fractional (Scalar n)) => Qu a l n -> Scalar n -> Qu (Normalize a) l n
-(Qu a) |/ b = Qu (a ^/ b)
--- The above function should *not* need to be privileged. But, GHC can't figure
--- out that a @@- '[] ~ a. Urgh.
 
 ---------------------------------------
 -- Exponentiation
@@ -226,24 +179,7 @@ qNapprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) > epsilon
 ---------------------------------------
 ---------------------------------------
 
-infixl 6 |-|
--- | Subtract two compatible quantities
-(|-|) :: (d1 @~ d2, AdditiveGroup n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
-a |-| b = a |+| qNegate b
-
--- | Take the sum of a list of quantities
-qSum :: (Foldable f, AdditiveGroup n) => f (Qu d l n) -> Qu d l n
-qSum = F.foldr (|+|) zero
-
-infixl 7 *| , |* , /|
--- | Multiply a quantity by a scalar from the left
-(*|) :: VectorSpace n => Scalar n -> Qu b l n -> Qu (Normalize b) l n
-a *| b = quantity a |*^| b
-
--- | Multiply a quantity by a scalar from the right
-(|*) :: VectorSpace n => Qu a l n -> Scalar n -> Qu (Normalize a) l n
-a |* b = a |^*| quantity b
-
+infixl 7 /|
 -- | Divide a scalar by a quantity
 (/|) :: Fractional n => n -> Qu b l n -> Qu (Normalize ('[] @- b)) l n
 a /| b = quantity a |/| b
@@ -303,4 +239,26 @@ infixr 8 %^
 type family (d :: *) %^ (z :: Z) :: *
 type instance (Qu d l n) %^ z = Qu (d @* z) l n
 
+-------------------------------------------------------------
+--- Term-level combinators ----------------------------------
+-------------------------------------------------------------
 
+-- | Use this to choose a default LCSU for a dimensioned quantity.
+-- The default LCSU uses the 'DefaultUnitOfDim' representation for each
+-- dimension.
+defaultLCSU :: Qu dim DefaultLCSU n -> Qu dim DefaultLCSU n
+defaultLCSU = id
+
+-- | The number 1, expressed as a unitless dimensioned quantity.
+unity :: Num n => Qu '[] l n
+unity = Qu 1
+
+-- | Cast between equivalent dimension within the same CSU.
+--  for example [kg m s] and [s m kg]. See the README for more info.
+redim :: (d @~ e) => Qu d l n -> Qu e l n
+redim (Qu x) = Qu x
+
+-- | The type of unitless dimensioned quantities.
+-- This is an instance of @Num@, though Haddock doesn't show it.
+-- This is parameterized by an LCSU and a number representation.
+type Count = MkQu_ULN Number
