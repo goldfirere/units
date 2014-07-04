@@ -264,11 +264,16 @@ qCubeRoot :: Floating n => Qu a l n -> Qu (a @/ Three) l n
 qCubeRoot = qNthRoot sThree
 
 -------------------------------------------------------------
+--- Instances for all quantities ----------------------------
+-------------------------------------------------------------
+
+deriving instance Eq n => Eq (Qu d l n)
+deriving instance Ord n => Ord (Qu d l n)
+
+-------------------------------------------------------------
 --- Instances for dimensionless quantities ------------------
 -------------------------------------------------------------
 
-deriving instance Eq n => Eq (Qu '[] l n)
-deriving instance Ord n => Ord (Qu '[] l n)
 deriving instance Num n => Num (Qu '[] l n)
 deriving instance Real n => Real (Qu '[] l n)
 deriving instance Fractional n => Fractional (Qu '[] l n)
