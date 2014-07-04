@@ -55,7 +55,7 @@ showFactor p
     case (length nums, length denoms) of
       (0, 0) -> ""
       (_, 0) -> " " ++ nums
-      (0, _) -> build_string (snd (showDims False p))
+      (0, _) -> " " ++ build_string (snd (showDims False p))
       (_, _) -> " " ++ nums ++ "/" ++ denoms
   where
     mapPair :: (a -> b) -> (a, a) -> (b, b)
@@ -74,5 +74,5 @@ showFactor p
 instance (ShowUnitFactor (LookupList dims lcsu), Show n)
            => Show (Qu dims lcsu n) where
   show (Qu d) = show d ++
-                (' ' : showFactor (Proxy :: Proxy (LookupList dims lcsu)))
+                (showFactor (Proxy :: Proxy (LookupList dims lcsu)))
 
