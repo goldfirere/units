@@ -20,14 +20,6 @@ import Data.Metrology.SI.Units
 import Data.Metrology.SI.Prefixes ( Kilo )
 import qualified Data.Metrology.SI.Dims as D
 
-type instance DefaultUnitOfDim D.Length            = Meter
-type instance DefaultUnitOfDim D.Mass              = Kilo :@ Gram
-type instance DefaultUnitOfDim D.Time              = Second
-type instance DefaultUnitOfDim D.Current           = Ampere
-type instance DefaultUnitOfDim D.Temperature       = Kelvin
-type instance DefaultUnitOfDim D.AmountOfSubstance = Mole
-type instance DefaultUnitOfDim D.LuminousIntensity = Lumen
-
 type Length              = MkQu_D D.Length
 type Mass                = MkQu_D D.Mass
 type Time                = MkQu_D D.Time

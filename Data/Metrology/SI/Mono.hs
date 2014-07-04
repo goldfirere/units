@@ -1,3 +1,5 @@
+{-# LANGUAGE TypeOperators, TypeFamilies #-}
+
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.Metrology.SI.Mono
@@ -21,5 +23,13 @@ module Data.Metrology.SI.Mono (
 import Data.Metrology.SI.MonoTypes
 import Data.Metrology.SI.Units
 import Data.Metrology.SI.Prefixes
+import qualified Data.Metrology.SI.Dims as D
+import Data.Metrology
 
-
+type instance DefaultUnitOfDim D.Length            = Meter
+type instance DefaultUnitOfDim D.Mass              = Kilo :@ Gram
+type instance DefaultUnitOfDim D.Time              = Second
+type instance DefaultUnitOfDim D.Current           = Ampere
+type instance DefaultUnitOfDim D.Temperature       = Kelvin
+type instance DefaultUnitOfDim D.AmountOfSubstance = Mole
+type instance DefaultUnitOfDim D.LuminousIntensity = Lumen
