@@ -1,21 +1,31 @@
+{- Copyright (c) 2013-4 Richard Eisenberg
+
+This file demonstrates some of `units`'s capabilities by building up a simple
+physics simulator.
+-}
+
 {-# LANGUAGE TypeOperators, TypeFamilies #-}
 
 module Tests.Compile.Simulator where
 
 import Prelude hiding (sum)
 
-import Data.Metrology.SI.Mono
+import Data.Metrology.SI
 import Data.Metrology.Show ()
 import Data.Metrology.Vector
 
+-- We never want to add positions! QPoint protects us from this.
 type Position = QPoint Length
 
 -- +x = right
 -- +y = up
 
+-- We still want the "outer" type to be Qu, not the pair. So push the pairing
+-- operation down to the Qu's representation.
 type family Vec2D x where
   Vec2D (Qu d l n) = Qu d l (n, n)
 
+-- An object in our little simulation
 data Object = Object { mass :: Mass
                      , rad  :: Length
                      , pos  :: Vec2D Position
