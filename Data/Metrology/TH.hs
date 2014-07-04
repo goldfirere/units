@@ -21,6 +21,7 @@ module Data.Metrology.TH (
 import Language.Haskell.TH
 import Language.Haskell.TH.Desugar
 import Language.Haskell.TH.Desugar.Expand
+import Language.Haskell.TH.Lift ()   -- need Lift Rational
 
 import Data.Metrology.Dimensions
 import Data.Metrology.Units
