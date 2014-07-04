@@ -29,6 +29,9 @@ Version 2.1
 
 * The `Eq` and `Ord` instances now work over any quantity, not just dimensionless ones.
 
+* New functions in `Data.Metrology.TH` that define `Dimension` and `Unit` instances
+  for you.
+
 Version 2.0
 -----------
 
