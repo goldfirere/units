@@ -103,7 +103,7 @@ type family Reorder' (scrut :: ([Factor *], Maybe (Factor *)))
 infix 4 @~
 -- | Check if two @[Factor *]@s should be considered to be equal
 type family (a :: [Factor *]) @~ (b :: [Factor *]) :: Constraint where
-  a @~ b = (Normalize (Reorder a b) ~ Normalize b)
+  a @~ b = (Normalize (a @- b) ~ '[])
 
 ----------------------------------------------------------
 --- Normalization ----------------------------------------
@@ -145,6 +145,7 @@ type family (a :: [Factor *]) @@- (b :: [Factor *]) :: [Factor *] where
 infixl 6 @-
 -- | Subtract exponents in two dimensions
 type family (a :: [Factor *]) @- (b :: [Factor *]) :: [Factor *] where
+  a @- a = '[]
   a @- b = a @@- (Reorder b a)
 
 -- | negate a single @Factor@

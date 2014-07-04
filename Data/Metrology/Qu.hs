@@ -244,7 +244,7 @@ a *| b = quantity a |*^| b
 a |* b = a |^*| quantity b
 
 -- | Divide a scalar by a quantity
-(/|) :: Fractional n => n -> Qu b l n -> Qu (Normalize (NegList b)) l n
+(/|) :: Fractional n => n -> Qu b l n -> Qu (Normalize ('[] @- b)) l n
 a /| b = quantity a |/| b
 
 -- | Square a quantity

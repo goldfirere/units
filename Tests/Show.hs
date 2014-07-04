@@ -5,7 +5,7 @@
 module Tests.Show where
 
 import Data.Metrology
-import Data.Metrology.Show
+import Data.Metrology.Show ()
 import Data.Metrology.SI
 
 import Test.Tasty

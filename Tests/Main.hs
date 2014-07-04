@@ -22,6 +22,8 @@ import qualified Tests.Compile.Simulator         ()
 import qualified Tests.Compile.UnitParser        ()
 import qualified Tests.Compile.Units             ()
 
+import qualified Tests.Compile.T23               ()
+
 import qualified Tests.Imperial
 import qualified Tests.LennardJones
 import qualified Tests.OffSystemAdd
