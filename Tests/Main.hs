@@ -20,6 +20,7 @@ import qualified Tests.Compile.Physics           ()
 import qualified Tests.Compile.Quantity          ()
 import qualified Tests.Compile.Readme            ()
 import qualified Tests.Compile.Simulator         ()
+import qualified Tests.Compile.TH                ()
 import qualified Tests.Compile.UnitParser        ()
 import qualified Tests.Compile.Units             ()
 
