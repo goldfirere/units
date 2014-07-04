@@ -8,7 +8,7 @@ module Tests.Parser where
 
 import Prelude hiding ( lex, exp )
 
-import Data.Metrology.Parser
+import Data.Metrology.Parser.Internal
 import Data.Metrology.SI
 
 import Control.Monad.Reader

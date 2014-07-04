@@ -7,7 +7,7 @@ Version 2.1
 
       g = 9.8 % [si| m/s^2 |]
 
-  See `Data.Metrology.UnitParser`.
+  See `Data.Metrology.Parser`.
 
 * Now, `Data.Metrology` exports operators that work with the default
   LCSU. Use `Data.Metrology.Poly` to get the old, more flexible operators.

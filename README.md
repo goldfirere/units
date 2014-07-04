@@ -96,7 +96,7 @@ import only *one* of `Data.Metrology`, `Data.Metrology.Poly`, or
     because it allows you to inspect (in a round-about way) how your quantities
     are stored.
 
- -  __`Data.Metrology.UnitParser`__
+ -  __`Data.Metrology.Parser`__
 
     This module allows users to create custom unit parsers. The user specifies
     a set of prefixes and a set of units to parse, and then a quasi-quoting parser

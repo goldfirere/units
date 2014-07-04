@@ -62,7 +62,7 @@ library
     Data.Metrology.Z,
     Data.Metrology.Set,
     Data.Metrology.Vector,
-    Data.Metrology.UnitParser,
+    Data.Metrology.Parser,
     Data.Metrology.Poly,
     Data.Metrology.TH,
     Data.Metrology.Quantity
@@ -75,7 +75,7 @@ library
     Data.Metrology.Units,
     Data.Metrology.Combinators,
     Data.Metrology.Validity,
-    Data.Metrology.Parser
+    Data.Metrology.Parser.Internal
 
     -- cabal now recommends that TH be explicitly listed in cabal files
   default-extensions: TemplateHaskell

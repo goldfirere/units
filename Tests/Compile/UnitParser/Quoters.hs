@@ -6,7 +6,7 @@
 
 module Tests.Compile.UnitParser.Quoters where
 
-import Data.Metrology.UnitParser
+import Data.Metrology.Parser
 import Data.Metrology.SI
 
 $(makeQuasiQuoter "ms" [''Milli, ''Kilo] [''Meter, ''Second])
