@@ -133,6 +133,7 @@ infixl 7 |*^|, |^*|, |^/|
        => Qu d1 l n -> Qu d2 l (Scalar n) -> Qu (Normalize (d1 @- d2)) l n
 (Qu a) |^/| (Qu b) = Qu (a ^/ b)
 
+infixl 7 |/
 -- | Divide a quantity by a scalar
 (|/) :: (VectorSpace n, Fractional (Scalar n)) => Qu a l n -> Scalar n -> Qu (Normalize a) l n
 (Qu a) |/ b = Qu (a ^/ b)
@@ -234,7 +235,7 @@ a |-| b = a |+| qNegate b
 qSum :: (Foldable f, AdditiveGroup n) => f (Qu d l n) -> Qu d l n
 qSum = F.foldr (|+|) zero
 
-infixl 7 *| , |* , /| , |/
+infixl 7 *| , |* , /|
 -- | Multiply a quantity by a scalar from the left
 (*|) :: VectorSpace n => Scalar n -> Qu b l n -> Qu (Normalize b) l n
 a *| b = quantity a |*^| b

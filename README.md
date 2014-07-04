@@ -104,6 +104,11 @@ The _units_ package exports several key modules:
     This module defines a `Quantity` class to enable easy, safe conversions with
     non-`units` types. See the module for more documentation.
 
+ -  __`Data.Metrology.NoVector`__
+
+    This module (and its `Data.Metrology.NoVector.Poly` variant) export combinators
+    that do *not* depend on the definitions in vector-spaces.
+
 Examples
 ========
 

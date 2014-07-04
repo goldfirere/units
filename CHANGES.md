@@ -17,7 +17,8 @@ Version 2.1
 
 * Now, numeric operations are based on vector spaces, as implemented in
   the `vector-space` library. This changes the type signature of a few functions,
-  and users writing their own combinators may need to update.
+  and users writing their own combinators may need to update. If you liked
+  the old behavior, see Data.Metrology.NoVector and Data.Metrology.NoVector.Poly.
 
 * Some documentation cleanup.
 
@@ -25,6 +26,10 @@ Version 2.1
   allows for easier instance declarations for quantities.
 
 * New class `Quantity` that allows for easy conversions with non-`units` types.
+
+* A few bugfixes.
+
+* The `Eq` and `Ord` instances now work over any quantity, not just dimensionless ones.
 
 Version 2.0
 -----------

@@ -54,7 +54,7 @@ module Data.Metrology (
   -- * The rest of the @units@ package interface.
 
   -- | Though Haddock doesn't show it, the polymorphic versions of 'numIn',
-  -- '#', 'quOf', and '%' are not re-exported.
+  -- '#', 'quOf', '%', and 'Count' are not re-exported.
   module Data.Metrology.Poly
   ) where
 
