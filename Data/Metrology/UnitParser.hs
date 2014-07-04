@@ -14,7 +14,7 @@
 --
 -- A typical use case is this:
 --
--- > $(makeQuasiQuoter "unit" ['Kilo, 'Milli] ['Meter, 'Second])
+-- > $(makeQuasiQuoter "unit" [''Kilo, ''Milli] [''Meter, ''Second])
 --
 -- and then, /in a separate module/ (due to GHC's staging constraints)
 --
@@ -54,6 +54,7 @@ import Language.Haskell.TH
 import Language.Haskell.TH.Quote
 import Language.Haskell.TH.Desugar.Lift  ()  -- get the Lift Name instance
 import Data.Maybe
+import Control.Monad
 
 import Data.Metrology.Parser
 import Data.Metrology
@@ -64,9 +65,10 @@ emptyQQ = QuasiQuoter { quoteExp = \_ -> fail "No quasi-quoter for expressions"
                       , quoteType = \_ -> fail "No quasi-quoter for types"
                       , quoteDec = \_ -> fail "No quasi-quoter for declarations" }
 
--- | @makeQuasiQuoter "qq" prefixes units@ makes a quasi-quoter named @qq@ that
--- considers the prefixes and units provided. See the module documentation for
--- more info.
+-- | @makeQuasiQuoter "qq" prefixes units@ makes a quasi-quoter named @qq@
+-- that considers the prefixes and units provided. These are provided via
+-- names of the /type/ constructors, /not/ the data constructors. See the
+-- module documentation for more info and an example.
 makeQuasiQuoter :: String -> [Name] -> [Name] -> Q [Dec]
 makeQuasiQuoter qq_name prefix_names unit_names = do
   qq <- [| emptyQQ { quoteExp = \unit_exp -> do
@@ -79,7 +81,7 @@ makeQuasiQuoter qq_name prefix_names unit_names = do
   return [ValD (VarP $ mkName qq_name) (NormalB qq) []]
   where
     mk_pair :: Name -> Q Exp   -- Exp is of type (String, Name)
-    mk_pair n = [| (show $( return $ ConE n ), n) |]
+    mk_pair n = [| (show (undefined :: $( return $ ConT n )), n) |]
 
     sym_tab :: Q Exp           -- Exp is of type (Either String SymbolTable)
     sym_tab = do
@@ -90,18 +92,23 @@ makeQuasiQuoter qq_name prefix_names unit_names = do
 getInstanceNames :: Name -> Q [Name]
 getInstanceNames class_name = do
   ClassI _ insts <- reify class_name
-  return $ catMaybes $ flip map insts $ \inst ->
+  m_names <- forM insts $ \inst ->
     case inst of
       InstanceD _ ((ConT class_name') `AppT` (ConT unit_name)) []
         |  class_name == class_name'
-        -> Just unit_name
-      _ -> Nothing
+        -> do show_insts <- reifyInstances ''Show [ConT unit_name]
+              case show_insts of
+                [_show_inst] -> return $ Just unit_name
+                _            -> return Nothing
+      _ -> return Nothing
+  return $ catMaybes m_names
 
 #if __GLASGOW_HASKELL__ < 709
 {-# WARNING allUnits, allPrefixes "Retrieving the list of all units and prefixes in scope does not work under GHC 7.8.*. Please upgrade GHC to use these functions." #-}
 #endif
 
--- | Gets a list of the names of all units in scope. Example usage:
+-- | Gets a list of the names of all units with @Show@ instances in scope.
+-- Example usage:
 --
 -- > $( do units <- allUnits
 -- >       makeQuasiQuoter "unit" [] units )
@@ -109,7 +116,8 @@ getInstanceNames class_name = do
 allUnits :: Q [Name]
 allUnits = getInstanceNames ''Unit
 
--- | Gets a list of the names of all unit prefixes in scope. Example usage:
+-- | Gets a list of the names of all unit prefixes with @Show@ instances in
+-- scope. Example usage:
 --
 -- > $( do units    <- allUnits
 -- >       prefixes <- allPrefixes

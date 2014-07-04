@@ -165,6 +165,9 @@ mkSymbolTable prefixes units =
 
 type UnitStringParser = ParsecT String () (Reader SymbolTable)
 
+ofType :: Name -> Exp
+ofType n = (VarE 'undefined) `SigE` (ConT n)
+
 -- parses just a unit (no prefix)
 justUnitP :: UnitStringParser Name
 justUnitP = do
@@ -184,7 +187,7 @@ prefixUnitP = do
   case results of
     [] -> fail $ "No known interpretation for " ++ full_string
     [(pre_name, unit_name)] ->
-      return $ ConE '(:@) `AppE` ConE pre_name `AppE` ConE unit_name
+      return $ ConE '(:@) `AppE` ofType pre_name `AppE` ofType unit_name
     lots -> fail $ "Multiple possible interpretations for " ++ full_string ++ ":\n" ++
                    (concatMap (\(pre_name, unit_name) ->
                                  "  " ++ show pre_name ++
@@ -198,7 +201,7 @@ prefixUnitP = do
 
 -- parse a unit string
 unitStringParser :: UnitStringParser Exp
-unitStringParser = try (ConE `liftM` justUnitP) <|> prefixUnitP
+unitStringParser = try (ofType `liftM` justUnitP) <|> prefixUnitP
 
 ----------------------------------------------------------------------
 -- Unit expression parser

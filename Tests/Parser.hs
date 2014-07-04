@@ -61,26 +61,26 @@ lexTests = testGroup "Lexer" $
 ----------------------------------------------------------------------
 
 unitStringTestCases :: [(String, String)]
-unitStringTestCases = [ ("m", "Meter")
-                      , ("s", "Second")
-                      , ("min", "Minute")
-                      , ("km", "(:@) Kilo Meter")
-                      , ("mm", "(:@) Milli Meter")
-                      , ("kmin", "(:@) Kilo Minute")
+unitStringTestCases = [ ("m", "undefined :: Meter")
+                      , ("s", "undefined :: Second")
+                      , ("min", "undefined :: Minute")
+                      , ("km", "(:@) (undefined :: Kilo) (undefined :: Meter)")
+                      , ("mm", "(:@) (undefined :: Milli) (undefined :: Meter)")
+                      , ("kmin", "(:@) (undefined :: Kilo) (undefined :: Minute)")
                       , ("dam", "error")   -- ambiguous!
-                      , ("damin", "(:@) Deca Minute")
-                      , ("ms", "(:@) Milli Second")
-                      , ("mmin", "(:@) Milli Minute")
+                      , ("damin", "(:@) (undefined :: Deca) (undefined :: Minute)")
+                      , ("ms", "(:@) (undefined :: Milli) (undefined :: Second)")
+                      , ("mmin", "(:@) (undefined :: Milli) (undefined :: Minute)")
                       , ("mmm", "error")
                       , ("mmmin", "error")
                       , ("sm", "error")
                       , ("", "error")
                       , ("dak", "error")
-                      , ("das", "(:@) Deca Second")
-                      , ("ds", "(:@) Deci Second")
-                      , ("daam", "(:@) Deca Ampere")
-                      , ("kam", "(:@) Kilo Ampere")
-                      , ("dm", "(:@) Deci Meter")
+                      , ("das", "(:@) (undefined :: Deca) (undefined :: Second)")
+                      , ("ds", "(:@) (undefined :: Deci) (undefined :: Second)")
+                      , ("daam", "(:@) (undefined :: Deca) (undefined :: Ampere)")
+                      , ("kam", "(:@) (undefined :: Kilo) (undefined :: Ampere)")
+                      , ("dm", "(:@) (undefined :: Deci) (undefined :: Meter)")
                       ]
 
 parseUnitStringTest :: String -> String
@@ -102,21 +102,21 @@ mkSymbolTableTests :: TestTree
 mkSymbolTableTests = testGroup "mkSymbolTable"
   [ testCase "Unambiguous1" (Map.keys (prefixTable testSymbolTable) @?= ["d","da","k","m"])
   , testCase "Unambiguous2" (Map.keys (unitTable testSymbolTable) @?= ["am","m","min","s"])
-  , testCase "AmbigPrefix" (leftOnly (mkSymbolTable [("a",'Milli),("a",'Centi)] []) @?= Just "The label `a' is assigned to the following meanings:\n[Data.Metrology.SI.Prefixes.Milli,Data.Metrology.SI.Prefixes.Centi]\nThis is ambiguous. Please fix before building a unit parser.")
-  , testCase "AmbigUnit" (leftOnly (mkSymbolTable [] [("m",'Meter),("m",'Minute)]) @?= Just "The label `m' is assigned to the following meanings:\n[Data.Metrology.SI.Units.Meter,Data.Metrology.SI.Units.Minute]\nThis is ambiguous. Please fix before building a unit parser.")
-  , testCase "MultiAmbig" (leftOnly (mkSymbolTable [("a",'Milli),("b",'Centi),("b",'Deci),("b",'Kilo),("c",'Atto),("c",'Deca)] [("m",'Meter),("m",'Minute),("s",'Second)]) @?= Just "The label `b' is assigned to the following meanings:\n[Data.Metrology.SI.Prefixes.Centi,Data.Metrology.SI.Prefixes.Deci,Data.Metrology.SI.Prefixes.Kilo]\nThe label `c' is assigned to the following meanings:\n[Data.Metrology.SI.Prefixes.Atto,Data.Metrology.SI.Prefixes.Deca]\nThis is ambiguous. Please fix before building a unit parser.")
+  , testCase "AmbigPrefix" (leftOnly (mkSymbolTable [("a",''Milli),("a",''Centi)] []) @?= Just "The label `a' is assigned to the following meanings:\n[Data.Metrology.SI.Prefixes.Milli,Data.Metrology.SI.Prefixes.Centi]\nThis is ambiguous. Please fix before building a unit parser.")
+  , testCase "AmbigUnit" (leftOnly (mkSymbolTable [] [("m",''Meter),("m",''Minute)]) @?= Just "The label `m' is assigned to the following meanings:\n[Data.Metrology.SI.Units.Meter,Data.Metrology.SI.Units.Minute]\nThis is ambiguous. Please fix before building a unit parser.")
+  , testCase "MultiAmbig" (leftOnly (mkSymbolTable [("a",''Milli),("b",''Centi),("b",''Deci),("b",''Kilo),("c",''Atto),("c",''Deca)] [("m",''Meter),("m",''Minute),("s",''Second)]) @?= Just "The label `b' is assigned to the following meanings:\n[Data.Metrology.SI.Prefixes.Centi,Data.Metrology.SI.Prefixes.Deci,Data.Metrology.SI.Prefixes.Kilo]\nThe label `c' is assigned to the following meanings:\n[Data.Metrology.SI.Prefixes.Atto,Data.Metrology.SI.Prefixes.Deca]\nThis is ambiguous. Please fix before building a unit parser.")
                                                                                                 ]
 
 testSymbolTable :: SymbolTable
 Right testSymbolTable =
-   mkSymbolTable [ ("k", 'Kilo)
-                 , ("da", 'Deca)
-                 , ("m", 'Milli)
-                 , ("d", 'Deci) ]
-                 [ ("m", 'Meter)
-                 , ("s", 'Second)
-                 , ("min", 'Minute)
-                 , ("am", 'Ampere) ]
+   mkSymbolTable [ ("k", ''Kilo)
+                 , ("da", ''Deca)
+                 , ("m", ''Milli)
+                 , ("d", ''Deci) ]
+                 [ ("m", ''Meter)
+                 , ("s", ''Second)
+                 , ("min", ''Minute)
+                 , ("am", ''Ampere) ]
 
 ----------------------------------------------------------------------
 -- Overall parser
@@ -131,22 +131,22 @@ parseUnitTest s =
 
 parseTestCases :: [(String, String)]
 parseTestCases =
-  [ ("m", "Meter")
-  , ("s", "Second")
-  , ("ms", "(:@) Milli Second")
-  , ("mm", "(:@) Milli Meter")
+  [ ("m", "undefined :: Meter")
+  , ("s", "undefined :: Second")
+  , ("ms", "(:@) (undefined :: Milli) (undefined :: Second)")
+  , ("mm", "(:@) (undefined :: Milli) (undefined :: Meter)")
   , ("mmm", "error")
-  , ("km", "(:@) Kilo Meter")
-  , ("m s", "(:*) Meter Second")
-  , ("m/s", "(:/) Meter Second")
-  , ("m/s^2", "(:/) Meter ((:^) Second (sSucc (sSucc sZero)))")
-  , ("s/m m", "(:/) Second ((:*) Meter Meter)")
-  , ("s s/m m", "(:/) ((:*) Second Second) ((:*) Meter Meter)")
-  , ("s*s/m*m", "(:*) ((:/) ((:*) Second Second) Meter) Meter")
-  , ("s*s/(m*m)", "(:/) ((:*) Second Second) ((:*) Meter Meter)")
-  , ("m^-1", "(:^) Meter (sNegate (sSucc sZero))")
-  , ("m^(-1)", "(:^) Meter (sNegate (sSucc sZero))")
-  , ("m^(-(1))", "(:^) Meter (sNegate (sSucc sZero))")
+  , ("km", "(:@) (undefined :: Kilo) (undefined :: Meter)")
+  , ("m s", "(:*) (undefined :: Meter) (undefined :: Second)")
+  , ("m/s", "(:/) (undefined :: Meter) (undefined :: Second)")
+  , ("m/s^2", "(:/) (undefined :: Meter) ((:^) (undefined :: Second) (sSucc (sSucc sZero)))")
+  , ("s/m m", "(:/) (undefined :: Second) ((:*) (undefined :: Meter) (undefined :: Meter))")
+  , ("s s/m m", "(:/) ((:*) (undefined :: Second) (undefined :: Second)) ((:*) (undefined :: Meter) (undefined :: Meter))")
+  , ("s*s/m*m", "(:*) ((:/) ((:*) (undefined :: Second) (undefined :: Second)) (undefined :: Meter)) (undefined :: Meter)")
+  , ("s*s/(m*m)", "(:/) ((:*) (undefined :: Second) (undefined :: Second)) ((:*) (undefined :: Meter) (undefined :: Meter))")
+  , ("m^-1", "(:^) (undefined :: Meter) (sNegate (sSucc sZero))")
+  , ("m^(-1)", "(:^) (undefined :: Meter) (sNegate (sSucc sZero))")
+  , ("m^(-(1))", "(:^) (undefined :: Meter) (sNegate (sSucc sZero))")
   ]
 
 parseUnitTests :: TestTree

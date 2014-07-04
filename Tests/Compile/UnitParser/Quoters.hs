@@ -9,7 +9,7 @@ module Tests.Compile.UnitParser.Quoters where
 import Data.Metrology.UnitParser
 import Data.Metrology.SI
 
-$(makeQuasiQuoter "ms" ['Milli, 'Kilo] ['Meter, 'Second])
+$(makeQuasiQuoter "ms" [''Milli, ''Kilo] [''Meter, ''Second])
 
 #if __GLASGOW_HASKELL__ >= 709
 $(do units <- allUnits

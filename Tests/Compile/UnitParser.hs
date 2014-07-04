@@ -2,7 +2,7 @@
    Copyright (c) 2014 Richard Eisenberg
 -}
 
-{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE QuasiQuotes, CPP #-}
 
 module Tests.Compile.UnitParser where
 
@@ -22,4 +22,10 @@ acc1, acc2 :: Acceleration
 acc1 = 5 % [ms| m/s^2 |]
 acc2 = redim $ 10 % [ms| m/s s |]
 
+#if __GLASGOW_HASKELL >= 709
+len3 :: Length
+len3 = 15 % [unit| μm |]
 
+freq :: Frequency
+freq = 100 % [unit| MHz |]
+#endif
