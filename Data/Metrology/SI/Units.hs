@@ -1,4 +1,4 @@
-{-# LANGUAGE TypeFamilies, TypeOperators, PatternSynonyms #-}
+{-# LANGUAGE TypeFamilies, TypeOperators, PatternSynonyms, TemplateHaskell #-}
 
 -----------------------------------------------------------------------------
 -- |
@@ -29,7 +29,9 @@ module Data.Metrology.SI.Units where
 
 import Data.Metrology
 import Data.Metrology.SI.Dims
-import Data.Metrology.SI.Prefixes ( Kilo, Centi )
+import Data.Metrology.SI.Prefixes ( Kilo, Centi, siPrefixes )
+
+import Language.Haskell.TH ( Name )
 
 data Meter = Meter
 instance Unit Meter where
@@ -250,3 +252,15 @@ instance Show Ton where
 
 type Tonne = Ton
 pattern Tonne = Ton
+
+-- | A list of the names of all unit types. Useful with
+-- 'Data.Metrology.Parser.makeQuasiQuoter'.
+siUnits :: [Name]
+siUnits =
+  [ ''Meter, ''Gram, ''Second, ''Minute, ''Hour, ''Day, ''Ampere
+  , ''Kelvin, ''Mole, ''Candela, ''Hertz, ''Liter, ''Newton, ''Pascal
+  , ''Joule, ''Watt, ''Coulomb, ''Volt, ''Farad, ''Ohm, ''Siemens
+  , ''Weber, ''Tesla, ''Henry, ''Lumen, ''Lux, ''Becquerel, ''Gray
+  , ''Sievert, ''Katal, ''Hectare, ''Ton
+  ]
+    

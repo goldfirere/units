@@ -1,4 +1,4 @@
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE TypeOperators, TemplateHaskell #-}
 
 -----------------------------------------------------------------------------
 -- |
@@ -14,6 +14,7 @@
 
 module Data.Metrology.SI.Prefixes where
 
+import Language.Haskell.TH ( Name )
 import Data.Metrology
 
 -- | 10^1
@@ -215,3 +216,12 @@ instance Show Yocto where
 
 yocto :: unit -> Yocto :@ unit
 yocto = (Yocto :@)
+
+-- | A list of the names of all prefix types. Useful with
+-- 'Data.Metrology.Parser.makeQuasiQuoter'.
+siPrefixes :: [Name]
+siPrefixes =
+  [ ''Deca, ''Hecto, ''Kilo, ''Mega, ''Giga, ''Tera, ''Peta, ''Exa
+  , ''Zetta, ''Yotta, ''Deci, ''Centi, ''Milli, ''Micro, ''Nano
+  , ''Pico, ''Femto, ''Atto, ''Zepto, ''Yocto
+  ]

@@ -18,7 +18,8 @@ module Data.Metrology.SI.Poly (
   SI,
   module Data.Metrology.SI.PolyTypes,
   module Data.Metrology.SI.Prefixes,
-  module Data.Metrology.SI.Units
+  module Data.Metrology.SI.Units,
+  module Data.Metrology.SI.Parser
   ) where
 
 import Data.Metrology.SI.PolyTypes
@@ -26,6 +27,7 @@ import Data.Metrology.SI.Prefixes
 import Data.Metrology.SI.Units
 import qualified Data.Metrology.SI.Dims as D
 import Data.Metrology
+import Data.Metrology.SI.Parser
 
 type SI = MkLCSU '[ (D.Length, Meter)
                   , (D.Mass, Kilo :@ Gram)
