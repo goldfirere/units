@@ -74,13 +74,14 @@ makeQuasiQuoter :: String -> [Name] -> [Name] -> Q [Dec]
 makeQuasiQuoter qq_name prefix_names unit_names = do
   mapM_ checkIsType prefix_names
   mapM_ checkIsType unit_names
-  qq <- [| emptyQQ' { quoteExp = \unit_exp -> do
+  qq <- [| emptyQQ { quoteExp = \unit_exp -> do
                        let result = do  -- in the Either monad
                              computed_sym_tab <- $sym_tab
                              parseUnit computed_sym_tab unit_exp
                        case result of
                          Left err  -> fail err
-                         Right exp -> return exp } |]
+                         Right exp -> return exp, 
+                     quoteType = ty_con } |]
   return [ValD (VarP $ mkName qq_name) (NormalB qq) []]
   where
     mk_pair :: Name -> Q Exp   -- Exp is of type (String, Name)
@@ -91,8 +92,6 @@ makeQuasiQuoter qq_name prefix_names unit_names = do
       prefix_pairs <- mapM mk_pair prefix_names
       unit_pairs   <- mapM mk_pair unit_names
       [| mkSymbolTable $( return $ ListE prefix_pairs ) $( return $ ListE unit_pairs ) |]
-    
-    emptyQQ' = emptyQQ { quoteType = ty_con }
     
     ty_con :: String -> Q Type
     ty_con _ = runQ [t| Maybe |]
