@@ -117,9 +117,14 @@ import only *one* of `Data.Metrology`, `Data.Metrology.Poly`, or
 Examples
 ========
 
-We will build up a full working example in several sections. It is awkward to explain
-the details of the pieces until the whole example is built, so please read on to
-see how it all works.
+We will build up a full working example in several sections. It is awkward to
+explain the details of the pieces until the whole example is built, so please
+read on to see how it all works. For more complete(-ish) examples, see [this
+test
+case](https://github.com/goldfirere/units/blob/master/Tests/Compile/Simulator.hs)
+(for examples of how to use units) and
+[units-defs](https://github.com/goldfirere/units-defs) (for examples of how to
+define units).
 
 Dimension definitions
 ---------------------
