@@ -11,6 +11,9 @@ import Data.Metrology.SI
 
 $(makeQuasiQuoter "ms" [''Milli, ''Kilo] [''Meter, ''Second])
 
+$(makeQuasiQuoter "si" siUnits siPrefixes)
+
+
 #if __GLASGOW_HASKELL__ >= 709
 $(do units <- allUnits
      prefixes <- allPrefixes

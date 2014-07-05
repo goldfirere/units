@@ -74,7 +74,7 @@ makeQuasiQuoter :: String -> [Name] -> [Name] -> Q [Dec]
 makeQuasiQuoter qq_name prefix_names unit_names = do
   mapM_ checkIsType prefix_names
   mapM_ checkIsType unit_names
-  qq <- [| emptyQQ { quoteExp = \unit_exp -> do
+  qq <- [| emptyQQ' { quoteExp = \unit_exp -> do
                        let result = do  -- in the Either monad
                              computed_sym_tab <- $sym_tab
                              parseUnit computed_sym_tab unit_exp
@@ -91,6 +91,11 @@ makeQuasiQuoter qq_name prefix_names unit_names = do
       prefix_pairs <- mapM mk_pair prefix_names
       unit_pairs   <- mapM mk_pair unit_names
       [| mkSymbolTable $( return $ ListE prefix_pairs ) $( return $ ListE unit_pairs ) |]
+    
+    emptyQQ' = emptyQQ { quoteType = ty_con }
+    
+    ty_con :: String -> Q Type
+    ty_con _ = runQ [t| Maybe |]
 
 getInstanceNames :: Name -> Q [Name]
 getInstanceNames class_name = do
