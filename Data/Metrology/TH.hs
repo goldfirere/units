@@ -12,10 +12,14 @@
 -----------------------------------------------------------------------------
 
 {-# LANGUAGE TemplateHaskell #-}
+{-# OPTIONS_HADDOCK prune #-}
 
 module Data.Metrology.TH (
   evalType,
-  declareDimension, declareCanonicalUnit, declareDerivedUnit, declareMonoUnit
+  declareDimension, declareCanonicalUnit, declareDerivedUnit, declareMonoUnit,
+
+  -- for internal use only
+  checkIsType                                    
   ) where
 
 import Language.Haskell.TH
@@ -46,7 +50,7 @@ evalType qty = do
   ex_dty <- expandType dty
   return $ sweeten ex_dty
 
--- | Checks to make sure the given name names a /type/, not a /data constructor/.
+-- Checks to make sure the given name names a /type/, not a /data constructor/.
 -- Reports a compile-time error if the name is not a type.
 checkIsType :: Name -> Q ()
 checkIsType n = do

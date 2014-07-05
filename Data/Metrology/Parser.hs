@@ -58,6 +58,7 @@ import Control.Monad
 
 import Data.Metrology.Parser.Internal
 import Data.Metrology
+import Data.Metrology.TH
 
 emptyQQ :: QuasiQuoter
 emptyQQ = QuasiQuoter { quoteExp = \_ -> fail "No quasi-quoter for expressions"
@@ -71,6 +72,8 @@ emptyQQ = QuasiQuoter { quoteExp = \_ -> fail "No quasi-quoter for expressions"
 -- module documentation for more info and an example.
 makeQuasiQuoter :: String -> [Name] -> [Name] -> Q [Dec]
 makeQuasiQuoter qq_name prefix_names unit_names = do
+  mapM_ checkIsType prefix_names
+  mapM_ checkIsType unit_names
   qq <- [| emptyQQ { quoteExp = \unit_exp -> do
                        let result = do  -- in the Either monad
                              computed_sym_tab <- $sym_tab
