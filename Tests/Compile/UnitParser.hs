@@ -10,6 +10,9 @@ import Tests.Compile.UnitParser.Quoters ( ms )
 import Data.Metrology.SI
 import Data.Metrology
 
+frac1 :: Count
+frac1 =  0.78 % [ms|  |]
+
 len1, len2 :: Length
 len1 = 5 % [ms| m |]
 len2 = redim $ 10 % [ms| s km / ms |]

@@ -110,12 +110,15 @@ lexer1 :: Lexer Token
 lexer1 = unitL <|> opL <|> numberL
 
 lexer :: Lexer [Token]
-lexer = do { eof <?> "" ; return [] } <|> do
-  spaces
-  tok <- lexer1
-  spaces
-  toks <- lexer
-  return (tok : toks)
+lexer = try lex1 <|> lex0
+  where
+    lex0 = do { spaces <?> "" ; return [] }
+    lex1 = do
+      spaces
+      tok <- lexer1
+      spaces
+      toks <- lexer
+      return (tok : toks)
 
 lex :: String -> Either ParseError [Token]
 lex = parse lexer ""
@@ -312,7 +315,7 @@ parser = do
   return result
   where
     dimless :: Exp
-    dimless = VarE 'DM.Number
+    dimless = ConE 'DM.Number
 
 -- top-level interface
 parseUnit :: SymbolTable -> String -> Either String Exp
