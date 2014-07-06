@@ -17,9 +17,11 @@ before_install:
 
 install:
  - cabal update
+# get the HEAD version of th-desugar and units always
  - git clone https://github.com/goldfirere/th-desugar.git
-# get the HEAD version of th-desugar always
  - cd th-desugar; cabal install; cd ..
+ - git clone https://github.com/goldfirere/units.git
+ - cd units; cabal install; cd ..
  - cabal install --only-dependencies --enable-tests --enable-benchmarks
 
 # Here starts the actual work to be performed for the package under test; any command which exits with a non-zero exit code causes the build to fail.
