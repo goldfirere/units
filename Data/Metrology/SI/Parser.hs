@@ -13,8 +13,8 @@
 -- @[si| m/s^2 |]@ produces @(Meter :/ (Second :^ sTwo))@. A larger
 -- example is
 --
--- > len :: Energy
--- > len = 5 % [d| N km |]  -- 5 Newton-kilometers
+-- > ke :: Energy
+-- > ke = 5 % [si| N km |]  -- 5 Newton-kilometers
 --
 -- See `Data.Metrology.Parser` for more information about the syntax
 -- of these unit expressions.
