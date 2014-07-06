@@ -27,6 +27,7 @@ import Control.Arrow
 import Data.Maybe
 
 import Data.Metrology    hiding (Number(..))
+import qualified Data.Metrology as DM (Number(..))
 
 import Language.Haskell.TH
 
@@ -109,12 +110,15 @@ lexer1 :: Lexer Token
 lexer1 = unitL <|> opL <|> numberL
 
 lexer :: Lexer [Token]
-lexer = do { eof <?> "" ; return [] } <|> do
-  spaces
-  tok <- lexer1
-  spaces
-  toks <- lexer
-  return (tok : toks)
+lexer = try lex1 <|> lex0
+  where
+    lex0 = do { spaces <?> "" ; return [] }
+    lex1 = do
+      spaces
+      tok <- lexer1
+      spaces
+      toks <- lexer
+      return (tok : toks)
 
 lex :: String -> Either ParseError [Token]
 lex = parse lexer ""
@@ -307,8 +311,11 @@ opP = do
 -- parse a whole unit expression
 parser :: UnitParser Exp
 parser = do
-  result <- chainl1 unitFactorP opP
+  result <- chainl unitFactorP opP dimless
   return result
+  where
+    dimless :: Exp
+    dimless = ConE 'DM.Number
 
 -- top-level interface
 parseUnit :: SymbolTable -> String -> Either String Exp
