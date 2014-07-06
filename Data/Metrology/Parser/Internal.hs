@@ -27,6 +27,7 @@ import Control.Arrow
 import Data.Maybe
 
 import Data.Metrology    hiding (Number(..))
+import qualified Data.Metrology as DM (Number(..))
 
 import Language.Haskell.TH
 
@@ -307,8 +308,11 @@ opP = do
 -- parse a whole unit expression
 parser :: UnitParser Exp
 parser = do
-  result <- chainl1 unitFactorP opP
+  result <- chainl unitFactorP opP dimless
   return result
+  where
+    dimless :: Exp
+    dimless = VarE 'DM.Number
 
 -- top-level interface
 parseUnit :: SymbolTable -> String -> Either String Exp
