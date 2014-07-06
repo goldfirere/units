@@ -45,3 +45,4 @@ library
 
   default-language:   Haskell2010
   default-extensions: TemplateHaskell
+  ghc-options:        -Wall
