@@ -41,3 +41,6 @@ velty = 5 % (Meter :/ Second)
 freqty :: MkQu_U [ms| s^-1 |]
 freqty = 5 % Hertz
 
+num1, num2 :: Count
+num1 = 3 % [ms|  |]
+num2 = 4 % [ms| 1 |]
