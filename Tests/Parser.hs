@@ -146,6 +146,9 @@ parseTestCases =
   , ("m^-1", "(:^) (undefined :: Meter) (sPred sZero)")
   , ("m^(-1)", "(:^) (undefined :: Meter) (sPred sZero)")
   , ("m^(-(1))", "(:^) (undefined :: Meter) (sPred sZero)")
+  , ("1", "Number")
+  , ("1/s", "(:/) Number (undefined :: Second)")
+  , ("m 1 m", "(:*) ((:*) (undefined :: Meter) Number) (undefined :: Meter)")
   ]
 
 parseUnitTests :: TestTree
@@ -177,6 +180,9 @@ parseTestCasesT =
   , ("m^-1", ":^ Meter (Pred Zero)")
   , ("m^(-1)", ":^ Meter (Pred Zero)")
   , ("m^(-(1))", ":^ Meter (Pred Zero)")
+  , ("1", "Number")
+  , ("1/s", ":/ Number Second")
+  , ("m 1 m", ":* (:* Meter Number) Meter")
   ]
 
 parseUnitTestsT :: TestTree

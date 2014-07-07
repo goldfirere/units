@@ -29,6 +29,7 @@ import Control.Arrow       hiding ( app)
 import Data.Maybe
 
 import Data.Metrology    hiding (Number(..))
+import qualified Data.Metrology
 
 import Language.Haskell.TH hiding ( Pred )
 
@@ -242,6 +243,13 @@ use n = do
     Exp  -> return $ ofType n
     Type -> return $ ConT n
 
+dimensionless :: MonadReader (ParserEnv g) m => m g
+dimensionless = do
+  g <- asks goal
+  case g of
+    Exp  -> return $ ConE 'Data.Metrology.Number
+    Type -> return $ ConT ''Data.Metrology.Number
+
 ----------------------------------------------------------------------
 -- Unit string parser
 ----------------------------------------------------------------------
@@ -349,12 +357,17 @@ powP = option id $ do
 
 -- parse a unit, possibly with an exponent
 unitP :: UnitParser g g
-unitP = do
-  unit_str <- uToken $ \case
-    Unit unit_str -> Just unit_str
-    _             -> Nothing
-  maybe_pow <- powP
-  maybe_pow $ unitStringP unit_str
+unitP =
+  do n <- numP
+     case n of
+       1 -> dimensionless
+       _ -> unexpected $ "number " ++ show n
+  <|>
+  do unit_str <- uToken $ \case
+       Unit unit_str -> Just unit_str
+       _             -> Nothing
+     maybe_pow <- powP
+     maybe_pow $ unitStringP unit_str
 
 -- parse a "unit factor": either a juxtaposed sequence of units
 -- or a paranthesized unit exp.
