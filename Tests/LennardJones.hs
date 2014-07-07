@@ -4,12 +4,13 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE ImplicitParams #-}
+{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 
 module Tests.LennardJones where
 
 import Data.Metrology.Poly
 import Data.Metrology.Z
-import Data.Metrology.SI.MonoTypes()
+import Data.Metrology.SI.Mono         ()
 import Data.Metrology.SI.PolyTypes
 import Data.Metrology.SI.Prefixes
 import Data.Metrology.SI.Units

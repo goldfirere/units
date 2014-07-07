@@ -1,5 +1,7 @@
 {-# LANGUAGE ConstraintKinds, DataKinds, FlexibleContexts, TypeFamilies,
              TypeOperators, ImplicitParams #-}
+{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
+
 module Tests.PhysicalConstants where
 
 import Data.Metrology.Poly

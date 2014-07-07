@@ -1,4 +1,4 @@
-{-# OPTIONS_GHC -fno-warn-type-defaults #-}
+{-# OPTIONS_GHC -fno-warn-type-defaults -fno-warn-missing-signatures #-}
 
 module Tests.Compile.NoVector where
 

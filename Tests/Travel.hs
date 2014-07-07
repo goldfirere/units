@@ -31,6 +31,7 @@ gasolineWeight :: (Fractional f)
   => MkQu_DLN D.Length su f -> PerArea su f -> MkQu_DLN D.Density su f -> MkQu_DLN D.Mass su f
 gasolineWeight len0 ef0 den0 = len0 |/| ef0 |*| den0
 
+tests :: TestTree
 tests =
   let ?epsilon = 0.00001 in
   testGroup "Travel"

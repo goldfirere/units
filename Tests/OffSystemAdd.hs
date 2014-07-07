@@ -1,4 +1,5 @@
 {-# LANGUAGE TypeFamilies, NoMonomorphismRestriction #-}
+{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 
 module Tests.OffSystemAdd where
 

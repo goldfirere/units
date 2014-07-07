@@ -71,7 +71,7 @@ emptyQQ = QuasiQuoter { quoteExp = \_ -> fail "No quasi-quoter for expressions"
 -- names of the /type/ constructors, /not/ the data constructors. See the
 -- module documentation for more info and an example.
 makeQuasiQuoter :: String -> [Name] -> [Name] -> Q [Dec]
-makeQuasiQuoter qq_name prefix_names unit_names = do
+makeQuasiQuoter qq_name_str prefix_names unit_names = do
   mapM_ checkIsType prefix_names
   mapM_ checkIsType unit_names
   qq <- [| emptyQQ { quoteExp = \unit_exp -> do
@@ -81,8 +81,11 @@ makeQuasiQuoter qq_name prefix_names unit_names = do
                        case result of
                          Left err  -> fail err
                          Right exp -> return exp } |]
-  return [ValD (VarP $ mkName qq_name) (NormalB qq) []]
+  return [ SigD qq_name (ConT ''QuasiQuoter)
+         , ValD (VarP qq_name) (NormalB qq) []]
   where
+    qq_name = mkName qq_name_str
+    
     mk_pair :: Name -> Q Exp   -- Exp is of type (String, Name)
     mk_pair n = [| (show (undefined :: $( return $ ConT n )), n) |]
 

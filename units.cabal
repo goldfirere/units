@@ -102,7 +102,7 @@ test-suite main
   hs-source-dirs:   units-defs, .
 
     -- optimize compile time, not runtime!
-  ghc-options:        -O0 -Wall -Werror -main-is Tests.Main -fno-warn-missing-signatures
+  ghc-options:        -O0 -Wall -Werror -main-is Tests.Main
 
     -- GHC 7.10 requires this in more places, and I don't feel like ferreting out exactly
     -- where.

@@ -1,4 +1,5 @@
 {-# LANGUAGE TypeOperators, TypeFamilies, ImplicitParams, NoMonomorphismRestriction #-}
+{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 
 module Tests.Imperial where
 

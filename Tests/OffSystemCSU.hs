@@ -1,4 +1,5 @@
 {-# LANGUAGE TypeOperators, DataKinds, TypeFamilies, NoMonomorphismRestriction #-}
+{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 
 module Tests.OffSystemCSU where
 
