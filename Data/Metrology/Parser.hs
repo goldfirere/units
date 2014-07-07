@@ -66,6 +66,12 @@ emptyQQ = QuasiQuoter { quoteExp = \_ -> fail "No quasi-quoter for expressions"
                       , quoteType = \_ -> fail "No quasi-quoter for types"
                       , quoteDec = \_ -> fail "No quasi-quoter for declarations" }
 
+errorQQ :: String -> QuasiQuoter
+errorQQ msg = QuasiQuoter { quoteExp = \_ -> fail msg
+                          , quotePat = \_ -> fail msg
+                          , quoteType = \_ -> fail msg
+                          , quoteDec = \_ -> fail msg }
+
 -- | @makeQuasiQuoter "qq" prefixes units@ makes a quasi-quoter named @qq@
 -- that considers the prefixes and units provided. These are provided via
 -- names of the /type/ constructors, /not/ the data constructors. See the
@@ -74,13 +80,18 @@ makeQuasiQuoter :: String -> [Name] -> [Name] -> Q [Dec]
 makeQuasiQuoter qq_name_str prefix_names unit_names = do
   mapM_ checkIsType prefix_names
   mapM_ checkIsType unit_names
-  qq <- [| emptyQQ { quoteExp = \unit_exp -> do
-                       let result = do  -- in the Either monad
-                             computed_sym_tab <- $sym_tab
-                             parseUnit computed_sym_tab unit_exp
-                       case result of
-                         Left err  -> fail err
-                         Right exp -> return exp } |]
+  qq <- [| case $sym_tab of
+            Left err -> errorQQ err
+            Right computed_sym_tab ->
+              emptyQQ { quoteExp = \unit_exp ->
+                         case parseUnitExp computed_sym_tab unit_exp of
+                           Left err2 -> fail err2
+                           Right exp -> return exp
+                      , quoteType = \unit_exp ->
+                         case parseUnitType computed_sym_tab unit_exp of
+                           Left err2 -> fail err2
+                           Right typ -> return typ
+                      } |]
   return [ SigD qq_name (ConT ''QuasiQuoter)
          , ValD (VarP qq_name) (NormalB qq) []]
   where

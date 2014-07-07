@@ -85,7 +85,7 @@ unitStringTestCases = [ ("m", "undefined :: Meter")
 
 parseUnitStringTest :: String -> String
 parseUnitStringTest s =
-  case flip runReader testSymbolTable $ runParserT unitStringParser () "" s of
+  case flip runReader (ParserEnv Exp testSymbolTable) $ runParserT unitStringParser () "" s of
     Left _ -> "error"
     Right exp -> pprintUnqualified exp
 
@@ -122,10 +122,9 @@ Right testSymbolTable =
 -- Overall parser
 ----------------------------------------------------------------------
 
-
 parseUnitTest :: String -> String
 parseUnitTest s =
-  case parseUnit testSymbolTable s of
+  case parseUnitExp testSymbolTable s of
     Left _    -> "error"
     Right exp -> pprintUnqualified exp
 
@@ -144,15 +143,46 @@ parseTestCases =
   , ("s s/m m", "(:/) ((:*) (undefined :: Second) (undefined :: Second)) ((:*) (undefined :: Meter) (undefined :: Meter))")
   , ("s*s/m*m", "(:*) ((:/) ((:*) (undefined :: Second) (undefined :: Second)) (undefined :: Meter)) (undefined :: Meter)")
   , ("s*s/(m*m)", "(:/) ((:*) (undefined :: Second) (undefined :: Second)) ((:*) (undefined :: Meter) (undefined :: Meter))")
-  , ("m^-1", "(:^) (undefined :: Meter) (sNegate (sSucc sZero))")
-  , ("m^(-1)", "(:^) (undefined :: Meter) (sNegate (sSucc sZero))")
-  , ("m^(-(1))", "(:^) (undefined :: Meter) (sNegate (sSucc sZero))")
+  , ("m^-1", "(:^) (undefined :: Meter) (sPred sZero)")
+  , ("m^(-1)", "(:^) (undefined :: Meter) (sPred sZero)")
+  , ("m^(-(1))", "(:^) (undefined :: Meter) (sPred sZero)")
   ]
 
 parseUnitTests :: TestTree
 parseUnitTests = testGroup "ParseUnit" $
   map (\(str, out) -> testCase ("`" ++ str ++ "'") $ parseUnitTest str @?= out)
     parseTestCases
+
+parseUnitTestT :: String -> String
+parseUnitTestT s =
+  case parseUnitType testSymbolTable s of
+    Left _    -> "error"
+    Right exp -> pprintUnqualified exp
+
+parseTestCasesT :: [(String, String)]
+parseTestCasesT =
+  [ ("m", "Meter")
+  , ("s", "Second")
+  , ("ms", ":@ Milli Second")
+  , ("mm", ":@ Milli Meter")
+  , ("mmm", "error")
+  , ("km", ":@ Kilo Meter")
+  , ("m s", ":* Meter Second")
+  , ("m/s", ":/ Meter Second")
+  , ("m/s^2", ":/ Meter (:^ Second (Succ (Succ Zero)))")
+  , ("s/m m", ":/ Second (:* Meter Meter)")
+  , ("s s/m m", ":/ (:* Second Second) (:* Meter Meter)")
+  , ("s*s/m*m", ":* (:/ (:* Second Second) Meter) Meter")
+  , ("s*s/(m*m)", ":/ (:* Second Second) (:* Meter Meter)")
+  , ("m^-1", ":^ Meter (Pred Zero)")
+  , ("m^(-1)", ":^ Meter (Pred Zero)")
+  , ("m^(-(1))", ":^ Meter (Pred Zero)")
+  ]
+
+parseUnitTestsT :: TestTree
+parseUnitTestsT = testGroup "ParseUnitType" $
+  map (\(str, out) -> testCase ("`" ++ str ++ "'") $ parseUnitTestT str @?= out)
+    parseTestCasesT
 
 ----------------------------------------------------------------------
 -- Conclusion
@@ -164,4 +194,5 @@ tests = testGroup "Parser"
   , mkSymbolTableTests
   , unitStringTests
   , parseUnitTests
+  , parseUnitTestsT
   ]

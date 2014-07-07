@@ -2,7 +2,7 @@
    Copyright (c) 2014 Richard Eisenberg
 -}
 
-{-# LANGUAGE QuasiQuotes, CPP #-}
+{-# LANGUAGE QuasiQuotes, CPP, DataKinds #-}
 
 module Tests.Compile.UnitParser where
 
@@ -29,3 +29,12 @@ len3 = 15 % [unit| μm |]
 freq :: Frequency
 freq = 100 % [unit| MHz |]
 #endif
+
+lenty :: MkQu_U [ms| m |]
+lenty = 5 % Meter
+
+velty :: MkQu_U [ms| m/s |]
+velty = 5 % (Meter :/ Second)
+
+freqty :: MkQu_U [ms| s^-1 |]
+freqty = 5 % Hertz
