@@ -16,8 +16,6 @@
 module Data.Metrology.SI.MonoTypes where
 
 import Data.Metrology
-import Data.Metrology.SI.Units
-import Data.Metrology.SI.Prefixes ( Kilo )
 import qualified Data.Metrology.SI.Dims as D
 
 type Length              = MkQu_D D.Length
