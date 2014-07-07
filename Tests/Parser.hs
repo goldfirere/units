@@ -8,6 +8,7 @@ module Tests.Parser where
 
 import Prelude hiding ( lex, exp )
 
+import Data.Metrology.Parser
 import Data.Metrology.Parser.Internal
 import Data.Metrology.SI
 
@@ -28,8 +29,11 @@ leftOnly (Right _) = Nothing
 -- TH functions
 ----------------------------------------------------------------------
 
+stripModules :: Data a => a -> a
+stripModules = everywhere (mkT (mkName . nameBase))
+
 pprintUnqualified :: (Ppr a, Data a) => a -> String
-pprintUnqualified = pprint . everywhere (mkT (mkName . nameBase))
+pprintUnqualified = pprint . stripModules
 
 ----------------------------------------------------------------------
 -- Lexer
@@ -63,33 +67,33 @@ lexTests = testGroup "Lexer" $
 ----------------------------------------------------------------------
 
 unitStringTestCases :: [(String, String)]
-unitStringTestCases = [ ("m", "undefined :: Meter")
-                      , ("s", "undefined :: Second")
-                      , ("min", "undefined :: Minute")
-                      , ("km", "(:@) (undefined :: Kilo) (undefined :: Meter)")
-                      , ("mm", "(:@) (undefined :: Milli) (undefined :: Meter)")
-                      , ("kmin", "(:@) (undefined :: Kilo) (undefined :: Minute)")
+unitStringTestCases = [ ("m", "Meter")
+                      , ("s", "Second")
+                      , ("min", "Minute")
+                      , ("km", "Kilo :@ Meter")
+                      , ("mm", "Milli :@ Meter")
+                      , ("kmin", "Kilo :@ Minute")
                       , ("dam", "error")   -- ambiguous!
-                      , ("damin", "(:@) (undefined :: Deca) (undefined :: Minute)")
-                      , ("ms", "(:@) (undefined :: Milli) (undefined :: Second)")
-                      , ("mmin", "(:@) (undefined :: Milli) (undefined :: Minute)")
+                      , ("damin", "Deca :@ Minute")
+                      , ("ms", "Milli :@ Second")
+                      , ("mmin", "Milli :@ Minute")
                       , ("mmm", "error")
                       , ("mmmin", "error")
                       , ("sm", "error")
                       , ("", "error")
                       , ("dak", "error")
-                      , ("das", "(:@) (undefined :: Deca) (undefined :: Second)")
-                      , ("ds", "(:@) (undefined :: Deci) (undefined :: Second)")
-                      , ("daam", "(:@) (undefined :: Deca) (undefined :: Ampere)")
-                      , ("kam", "(:@) (undefined :: Kilo) (undefined :: Ampere)")
-                      , ("dm", "(:@) (undefined :: Deci) (undefined :: Meter)")
+                      , ("das", "Deca :@ Second")
+                      , ("ds", "Deci :@ Second")
+                      , ("daam", "Deca :@ Ampere")
+                      , ("kam", "Kilo :@ Ampere")
+                      , ("dm", "Deci :@ Meter")
                       ]
 
 parseUnitStringTest :: String -> String
 parseUnitStringTest s =
-  case flip runReader (ParserEnv Exp testSymbolTable) $ runParserT unitStringParser () "" s of
+  case flip runReader testSymbolTable $ runParserT unitStringParser () "" s of
     Left _ -> "error"
-    Right exp -> pprintUnqualified exp
+    Right exp -> show exp
 
 unitStringTests :: TestTree
 unitStringTests = testGroup "UnitStrings" $
@@ -104,21 +108,21 @@ mkSymbolTableTests :: TestTree
 mkSymbolTableTests = testGroup "mkSymbolTable"
   [ testCase "Unambiguous1" (Map.keys (prefixTable testSymbolTable) @?= ["d","da","k","m"])
   , testCase "Unambiguous2" (Map.keys (unitTable testSymbolTable) @?= ["am","m","min","s"])
-  , testCase "AmbigPrefix" (leftOnly (mkSymbolTable [("a",''Milli),("a",''Centi)] []) @?= Just "The label `a' is assigned to the following meanings:\n[Data.Metrology.SI.Prefixes.Milli,Data.Metrology.SI.Prefixes.Centi]\nThis is ambiguous. Please fix before building a unit parser.")
-  , testCase "AmbigUnit" (leftOnly (mkSymbolTable [] [("m",''Meter),("m",''Minute)]) @?= Just "The label `m' is assigned to the following meanings:\n[Data.Metrology.SI.Units.Meter,Data.Metrology.SI.Units.Minute]\nThis is ambiguous. Please fix before building a unit parser.")
-  , testCase "MultiAmbig" (leftOnly (mkSymbolTable [("a",''Milli),("b",''Centi),("b",''Deci),("b",''Kilo),("c",''Atto),("c",''Deca)] [("m",''Meter),("m",''Minute),("s",''Second)]) @?= Just "The label `b' is assigned to the following meanings:\n[Data.Metrology.SI.Prefixes.Centi,Data.Metrology.SI.Prefixes.Deci,Data.Metrology.SI.Prefixes.Kilo]\nThe label `c' is assigned to the following meanings:\n[Data.Metrology.SI.Prefixes.Atto,Data.Metrology.SI.Prefixes.Deca]\nThis is ambiguous. Please fix before building a unit parser.")
+  , testCase "AmbigPrefix" (leftOnly (mkSymbolTable [("a",''Milli),("a",''Centi)] ([] :: [(String,Name)])) @?= Just "The label `a' is assigned to the following meanings:\n[\"Data.Metrology.SI.Prefixes.Milli\",\"Data.Metrology.SI.Prefixes.Centi\"]\nThis is ambiguous. Please fix before building a unit parser.")
+  , testCase "AmbigUnit" (leftOnly (mkSymbolTable ([] :: [(String,Name)]) [("m",''Meter),("m",''Minute)]) @?= Just "The label `m' is assigned to the following meanings:\n[\"Data.Metrology.SI.Units.Meter\",\"Data.Metrology.SI.Units.Minute\"]\nThis is ambiguous. Please fix before building a unit parser.")
+  , testCase "MultiAmbig" (leftOnly (mkSymbolTable [("a",''Milli),("b",''Centi),("b",''Deci),("b",''Kilo),("c",''Atto),("c",''Deca)] [("m",''Meter),("m",''Minute),("s",''Second)]) @?= Just "The label `b' is assigned to the following meanings:\n[\"Data.Metrology.SI.Prefixes.Centi\",\"Data.Metrology.SI.Prefixes.Deci\",\"Data.Metrology.SI.Prefixes.Kilo\"]\nThe label `c' is assigned to the following meanings:\n[\"Data.Metrology.SI.Prefixes.Atto\",\"Data.Metrology.SI.Prefixes.Deca\"]\nThis is ambiguous. Please fix before building a unit parser.")
                                                                                                 ]
 
-testSymbolTable :: SymbolTable
+testSymbolTable :: SymbolTable Name Name
 Right testSymbolTable =
-   mkSymbolTable [ ("k", ''Kilo)
-                 , ("da", ''Deca)
-                 , ("m", ''Milli)
-                 , ("d", ''Deci) ]
-                 [ ("m", ''Meter)
-                 , ("s", ''Second)
-                 , ("min", ''Minute)
-                 , ("am", ''Ampere) ]
+   mkSymbolTable (stripModules [ ("k", ''Kilo)
+                               , ("da", ''Deca)
+                               , ("m", ''Milli)
+                               , ("d", ''Deci) ])
+                 (stripModules [ ("m", ''Meter)
+                               , ("s", ''Second)
+                               , ("min", ''Minute)
+                               , ("am", ''Ampere) ])
 
 ----------------------------------------------------------------------
 -- Overall parser

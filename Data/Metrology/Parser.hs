@@ -45,7 +45,17 @@
 -----------------------------------------------------------------------------
 
 module Data.Metrology.Parser (
-  makeQuasiQuoter, allUnits, allPrefixes
+  -- * Quasiquoting interface
+  makeQuasiQuoter, allUnits, allPrefixes,
+
+  -- * Direct interface
+  
+  -- | The definitions below allow users to access the unit parser directly.
+  -- The parser produces 'UnitExp's which can then be further processed as
+  -- necessary.
+  parseUnit,
+  UnitExp(..), SymbolTable,
+  mkSymbolTable
   ) where
 
 import Prelude hiding ( exp )
