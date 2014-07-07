@@ -1,3 +1,11 @@
+Version 1.1
+-------------
+
+* Added `si` parser.
+* Moved `DefaultUnitOfDim` instances from `SI.MonoTypes` to `SI.Mono`. This allows
+  client code to import the monomorphic types without getting these instances. But,
+  it may mean that your imports have to change.
+
 Version 1.0.1
 -------------
 

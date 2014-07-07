@@ -1,5 +1,5 @@
 name:           units-defs
-version:        1.0.2
+version:        1.1
 cabal-version:  >= 1.10
 synopsis:       Definitions for use with the units package
 homepage:       http://github.com/goldfirere/units-defs
@@ -23,7 +23,7 @@ description:
 source-repository this
   type:     git
   location: https://github.com/goldfirere/units-defs.git
-  tag:      v1.0.2
+  tag:      v1.1
 
 library
   build-depends:      
