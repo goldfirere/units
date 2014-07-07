@@ -112,12 +112,16 @@ lexer1 :: Lexer Token
 lexer1 = unitL <|> opL <|> numberL
 
 lexer :: Lexer [Token]
-lexer = do { eof <?> "" ; return [] } <|> do
+lexer = do
   spaces
-  tok <- lexer1
-  spaces
-  toks <- lexer
-  return (tok : toks)
+  choice
+    [ do eof <?> ""
+         return []
+    , do tok <- lexer1
+         spaces
+         toks <- lexer
+         return (tok : toks)
+    ]
 
 lex :: String -> Either ParseError [Token]
 lex = parse lexer ""
@@ -394,7 +398,8 @@ opP = do
 -- parse a whole unit expression
 parser :: UnitParser g g
 parser = do
-  chainl1 unitFactorP opP
+  d'less <- dimensionless
+  chainl unitFactorP opP d'less
 
 parseUnit :: Goal g -> SymbolTable -> String -> Either String g
 parseUnit g tab s = left show $ do

@@ -50,6 +50,8 @@ lexTestCases = [ ( "m", "[m]" )
                , ( "   m", "[m]" )
                , ( "( m  /s", "[(,m,/,s]" )
                , ( "!", "error" )
+               , ( "1 2 3", "[1,2,3]" )
+               , ( "  ", "[]" )
                ]
 
 lexTests :: TestTree
@@ -149,6 +151,8 @@ parseTestCases =
   , ("1", "Number")
   , ("1/s", "(:/) Number (undefined :: Second)")
   , ("m 1 m", "(:*) ((:*) (undefined :: Meter) Number) (undefined :: Meter)")
+  , ("  ", "Number")
+  , ("", "Number")
   ]
 
 parseUnitTests :: TestTree
@@ -183,6 +187,8 @@ parseTestCasesT =
   , ("1", "Number")
   , ("1/s", ":/ Number Second")
   , ("m 1 m", ":* (:* Meter Number) Meter")
+  , ("  ", "Number")
+  , ("", "Number")
   ]
 
 parseUnitTestsT :: TestTree
