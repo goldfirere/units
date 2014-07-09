@@ -11,7 +11,10 @@
 --
 -- This module exports definitions for the SI system, with the intent
 -- of using these definitions in a monomorphic manner -- that is,
--- with the DefaultLCSU.
+-- with the DefaultLCSU. The difference between this module and
+-- 'Data.Metrology.SI.MonoTypes' is that this module also exports
+-- instances of 'DefaultUnitOfDim', necessary for use with
+-- 'DefaultLCSU'.
 -----------------------------------------------------------------------------
 
 module Data.Metrology.SI.Mono (

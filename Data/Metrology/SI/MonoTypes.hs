@@ -10,7 +10,8 @@
 -- Portability :  non-portable
 --
 -- This module defines type synonyms for SI units, using a Double as the
--- internal representation.
+-- internal representation. This module /does not/ export instances of
+-- 'DefaultUnitOfDim'. Use 'Data.Metrology.SI.Mono' for that.
 -----------------------------------------------------------------------------
 
 module Data.Metrology.SI.MonoTypes where
