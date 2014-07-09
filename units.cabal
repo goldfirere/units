@@ -11,6 +11,7 @@ stability:      experimental
 extra-source-files: README.md
                   , CHANGES.md
                   , Tests/*.hs
+                  , Tests/README.md
                   , Tests/Compile/*.hs
                   , Tests/Compile/UnitParser/*.hs
                   , units-defs/Data/Metrology/*.hs
