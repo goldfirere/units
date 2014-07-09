@@ -1,3 +1,12 @@
+Version 2.2
+-----------
+
+* Some types of arithmetic operations are different to aid in type inference.
+For example, `*|` does not normalize its dimension list.
+
+* The types of the `derive...` TH functions now allow for deriving units
+based on composite dimensions/units.
+
 Version 2.1
 -----------
 

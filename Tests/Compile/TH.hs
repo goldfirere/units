@@ -7,8 +7,8 @@ import Data.Metrology.Poly
 import qualified Data.Metrology as Mono
 
 $(declareDimension "Length")
-$(declareCanonicalUnit "Meter" ''Length (Just "m"))
-$(declareDerivedUnit "Foot" ''Meter 0.3048 Nothing)
+$(declareCanonicalUnit "Meter" [t| Length |] (Just "m"))
+$(declareDerivedUnit "Foot" [t| Meter |] 0.3048 Nothing)
 
 type MyLCSU = MkLCSU '[(Length, Meter)]
 

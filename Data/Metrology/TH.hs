@@ -87,52 +87,47 @@ maybeMkShowInstance _ Nothing = return []
 
 -- | @declareCanonicalUnit unit_name dim (Just abbrev)@ creates a new
 -- canonical unit (that is, it is not defined in terms of other known units)
--- named @unit_name@, measuring dimension @dim@. (@dim@ must be the name of
--- the dimension /type/, not /data constructor/.) @abbrev@ will be the
+-- named @unit_name@, measuring dimension @dim@. @abbrev@ will be the
 -- abbreviation in the unit's @Show@ instance. If no abbraviation is supplied,
 -- then no @Show@ instance will be generated.
 --
 -- Example usage:
 --
--- > $(declareCanonicalUnit "Meter" ''Length (Just "m"))
-declareCanonicalUnit :: String -> Name -> Maybe String -> Q [Dec]
+-- > $(declareCanonicalUnit "Meter" [t| Length |] (Just "m"))
+declareCanonicalUnit :: String -> Q Type -> Maybe String -> Q [Dec]
 declareCanonicalUnit unit_name_str dim m_abbrev = do
-  checkIsType dim
   show_instance <- maybeMkShowInstance unit_name m_abbrev
   unit_instance <- [d| instance Unit $unit_type where
                          type BaseUnit $unit_type = Canonical
-                         type DimOfUnit $unit_type = $dim_type |]
+                         type DimOfUnit $unit_type = $dim |]
   return $ (DataD [] unit_name [] [NormalC unit_name []] [])
            : unit_instance ++ show_instance
   where
     unit_name = mkName unit_name_str
     unit_type = return $ ConT unit_name
-    dim_type = return $ ConT dim
 
 -- | @declareDerivedUnit unit_name base_unit_type ratio (Just abbrev)@ creates
--- a new derived unit, expressed in terms of @base_unit_type@ (which must be the
--- name of a /type/ not a /data constructor/). @ratio@ says how many base units
--- are in the derived unit. (Thus, if @unit_name@ is @"Minute"@ and @base_unit_type@
--- is @''Second@, then @ratio@ would be @60@.) @abbrev@, if supplied, becomes
--- the string produced in the derived unit's @Show@ instance. If no abbreviation
--- is supplied, no @Show@ instance is generated.
+-- a new derived unit, expressed in terms of @base_unit_type@. @ratio@ says
+-- how many base units are in the derived unit. (Thus, if @unit_name@ is
+-- @"Minute"@ and @base_unit_type@ is @''Second@, then @ratio@ would be @60@.)
+-- @abbrev@, if supplied, becomes the string produced in the derived unit's
+-- @Show@ instance. If no abbreviation is supplied, no @Show@ instance is
+-- generated.
 --
 -- Example usage:
 --
--- > $(declareDerivedUnit "Minute" ''Second 60 (Just "min"))
-declareDerivedUnit :: String -> Name -> Rational -> Maybe String -> Q [Dec]
+-- > $(declareDerivedUnit "Minute" [t| Second |] 60 (Just "min"))
+declareDerivedUnit :: String -> Q Type -> Rational -> Maybe String -> Q [Dec]
 declareDerivedUnit unit_name_str base_unit ratio m_abbrev = do
-  checkIsType base_unit
   show_instance <- maybeMkShowInstance unit_name m_abbrev
   unit_instance <- [d| instance Unit $unit_type where
-                         type BaseUnit $unit_type = $base_unit_type
+                         type BaseUnit $unit_type = $base_unit
                          conversionRatio _ = ratio |]
   return $ (DataD [] unit_name [] [NormalC unit_name []] [])
            : unit_instance ++ show_instance
   where
     unit_name = mkName unit_name_str
     unit_type = return $ ConT unit_name
-    base_unit_type = return $ ConT base_unit
 
 -- | @declareMonoUnit unit_name (Just abbrev)@ creates a new derived unit,
 -- intended for use without unit polymorphism. The same type stands for both
