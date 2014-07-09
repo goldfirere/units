@@ -13,4 +13,6 @@ There are two kinds of test:
    the module. Then, this `tests` should be imported and run from within
    `Tests.Main`, following the style there.
 
-To run the tests, just say `cabal test`.
+To run the tests, just say `cabal test`. You will need to say `git submodule
+update --init` to download the contents of `units-defs`, necessary for testing
+purposes.
