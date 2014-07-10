@@ -229,14 +229,14 @@ qNegate (Qu x) = Qu (negate x)
 
 infixl 7 *| , |* , |/
 -- | Multiply a quantity by a scalar from the left
-(*|) :: Num n => n -> Qu b l n -> Qu (Normalize b) l n
+(*|) :: Num n => n -> Qu b l n -> Qu b l n
 a *| (Qu b) = Qu (a * b)
 
 -- | Multiply a quantity by a scalar from the right
-(|*) :: Num n => Qu a l n -> n -> Qu (Normalize a) l n
+(|*) :: Num n => Qu a l n -> n -> Qu a l n
 (Qu a) |* b = Qu (a * b)
 
 -- | Divide a quantity by a scalar
-(|/) :: Fractional n => Qu a l n -> n -> Qu (Normalize a) l n
+(|/) :: Fractional n => Qu a l n -> n -> Qu a l n
 (Qu a) |/ b = Qu (a / b)
 

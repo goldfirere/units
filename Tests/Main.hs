@@ -34,6 +34,7 @@ import qualified Tests.Parser
 import qualified Tests.PhysicalConstants
 import qualified Tests.Show
 import qualified Tests.Travel
+import qualified Tests.Vector
 
 import Test.Tasty
 
@@ -52,4 +53,5 @@ tests =
   , Tests.PhysicalConstants.tests
   , Tests.Show.tests
   , Tests.Travel.tests
+  , Tests.Vector.tests    
   ]

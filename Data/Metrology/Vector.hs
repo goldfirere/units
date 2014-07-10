@@ -163,19 +163,19 @@ infixl 7 |*^|, |^*|, |^/|
 
 infixl 7 |/
 -- | Divide a quantity by a scalar
-(|/) :: (VectorSpace n, Fractional (Scalar n)) => Qu a l n -> Scalar n -> Qu (Normalize a) l n
+(|/) :: (VectorSpace n, Fractional (Scalar n)) => Qu a l n -> Scalar n -> Qu a l n
 (Qu a) |/ b = Qu (a ^/ b)
 -- The above function should *not* need to be privileged. But, GHC can't figure
 -- out that a @@- '[] ~ a. Urgh.
 
 infixl 7 *| , |*
 -- | Multiply a quantity by a scalar from the left
-(*|) :: VectorSpace n => Scalar n -> Qu b l n -> Qu (Normalize b) l n
-a *| b = quantity a |*^| b
+(*|) :: VectorSpace n => Scalar n -> Qu b l n -> Qu b l n
+a *| (Qu b) =  Qu (a *^ b)
 
 -- | Multiply a quantity by a scalar from the right
-(|*) :: VectorSpace n => Qu a l n -> Scalar n -> Qu (Normalize a) l n
-a |* b = a |^*| quantity b
+(|*) :: VectorSpace n => Qu a l n -> Scalar n -> Qu a l n
+(Qu a) |* b = Qu (a ^* b)
 
 ---------------------------------------
 -- Multiplicative operations
