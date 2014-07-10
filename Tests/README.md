@@ -8,8 +8,9 @@ There are two kinds of test:
    `Tests.Main`, in alphabetical order with the others.
 
  - Other tests test both compilation and some functionality. These use the
-   `tasty` testing framework, avaiable on Hackage. Each of these tests should
-   export a `tests :: TestTree` definition which contain all the tests in
+   [`tasty`](http://hackage.haskell.org/package/tasty) testing framework,
+   avaiable on Hackage. Each of these tests should export a 
+   `tests :: TestTree` definition which contain all the tests in
    the module. Then, this `tests` should be imported and run from within
    `Tests.Main`, following the style there.
 
