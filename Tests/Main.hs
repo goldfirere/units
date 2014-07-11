@@ -28,6 +28,7 @@ import qualified Tests.Compile.T23               ()
 
 import qualified Tests.Imperial
 import qualified Tests.LennardJones
+import qualified Tests.Linearity
 import qualified Tests.OffSystemAdd
 import qualified Tests.OffSystemCSU
 import qualified Tests.Parser
@@ -47,6 +48,7 @@ tests =
   testGroup "Tests"
   [ Tests.Imperial.tests
   , Tests.LennardJones.tests
+  , Tests.Linearity.tests    
   , Tests.OffSystemAdd.tests
   , Tests.OffSystemCSU.tests
   , Tests.Parser.tests
