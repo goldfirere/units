@@ -120,7 +120,7 @@ instance Unit Liter where
   type BaseUnit Liter = (Centi :@ Meter) :^ Three
   conversionRatio _ = 1000
 instance Show Liter where
-  show _ = "l"
+  show _ = "L"
 
 type Litre = Liter
 pattern Litre = Liter
