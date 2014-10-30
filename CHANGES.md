@@ -7,6 +7,8 @@ For example, `*|` does not normalize its dimension list.
 * The types of the `derive...` TH functions now allow for deriving units
 based on composite dimensions/units.
 
+* New TH function to help declare constants, called `declareConstant`.
+
 Version 2.1
 -----------
 
