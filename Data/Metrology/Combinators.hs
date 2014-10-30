@@ -28,7 +28,8 @@ infixl 7 :*
 data u1 :* u2 = u1 :* u2
 
 instance (Dimension d1, Dimension d2) => Dimension (d1 :* d2) where
-  type DimFactorsOf (d1 :* d2) = (DimFactorsOf d1) @+ (DimFactorsOf d2)
+  type DimFactorsOf (d1 :* d2)
+    = Normalize ((DimFactorsOf d1) @+ (DimFactorsOf d2))
 
 instance (Unit u1, Unit u2) => Unit (u1 :* u2) where
 
@@ -37,7 +38,8 @@ instance (Unit u1, Unit u2) => Unit (u1 :* u2) where
   type DimOfUnit (u1 :* u2) = DimOfUnit u1 :* DimOfUnit u2
   conversionRatio _ = undefined -- this should never be called
 
-  type UnitFactorsOf (u1 :* u2) = (UnitFactorsOf u1) @+ (UnitFactorsOf u2)
+  type UnitFactorsOf (u1 :* u2)
+    = Normalize ((UnitFactorsOf u1) @+ (UnitFactorsOf u2))
   canonicalConvRatio _ = canonicalConvRatio (undefined :: u1) *
                          canonicalConvRatio (undefined :: u2)
 
@@ -53,13 +55,15 @@ infixl 7 :/
 data u1 :/ u2 = u1 :/ u2
 
 instance (Dimension d1, Dimension d2) => Dimension (d1 :/ d2) where
-  type DimFactorsOf (d1 :/ d2) = (DimFactorsOf d1) @- (DimFactorsOf d2)
+  type DimFactorsOf (d1 :/ d2)
+    = Normalize ((DimFactorsOf d1) @- (DimFactorsOf d2))
 
 instance (Unit u1, Unit u2) => Unit (u1 :/ u2) where
   type BaseUnit (u1 :/ u2) = Canonical
   type DimOfUnit (u1 :/ u2) = DimOfUnit u1 :/ DimOfUnit u2
   conversionRatio _ = undefined -- this should never be called
-  type UnitFactorsOf (u1 :/ u2) = (UnitFactorsOf u1) @- (UnitFactorsOf u2)
+  type UnitFactorsOf (u1 :/ u2)
+    = Normalize ((UnitFactorsOf u1) @- (UnitFactorsOf u2))
   canonicalConvRatio _ = canonicalConvRatio (undefined :: u1) /
                          canonicalConvRatio (undefined :: u2)
 
@@ -75,14 +79,16 @@ infixr 8 :^
 data unit :^ (power :: Z) = unit :^ Sing power
 
 instance Dimension dim => Dimension (dim :^ power) where
-  type DimFactorsOf (dim :^ power) = (DimFactorsOf dim) @* power
+  type DimFactorsOf (dim :^ power)
+    = Normalize ((DimFactorsOf dim) @* power)
 
 instance (Unit unit, SingI power) => Unit (unit :^ power) where
   type BaseUnit (unit :^ power) = Canonical
   type DimOfUnit (unit :^ power) = DimOfUnit unit :^ power
   conversionRatio _ = undefined
 
-  type UnitFactorsOf (unit :^ power) = (UnitFactorsOf unit) @* power
+  type UnitFactorsOf (unit :^ power)
+    = Normalize ((UnitFactorsOf unit) @* power)
   canonicalConvRatio _ = canonicalConvRatio (undefined :: unit) ^^ (szToInt (sing :: Sing power))
 
 type instance DefaultUnitOfDim (d :^ z) = DefaultUnitOfDim d :^ z
