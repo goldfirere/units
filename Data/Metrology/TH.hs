@@ -17,7 +17,8 @@
 module Data.Metrology.TH (
   evalType,
   declareDimension, declareCanonicalUnit, declareDerivedUnit, declareMonoUnit,
-
+  declareConstant,
+  
   -- for internal use only
   checkIsType                                    
   ) where
@@ -30,6 +31,7 @@ import Language.Haskell.TH.Desugar.Lift ()   -- need Lift Rational
 import Data.Metrology.Dimensions
 import Data.Metrology.Units
 import Data.Metrology.LCSU
+import Data.Metrology.Poly
 
 -- | "Evaluates" a type as far as it can. This is useful, say, in instance
 -- declarations:
@@ -168,3 +170,36 @@ declareMonoUnit unit_name_str m_abbrev = do
   where
     unit_name = mkName unit_name_str
     unit_type = return $ ConT unit_name
+
+-- | @declareConstant const_name value unit_type@ creates a new numerical
+-- constant, named @const_name@. Its numerical value is @value@ expressed
+-- in units given by @unit_type@. The constant is polymorphic in both its
+-- LCSU and numerical representation. For example,
+--
+-- > declareConstant "gravity_g" 9.80665 [t| Meter :/ Second :^ Two |]
+--
+-- yields
+--
+-- > gravity_g :: ( Fractional n
+-- >              , CompatibleUnit lcsu (Meter :/ Second :^ Two) )
+-- >           => MkQu_ULN (Meter :/ Second :^ Two) lcsu n
+-- > gravity_g = 9.80665 % (undefined :: Meter :/ Second :^ Two)
+declareConstant :: String -> Rational -> Q Type -> Q [Dec]
+declareConstant name value q_unit_type = do
+  unit_type <- q_unit_type
+  lcsu_name <- newName "lcsu"
+  n_name <- newName "n"
+  let lcsu = VarT lcsu_name
+      n    = VarT n_name
+      const_name = mkName name
+      const_type = ForallT [PlainTV lcsu_name, PlainTV n_name]
+                           [ ClassP ''Fractional [n]
+                           , ClassP ''CompatibleUnit [lcsu, unit_type] ] $
+                   ConT ''MkQu_ULN `AppT` unit_type `AppT` lcsu `AppT` n
+      ty_sig = SigD const_name const_type
+      dec    = ValD (VarP const_name) (NormalB $
+                                       VarE '(%) `AppE` LitE (RationalL value)
+                                                 `AppE` SigE (VarE 'undefined)
+                                                             unit_type) []
+  return [ty_sig, dec]
+                   
