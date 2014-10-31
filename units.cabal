@@ -80,8 +80,8 @@ library
     Data.Metrology.Parser.Internal
 
     -- cabal now recommends that TH be explicitly listed in cabal files
-  default-extensions: TemplateHaskell
-  default-language:   Haskell2010
+  other-extensions: TemplateHaskell
+  default-language: Haskell2010
 
 test-suite main
   type:             exitcode-stdio-1.0
