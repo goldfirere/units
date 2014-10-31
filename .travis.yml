@@ -3,10 +3,14 @@
 
 # The following enables several GHC versions to be tested; often it's enough to test only against the last release in a major GHC version. Feel free to omit lines listings versions you don't need/want testing for.
 env:
- - GHCVER=7.8.2 SINGLETONS=" == 0.9.*"
- - GHCVER=7.8.2 SINGLETONS=" == 0.10.*"
- - GHCVER=7.8.2 SINGLETONS=""          # with SINGLETONS blank, we get "head"
+ - GHCVER=7.8.3 SINGLETONS=" == 0.9.*"
+ - GHCVER=7.8.3 SINGLETONS=" == 0.10.*"
+ - GHCVER=7.8.3 SINGLETONS=""          # with SINGLETONS blank, we get "head"
  - GHCVER=head SINGLETONS=""
+
+matrix:
+  allow_failures:
+    - env: GHCVER=head SINGLETONS=""
 
 # Note: the distinction between `before_install` and `install` is not important.
 before_install:
