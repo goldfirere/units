@@ -4,13 +4,12 @@
    This file defines a parser for unit expressions.
 -}
 
-{-# LANGUAGE LambdaCase, TemplateHaskell, NoMonomorphismRestriction,
-             FlexibleContexts, RankNTypes #-}
+{-# LANGUAGE LambdaCase, NoMonomorphismRestriction,
+             FlexibleContexts, RankNTypes, Safe #-}
 
 module Data.Metrology.Parser.Internal (
   UnitExp(..), parseUnit,
   
-  parseUnitExp, parseUnitType, 
   SymbolTable(..), mkSymbolTable,
   
   -- only for testing purposes:
@@ -28,10 +27,6 @@ import Control.Monad.Reader
 import Control.Arrow       hiding ( app)
 import Data.Maybe
 import Data.Char
-
-import Data.Metrology
-
-import Language.Haskell.TH hiding ( Pred )
 
 ----------------------------------------------------------------------
 -- Basic combinators
@@ -159,7 +154,7 @@ type UnitTable u = Map.Map String u
 data SymbolTable pre u = SymbolTable { prefixTable :: PrefixTable pre
                                      , unitTable   :: UnitTable u
                                      }
-  deriving Show
+--  deriving Show
 
 -- build a Map from a list, checking for ambiguity
 unambFromList :: (Ord a, Show b) => [(a,b)] -> Either [(a,[String])] (Map.Map a b)
@@ -352,43 +347,4 @@ parseUnit :: (Show pre, Show u)
 parseUnit tab s = left show $ do
   toks <- lex s
   flip runReader tab $ runParserT (consumeAll parser) () "" toks
-
-----------------------------------------------------------------------
--- TH conversions
-----------------------------------------------------------------------
-
-parseUnitExp :: SymbolTable Name Name -> String -> Either String Exp
-parseUnitExp tab s = to_exp `liftM` parseUnit tab s   -- the Either monad
-  where
-    to_exp Unity                  = ConE 'Number
-    to_exp (Unit (Just pre) unit) = ConE '(:@) `AppE` of_type pre `AppE` of_type unit
-    to_exp (Unit Nothing unit)    = of_type unit
-    to_exp (Mult e1 e2)           = ConE '(:*) `AppE` to_exp e1 `AppE` to_exp e2
-    to_exp (Div e1 e2)            = ConE '(:/) `AppE` to_exp e1 `AppE` to_exp e2
-    to_exp (Pow e i)              = ConE '(:^) `AppE` to_exp e `AppE` mk_sing i
-
-    of_type :: Name -> Exp
-    of_type n = (VarE 'undefined) `SigE` (ConT n)
-
-    mk_sing :: Integer -> Exp
-    mk_sing n
-      | n < 0     = VarE 'sPred `AppE` mk_sing (n + 1)
-      | n > 0     = VarE 'sSucc `AppE` mk_sing (n - 1)
-      | otherwise = VarE 'sZero
-
-parseUnitType :: SymbolTable Name Name -> String -> Either String Type
-parseUnitType tab s = to_type `liftM` parseUnit tab s   -- the Either monad
-  where
-    to_type Unity                  = ConT ''Number
-    to_type (Unit (Just pre) unit) = ConT ''(:@) `AppT` ConT pre `AppT` ConT unit
-    to_type (Unit Nothing unit)    = ConT unit
-    to_type (Mult e1 e2)           = ConT ''(:*) `AppT` to_type e1 `AppT` to_type e2
-    to_type (Div e1 e2)            = ConT ''(:/) `AppT` to_type e1 `AppT` to_type e2
-    to_type (Pow e i)              = ConT ''(:^) `AppT` to_type e `AppT` mk_z i
-
-    mk_z :: Integer -> Type
-    mk_z n
-      | n < 0     = ConT ''Pred `AppT` mk_z (n + 1)
-      | n > 0     = ConT ''Succ `AppT` mk_z (n - 1)
-      | otherwise = ConT 'Zero   -- single quote as it's a data constructor!
 

@@ -1,5 +1,3 @@
-{-# LANGUAGE TemplateHaskell, CPP #-}
-
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.Metrology.Parser
@@ -44,6 +42,9 @@
 -- @dam@ is ambiguous like this.
 -----------------------------------------------------------------------------
 
+{-# LANGUAGE TemplateHaskell, CPP #-}
+{-# OPTIONS_HADDOCK prune #-}
+
 module Data.Metrology.Parser (
   -- * Quasiquoting interface
   makeQuasiQuoter, allUnits, allPrefixes,
@@ -55,12 +56,15 @@ module Data.Metrology.Parser (
   -- necessary.
   parseUnit,
   UnitExp(..), SymbolTable,
-  mkSymbolTable
+  mkSymbolTable,
+
+  -- for internal use only
+  parseUnitExp, parseUnitType
   ) where
 
 import Prelude hiding ( exp )
 
-import Language.Haskell.TH
+import Language.Haskell.TH hiding ( Pred )
 import Language.Haskell.TH.Quote
 import Language.Haskell.TH.Desugar.Lift  ()  -- get the Lift Name instance
 import Data.Maybe
@@ -69,6 +73,49 @@ import Control.Monad
 import Data.Metrology.Parser.Internal
 import Data.Metrology
 import Data.Metrology.TH
+
+----------------------------------------------------------------------
+-- TH conversions
+----------------------------------------------------------------------
+
+parseUnitExp :: SymbolTable Name Name -> String -> Either String Exp
+parseUnitExp tab s = to_exp `liftM` parseUnit tab s   -- the Either monad
+  where
+    to_exp Unity                  = ConE 'Number
+    to_exp (Unit (Just pre) unit) = ConE '(:@) `AppE` of_type pre `AppE` of_type unit
+    to_exp (Unit Nothing unit)    = of_type unit
+    to_exp (Mult e1 e2)           = ConE '(:*) `AppE` to_exp e1 `AppE` to_exp e2
+    to_exp (Div e1 e2)            = ConE '(:/) `AppE` to_exp e1 `AppE` to_exp e2
+    to_exp (Pow e i)              = ConE '(:^) `AppE` to_exp e `AppE` mk_sing i
+
+    of_type :: Name -> Exp
+    of_type n = (VarE 'undefined) `SigE` (ConT n)
+
+    mk_sing :: Integer -> Exp
+    mk_sing n
+      | n < 0     = VarE 'sPred `AppE` mk_sing (n + 1)
+      | n > 0     = VarE 'sSucc `AppE` mk_sing (n - 1)
+      | otherwise = VarE 'sZero
+
+parseUnitType :: SymbolTable Name Name -> String -> Either String Type
+parseUnitType tab s = to_type `liftM` parseUnit tab s   -- the Either monad
+  where
+    to_type Unity                  = ConT ''Number
+    to_type (Unit (Just pre) unit) = ConT ''(:@) `AppT` ConT pre `AppT` ConT unit
+    to_type (Unit Nothing unit)    = ConT unit
+    to_type (Mult e1 e2)           = ConT ''(:*) `AppT` to_type e1 `AppT` to_type e2
+    to_type (Div e1 e2)            = ConT ''(:/) `AppT` to_type e1 `AppT` to_type e2
+    to_type (Pow e i)              = ConT ''(:^) `AppT` to_type e `AppT` mk_z i
+
+    mk_z :: Integer -> Type
+    mk_z n
+      | n < 0     = ConT ''Pred `AppT` mk_z (n + 1)
+      | n > 0     = ConT ''Succ `AppT` mk_z (n - 1)
+      | otherwise = ConT 'Zero   -- single quote as it's a data constructor!
+
+----------------------------------------------------------------------
+-- QuasiQuoters
+----------------------------------------------------------------------
 
 emptyQQ :: QuasiQuoter
 emptyQQ = QuasiQuoter { quoteExp = \_ -> fail "No quasi-quoter for expressions"
@@ -115,6 +162,10 @@ makeQuasiQuoter qq_name_str prefix_names unit_names = do
       prefix_pairs <- mapM mk_pair prefix_names
       unit_pairs   <- mapM mk_pair unit_names
       [| mkSymbolTable $( return $ ListE prefix_pairs ) $( return $ ListE unit_pairs ) |]
+
+----------------------------------------------------------------------
+-- Getting instances
+----------------------------------------------------------------------
 
 getInstanceNames :: Name -> Q [Name]
 getInstanceNames class_name = do
