@@ -56,6 +56,7 @@ library
                , syb >= 0.3
                , containers >= 0.4
                , parsec >= 3
+               , units-parser >= 0.1
   exposed-modules:    
     Data.Metrology, 
     Data.Metrology.Internal,
@@ -76,8 +77,7 @@ library
     Data.Metrology.Dimensions,
     Data.Metrology.Units,
     Data.Metrology.Combinators,
-    Data.Metrology.Validity,
-    Data.Metrology.Parser.Internal
+    Data.Metrology.Validity
 
     -- cabal now recommends that TH be explicitly listed in cabal files
   other-extensions: TemplateHaskell
@@ -101,6 +101,7 @@ test-suite main
                   , syb >= 0.3
                   , containers >= 0.4
                   , parsec >= 3
+                  , units-parser >= 0.1
   hs-source-dirs:   units-defs, .
 
     -- optimize compile time, not runtime!
