@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Metrology.Imperial.US.Units.Survey
+-- Module      :  Data.Units.US.Survey
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -23,7 +23,7 @@
 -- http://nist.gov/pml/wmd/pubs/upload/appc-14-hb44-final.pdf
 -----------------------------------------------------------------------------
 
-module Data.Metrology.Imperial.US.Units.Survey where
+module Data.Units.US.Survey where
 
 import Data.Metrology
 import Data.Metrology.TH
@@ -38,6 +38,8 @@ declareDerivedUnit "Chain"   [t| Rod      |] 4           (Just "ch")
 declareDerivedUnit "Furlong" [t| Chain    |] 10          (Just "fur")
 declareDerivedUnit "Mile"    [t| Furlong  |] 8           (Just "mi")
 declareDerivedUnit "League"  [t| Mile     |] 3           (Just "lea")
+
+-- | Includes all the lengths above.
 surveyLengths :: [Name]
 surveyLengths = [ ''Foot, ''Link, ''Rod, ''Chain, ''Furlong
                 , ''Mile, ''League ]
@@ -45,5 +47,7 @@ surveyLengths = [ ''Foot, ''Link, ''Rod, ''Chain, ''Furlong
 declareDerivedUnit "Acre"     [t| Foot :^ Two |] 43560 (Just "acre")
 declareDerivedUnit "Section"  [t| Acre |]        640   (Just "section")
 declareDerivedUnit "Township" [t| Section |]     36    (Just "twp")
+
+-- | Includes all the areas above.
 surveyAreas :: [Name]
 surveyAreas = [ ''Acre, ''Section, ''Township ]

@@ -25,7 +25,7 @@ module Data.Metrology.SI.Mono (
   ) where
 
 import Data.Metrology.SI.MonoTypes
-import Data.Metrology.SI.Units
+import Data.Units.SI.Units
 import Data.Metrology.SI.Prefixes
 import qualified Data.Metrology.SI.Dims as D
 import Data.Metrology

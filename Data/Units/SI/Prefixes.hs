@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Metrology.SI.Prefixes
+-- Module      :  Data.Units.SI.Prefixes
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -12,10 +12,10 @@
 -- Defines prefixes from the SI standard at <http://www.bipm.org/en/si/>
 -----------------------------------------------------------------------------
 
-module Data.Metrology.SI.Prefixes where
+module Data.Units.SI.Prefixes where
 
 import Language.Haskell.TH ( Name )
-import Data.Metrology
+import Data.Metrology.Poly
 
 -- | 10^1
 data Deca = Deca

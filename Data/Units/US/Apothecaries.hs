@@ -2,14 +2,15 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Metrology.Imperial.US.Units.DryVolume
+-- Module      :  Data.Units.US.Apothecaries
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
--- This module defines dry volume measures as used in the USA.
+-- This module defines apothecaries' measures of mass. These measures
+-- are rarely used.
 --
 -- Included are all units mentioned here:
 -- http://en.wikipedia.org/wiki/United_States_customary_units
@@ -21,24 +22,25 @@
 -- http://nist.gov/pml/wmd/pubs/upload/appc-14-hb44-final.pdf
 -----------------------------------------------------------------------------
 
-module Data.Metrology.Imperial.US.Units.DryVolume where
+module Data.Units.US.Apothecaries (
+  module Data.Units.US.Apothecaries,
 
-import Data.Metrology
+  -- | The apothecaries' grain is the same as the avoirdupois grain.
+  Grain(..),
+
+  -- | The apothecaries' ounce and pound are the troy ounce and pound.
+  Ounce(..), Pound(..)
+  ) where
+
 import Data.Metrology.TH
-import Data.Metrology.Imperial.US.Units
+import Data.Units.US.Avoirdupois ( Grain(..) )
+import Data.Units.US.Troy ( Ounce(..), Pound(..) )
 
 import Language.Haskell.TH
 
-declareDerivedUnit "Gallon" [t| Inch :^ Three |] 268.8025 (Just "gal")
-declareDerivedUnit "Quart"  [t| Gallon        |] (1/4)    (Just "qt")
-declareDerivedUnit "Pint"   [t| Quart         |] (1/2)    (Just "pt")
-declareDerivedUnit "Peck"   [t| Gallon        |] 2        (Just "pk")
-declareDerivedUnit "Bushel" [t| Peck          |] 4        (Just "bu")
-declareDerivedUnit "Barrel" [t| Inch :^ Three |] 7056     (Just "bbl")
-declareDerivedUnit "Cord"   [t| Foot :^ Three |] 128      (Just "cd")
+declareDerivedUnit "Scruple" [t| Grain |] 20   (Just "sap")
+declareDerivedUnit "Dram"    [t| Grain |] 60   (Just "drap")
 
-declareDerivedUnit "CranberryBarrel" [t| Inch :^ Three |] 5826 (Just "bbl")
-
-dryVolumeMeasures :: [Name]
-dryVolumeMeasures = [ ''Pint, ''Quart, ''Gallon, ''Peck, ''Bushel
-                    , ''Barrel, ''Cord ]
+-- | Includes 'Grain', 'Scruple', 'Dram', 'Ounce', and 'Pound'.
+apothecariesMassMeasures :: [Name]
+apothecariesMassMeasures = [ ''Grain, ''Scruple, ''Dram, ''Ounce, ''Pound ]

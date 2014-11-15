@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Metrology.Imperial.US
+-- Module      :  Data.Units.US
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -26,7 +26,7 @@
 -- http://nist.gov/pml/wmd/pubs/upload/appc-14-hb44-final.pdf
 -----------------------------------------------------------------------------
 
-module Data.Metrology.Imperial.US (
+module Data.Units.US (
   -- * Lengths
   Angstrom(..), Mil(..), Point(..), Pica(..),
   Inch(..), Foot(..), Yard(..), Mile(..), NauticalMile(..),
@@ -35,7 +35,7 @@ module Data.Metrology.Imperial.US (
   Knot(..),
   
   -- * Area
-  Acre(..),
+  Survey.Acre(..),
 
   -- * Volume
   -- | These are all /liquid/ measures. Solid measures are /different/.
@@ -46,4 +46,17 @@ module Data.Metrology.Imperial.US (
   -- | These are all in the avoirdupois system
   Avdp.Ounce(..), Avdp.Pound(..), Avdp.Ton(..),
 
-  -- *
+  -- * Pressure
+  Atmosphere(..), Bar(..),
+
+  -- * Energy
+  FoodCalorie(..), Therm(..), Btu(..),
+
+  -- * Power
+  Horsepower(..)
+  ) where
+
+import Data.Units.US.Misc
+import qualified Data.Units.US.Survey      as Survey
+import qualified Data.Units.US.Liquid      as Liq
+import qualified Data.Units.US.Avoirdupois as Avdp

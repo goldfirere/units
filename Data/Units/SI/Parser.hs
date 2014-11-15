@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Metrology.SI.Parser
+-- Module      :  Data.Units.SI.Parser
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -20,10 +20,10 @@
 -- of these unit expressions.
 -----------------------------------------------------------------------------
 
-module Data.Metrology.SI.Parser where
+module Data.Units.SI.Parser ( si ) where
 
 import Data.Metrology.Parser
-import Data.Metrology.SI.Prefixes
-import Data.Metrology.SI.Units
+import Data.Units.SI.Prefixes
+import Data.Units.SI
 
 makeQuasiQuoter "si" siPrefixes siUnits

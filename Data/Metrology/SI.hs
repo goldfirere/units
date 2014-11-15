@@ -17,9 +17,9 @@
 -----------------------------------------------------------------------------
 
 module Data.Metrology.SI (
-  module Data.Metrology.SI.Mono
+  module Data.Metrology.SI.Mono,
+  si
   ) where
 
 import Data.Metrology.SI.Mono
-
-
+import Data.Units.SI.Parser

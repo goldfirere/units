@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Metrology.Imperial.US.Units.Liquid
+-- Module      :  Data.Units.US.Liquid
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -23,11 +23,11 @@
 -- http://nist.gov/pml/wmd/pubs/upload/appc-14-hb44-final.pdf
 -----------------------------------------------------------------------------
 
-module Data.Metrology.Imperial.US.Units.Liquid where
+module Data.Units.US.Liquid where
 
 import Data.Metrology
 import Data.Metrology.TH
-import Data.Metrology.Imperial.US.Units
+import Data.Units.US.Misc
 
 import Language.Haskell.TH
 
@@ -49,11 +49,12 @@ declareDerivedUnit "Hogshead"   [t| Gallon        |] 63      (Just "hogshead")
 declareDerivedUnit "Barrel"     [t| Hogshead      |] (1/2)   (Just "bbl")
 declareDerivedUnit "OilBarrel"  [t| Gallon        |] 42      (Just "bbl")
 
--- ^ As shown on Wikipedia: http://en.wikipedia.org/wiki/United_States_customary_units
+-- | As shown on Wikipedia: http://en.wikipedia.org/wiki/United_States_customary_units
 commonLiquidMeasures :: [Name]
 commonLiquidMeasures = [ ''Teaspoon, ''Tablespoon, ''FluidOunce, ''Cup, ''Pint
                        , ''Quart, ''Gallon ]
 
+-- | Includes the rest of the measures in this file.
 otherLiquidMeasures :: [Name]
 otherLiquidMeasures = [ ''Minim, ''Dram, ''Shot, ''Gill, ''Barrel
                       , ''OilBarrel, ''Hogshead ]

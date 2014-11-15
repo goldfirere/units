@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Metrology.Imperial.US.Units.Avoirdupois
+-- Module      :  Data.Units.US.Avoirdupois
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -22,9 +22,8 @@
 -- http://nist.gov/pml/wmd/pubs/upload/appc-14-hb44-final.pdf
 -----------------------------------------------------------------------------
 
-module Data.Metrology.Imperial.US.Units.Avoirdupois where
+module Data.Units.US.Avoirdupois where
 
-import Data.Metrology
 import Data.Metrology.TH
 import Data.Metrology.SI.Units ( Gram )
 
@@ -40,9 +39,12 @@ declareDerivedUnit "LongHundredweight" [t| Pound |] 112          (Just "longcwt"
 declareDerivedUnit "Ton"               [t| Pound |] 2000         (Just "ton")
 declareDerivedUnit "LongTon"           [t| Pound |] 2240         (Just "longton")
 
+-- | Includes 'Ounce', 'Pound', 'Ton'
 commonMassMeasures :: [Name]
 commonMassMeasures = [ ''Ounce, ''Pound, ''Ton]
 
+-- | Includes 'Grain', 'Dram', 'Hundredweight', 'LongHundredweight',
+-- and 'LongTon'
 otherMassMeasures :: [Name]
 otherMassMeasures = [ ''Grain, ''Dram, ''Hundredweight, ''LongHundredweight
                     , ''LongTon ]

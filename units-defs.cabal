@@ -1,5 +1,5 @@
 name:           units-defs
-version:        1.1
+version:        1.2
 cabal-version:  >= 1.10
 synopsis:       Definitions for use with the units package
 homepage:       http://github.com/goldfirere/units-defs
@@ -22,25 +22,36 @@ description:
 source-repository this
   type:     git
   location: https://github.com/goldfirere/units-defs.git
-  tag:      v1.1
+  tag:      v1.2
 
 library
   build-depends:      
       base >= 4.7 && < 5,
-      units >= 2.1 && < 3,
+      units >= 2.2 && < 3,
       template-haskell
   exposed-modules:
-    Data.Metrology.SI,
-    Data.Metrology.SI.Mono,
-    Data.Metrology.SI.Poly,
-    Data.Metrology.SI.Prefixes,
-    Data.Metrology.SI.MonoTypes, 
-    Data.Metrology.SI.Units,
-    Data.Metrology.SI.Dims,
-    Data.Metrology.SI.PolyTypes,
+    Data.Metrology.SI
+    Data.Metrology.SI.Mono
+    Data.Metrology.SI.Poly
+    Data.Metrology.SI.Prefixes
+    Data.Metrology.SI.MonoTypes
+    Data.Metrology.SI.Units
+    Data.Metrology.SI.Dims
+    Data.Metrology.SI.PolyTypes
     Data.Metrology.SI.Parser
---    Data.Metrology.Imperial.Types
---    Data.Metrology.Imperial.Units
+    Data.Units.SI
+    Data.Units.CGS
+    Data.Units.US
+    Data.Units.US.Apothecaries
+    Data.Units.US.Avoirdupois
+    Data.Units.US.DryVolume
+    Data.Units.US.Liquid
+    Data.Units.US.Misc
+    Data.Units.US.Survey
+    Data.Units.US.Troy
+    Data.Units.PreciousMetals
+    Data.Constants.Mechanics
+    Data.Constants.Math
 
   default-language:   Haskell2010
   default-extensions: TemplateHaskell

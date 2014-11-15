@@ -2,7 +2,7 @@
 
 -----------------------------------------------------------------------------
 -- |
--- Module      :  Data.Metrology.SI.Dims
+-- Module      :  Data.Dimensions.SI
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
 -- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
@@ -13,30 +13,17 @@
 -- <http://www.bipm.org/utils/common/documents/jcgm/JCGM_200_2012.pdf>.
 -----------------------------------------------------------------------------
 
-module Data.Metrology.SI.Dims where
+module Data.Dimensions.SI where
 
-import Data.Metrology
+import Data.Metrology.Poly
 
-data Length = Length
-instance Dimension Length
-
-data Mass = Mass
-instance Dimension Mass
-
-data Time = Time
-instance Dimension Time
-
-data Current = Current
-instance Dimension Current
-
-data Temperature = Temperature
-instance Dimension Temperature
-
-data AmountOfSubstance = AmountOfSubstance
-instance Dimension AmountOfSubstance
-
-data LuminousIntensity = LuminousIntensity
-instance Dimension LuminousIntensity
+declareDimension "Length"
+declareDimension "Mass"
+declareDimension "Time"
+declareDimension "Current"
+declareDimension "Temperature"
+declareDimension "AmountOfSubstance"
+declareDimension "LuminousIntensity"
 
 type Area                = Length            :^ Two
 type Volume              = Length            :^ Three
