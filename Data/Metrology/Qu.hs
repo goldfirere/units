@@ -211,12 +211,15 @@ deriving instance Ord n => Ord (Qu d l n)
 --- Instances for dimensionless quantities ------------------
 -------------------------------------------------------------
 
-deriving instance Num n => Num (Qu '[] l n)
-deriving instance Real n => Real (Qu '[] l n)
-deriving instance Fractional n => Fractional (Qu '[] l n)
-deriving instance Floating n => Floating (Qu '[] l n)
-deriving instance RealFrac n => RealFrac (Qu '[] l n)
-deriving instance RealFloat n => RealFloat (Qu '[] l n)
+-- Express the condition on `d` via a constraint, so that the
+-- requirement for the Num class can inform the choice of
+-- dimension. See #35.
+deriving instance (d ~ '[], Num n)        => Num (Qu d l n)
+deriving instance (d ~ '[], Real n)       => Real (Qu d l n)
+deriving instance (d ~ '[], Fractional n) => Fractional (Qu d l n)
+deriving instance (d ~ '[], Floating n)   => Floating (Qu d l n)
+deriving instance (d ~ '[], RealFrac n)   => RealFrac (Qu d l n)
+deriving instance (d ~ '[], RealFloat n)  => RealFloat (Qu d l n)
 
 -------------------------------------------------------------
 --- Combinators ---------------------------------------------
