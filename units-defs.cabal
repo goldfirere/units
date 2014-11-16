@@ -1,5 +1,5 @@
 name:           units-defs
-version:        1.2
+version:        2.0
 cabal-version:  >= 1.10
 synopsis:       Definitions for use with the units package
 homepage:       http://github.com/goldfirere/units-defs
@@ -22,7 +22,7 @@ description:
 source-repository this
   type:     git
   location: https://github.com/goldfirere/units-defs.git
-  tag:      v1.2
+  tag:      v2.0
 
 library
   build-depends:      
@@ -30,16 +30,17 @@ library
       units >= 2.2 && < 3,
       template-haskell
   exposed-modules:
+    Data.Constants.Mechanics
+    Data.Constants.Math
+    Data.Dimensions.SI
     Data.Metrology.SI
     Data.Metrology.SI.Mono
     Data.Metrology.SI.Poly
-    Data.Metrology.SI.Prefixes
     Data.Metrology.SI.MonoTypes
-    Data.Metrology.SI.Units
-    Data.Metrology.SI.Dims
     Data.Metrology.SI.PolyTypes
-    Data.Metrology.SI.Parser
     Data.Units.SI
+    Data.Units.SI.Prefixes
+    Data.Units.SI.Parser
     Data.Units.CGS
     Data.Units.US
     Data.Units.US.Apothecaries
@@ -50,9 +51,7 @@ library
     Data.Units.US.Survey
     Data.Units.US.Troy
     Data.Units.PreciousMetals
-    Data.Constants.Mechanics
-    Data.Constants.Math
 
   default-language:   Haskell2010
-  default-extensions: TemplateHaskell
+  other-extensions:   TemplateHaskell
   ghc-options:        -Wall

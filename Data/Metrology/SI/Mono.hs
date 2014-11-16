@@ -19,17 +19,17 @@
 
 module Data.Metrology.SI.Mono (
   module Data.Metrology.SI.MonoTypes,
-  module Data.Metrology.SI.Units,
-  module Data.Metrology.SI.Prefixes,
-  module Data.Metrology.SI.Parser
+  module Data.Units.SI,
+  module Data.Units.SI.Prefixes,
+  module Data.Units.SI.Parser
   ) where
 
 import Data.Metrology.SI.MonoTypes
-import Data.Units.SI.Units
-import Data.Metrology.SI.Prefixes
-import qualified Data.Metrology.SI.Dims as D
+import Data.Units.SI
+import Data.Units.SI.Prefixes
+import qualified Data.Dimensions.SI as D
 import Data.Metrology
-import Data.Metrology.SI.Parser
+import Data.Units.SI.Parser
 
 type instance DefaultUnitOfDim D.Length            = Meter
 type instance DefaultUnitOfDim D.Mass              = Kilo :@ Gram

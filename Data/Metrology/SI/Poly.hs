@@ -17,17 +17,17 @@
 module Data.Metrology.SI.Poly (
   SI,
   module Data.Metrology.SI.PolyTypes,
-  module Data.Metrology.SI.Prefixes,
-  module Data.Metrology.SI.Units,
-  module Data.Metrology.SI.Parser
+  module Data.Units.SI.Prefixes,
+  module Data.Units.SI,
+  module Data.Units.SI.Parser
   ) where
 
 import Data.Metrology.SI.PolyTypes
-import Data.Metrology.SI.Prefixes
-import Data.Metrology.SI.Units
-import qualified Data.Metrology.SI.Dims as D
+import Data.Units.SI.Prefixes
+import Data.Units.SI
+import qualified Data.Dimensions.SI as D
 import Data.Metrology
-import Data.Metrology.SI.Parser
+import Data.Units.SI.Parser
 
 type SI = MkLCSU '[ (D.Length, Meter)
                   , (D.Mass, Kilo :@ Gram)

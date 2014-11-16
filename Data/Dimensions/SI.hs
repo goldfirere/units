@@ -1,4 +1,4 @@
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE TypeOperators, TemplateHaskell #-}
 
 -----------------------------------------------------------------------------
 -- |
@@ -16,6 +16,7 @@
 module Data.Dimensions.SI where
 
 import Data.Metrology.Poly
+import Data.Metrology.TH
 
 declareDimension "Length"
 declareDimension "Mass"

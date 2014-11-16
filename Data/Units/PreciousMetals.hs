@@ -16,8 +16,8 @@ module Data.Units.PreciousMetals where
 
 import Data.Metrology
 import Data.Metrology.TH
-import Data.Metrology.SI.Units
-import Data.Metrology.SI.Prefixes
+import Data.Units.SI
+import Data.Units.SI.Prefixes
 
 import qualified Data.Units.US.Avoirdupois as Avdp
 import qualified Data.Units.US.Troy        as Troy

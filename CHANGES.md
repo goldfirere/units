@@ -1,5 +1,11 @@
+Version 2.2
+-----------
+
+* Full re-organization of modules.
+* Addition of US customary units, CGS units, and a few other gubbins.
+
 Version 1.1
--------------
+-----------
 
 * Added `si` parser.
 * Moved `DefaultUnitOfDim` instances from `SI.MonoTypes` to `SI.Mono`. This allows

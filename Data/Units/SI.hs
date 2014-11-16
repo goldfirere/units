@@ -29,7 +29,7 @@ module Data.Units.SI where
 
 import Data.Metrology.Poly
 import Data.Metrology.TH
-import Data.Metrology.SI.Dims
+import Data.Dimensions.SI
 import Data.Units.SI.Prefixes ( Kilo, Centi )
 
 import Language.Haskell.TH ( Name )

@@ -17,7 +17,7 @@
 module Data.Metrology.SI.MonoTypes where
 
 import Data.Metrology
-import qualified Data.Metrology.SI.Dims as D
+import qualified Data.Dimensions.SI as D
 
 type Length              = MkQu_D D.Length
 type Mass                = MkQu_D D.Mass

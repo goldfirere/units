@@ -16,7 +16,7 @@
 module Data.Metrology.SI.PolyTypes where
 
 import Data.Metrology
-import qualified Data.Metrology.SI.Dims as D
+import qualified Data.Dimensions.SI as D
 
 type Length              = MkQu_DLN D.Length              
 type Mass                = MkQu_DLN D.Mass                

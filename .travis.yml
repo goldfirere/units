@@ -3,8 +3,12 @@
 
 # The following enables several GHC versions to be tested; often it's enough to test only against the last release in a major GHC version. Feel free to omit lines listings versions you don't need/want testing for.
 env:
- - GHCVER=7.8.2
+ - GHCVER=7.8.3
  - GHCVER=head
+
+matrix:
+  allow_failures:
+    - env: GHCVER=head
 
 # Note: the distinction between `before_install` and `install` is not important.
 before_install:
@@ -17,9 +21,7 @@ before_install:
 
 install:
  - cabal update
-# get the HEAD version of th-desugar and units always
- - git clone https://github.com/goldfirere/th-desugar.git
- - cd th-desugar; cabal install; cd ..
+# get the HEAD version of units always
  - git clone https://github.com/goldfirere/units.git
  - cd units; cabal install; cd ..
  - cabal install --only-dependencies --enable-tests --enable-benchmarks

@@ -27,6 +27,7 @@ module Data.Units.CGS (
   ) where
 
 import Data.Units.SI
+import Data.Units.SI.Prefixes
 import Data.Metrology.Poly
 import Data.Metrology.TH
 

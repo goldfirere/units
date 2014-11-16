@@ -25,7 +25,7 @@
 module Data.Units.US.Avoirdupois where
 
 import Data.Metrology.TH
-import Data.Metrology.SI.Units ( Gram )
+import Data.Units.SI ( Gram )
 
 import Language.Haskell.TH
 

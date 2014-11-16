@@ -27,7 +27,7 @@ module Data.Units.US.Survey where
 
 import Data.Metrology
 import Data.Metrology.TH
-import Data.Metrology.SI.Units
+import Data.Units.SI
 
 import Language.Haskell.TH
 

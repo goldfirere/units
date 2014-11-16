@@ -22,13 +22,17 @@
 -- http://nist.gov/pml/wmd/pubs/upload/appc-14-hb44-final.pdf
 -----------------------------------------------------------------------------
 
-module Data.Units.US.Misc where
+module Data.Units.US.Misc (
+  module Data.Units.US.Misc,
+  Maxwell(..)
+  ) where
 
 import Data.Metrology
 import Data.Metrology.TH
 
-import Data.Metrology.SI.Units
-import Data.Metrology.SI.Prefixes
+import Data.Units.SI
+import Data.Units.SI.Prefixes
+import Data.Units.CGS
 import Data.Constants.Math
 
 import Language.Haskell.TH
@@ -73,8 +77,6 @@ declareDerivedUnit "Slug"       [t| PoundForce :* (Second :^ Two) :/ Foot |]
 
 declareDerivedUnit "Oersted"    [t| Ampere :/ Meter |]
                                 (1000 / (4 * piR)) (Just "Oe")
-
-declareDerivedUnit "Maxwell"    
 
 -- | Standard lengths: 'Foot', 'Inch', 'Yard', and 'Mile'
 lengths :: [Name]
