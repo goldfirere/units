@@ -24,8 +24,8 @@ module Data.Metrology.TH (
   ) where
 
 import Language.Haskell.TH
-import Language.Haskell.TH.Desugar
-import Language.Haskell.TH.Desugar.Expand
+import Language.Haskell.TH.Desugar         ( dsType, sweeten )
+import Language.Haskell.TH.Desugar.Expand  ( expandType )
 import Language.Haskell.TH.Desugar.Lift ()   -- need Lift Rational
 
 import Data.Metrology.Dimensions
