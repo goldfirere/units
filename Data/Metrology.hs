@@ -33,7 +33,7 @@
 -- The units package is a framework for strongly-typed dimensional analysis.
 -- This haddock documentation is generally /not/ enough to be able to use this
 -- package effectively. Please see the readme at
--- <http://www.cis.upenn.edu/~eir/packages/units/README.html>.
+-- <https://github.com/goldfirere/units/blob/master/README.md>.
 --
 -- Some of the types below refer to declarations that are not exported and
 -- not documented here. This is because Haddock does not allow finely-tuned
