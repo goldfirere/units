@@ -1,3 +1,8 @@
+Version 2.2.1
+-------------
+
+* Added `AdditiveGroup` and `VectorSpace` instances for `Qu`.
+
 Version 2.2
 -----------
 
