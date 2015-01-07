@@ -22,6 +22,8 @@ import Data.Metrology.Units
 import Data.Metrology.Z
 import Data.Metrology.LCSU
 
+import Data.VectorSpace
+
 -------------------------------------------------------------
 --- Internal ------------------------------------------------
 -------------------------------------------------------------
@@ -206,6 +208,11 @@ qCubeRoot = qNthRoot sThree
 
 deriving instance Eq n => Eq (Qu d l n)
 deriving instance Ord n => Ord (Qu d l n)
+
+deriving instance AdditiveGroup n => AdditiveGroup (Qu d l n)
+instance VectorSpace n => VectorSpace (Qu d l n) where
+  type Scalar (Qu d l n) = Scalar n
+  a *^ (Qu b) = Qu (a *^ b)
 
 -------------------------------------------------------------
 --- Instances for dimensionless quantities ------------------
