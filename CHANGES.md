@@ -1,5 +1,10 @@
+Release notes for `units`
+=========================
+
 Version 2.2.1
 -------------
+
+* Compatibility with GHC 7.10.
 
 * Added `AdditiveGroup` and `VectorSpace` instances for `Qu`.
 
