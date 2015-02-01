@@ -11,7 +11,7 @@
 -- @units@ a little more convenient.
 -----------------------------------------------------------------------------
 
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TemplateHaskell, CPP #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 module Data.Metrology.TH (
@@ -45,6 +45,11 @@ import Data.Metrology.Poly
 -- more polymorphic types. (If it doesn't work, not all of the type families
 -- will be evaluated, and the instance declaration will fail. This function
 -- should never cause /incorrect/ behavior.)
+--
+-- Note: Under GHC 7.10 and later, this function works only for base types
+-- like @Length@, not compound types like @Volume@ or @Velocity@. See
+-- <https://github.com/goldfirere/units/issues/34> for more info and a
+-- workaround.
 evalType :: Q Type -> Q Type
 evalType qty = do
   ty <- qty
@@ -193,8 +198,8 @@ declareConstant name value q_unit_type = do
       n    = VarT n_name
       const_name = mkName name
       const_type = ForallT [PlainTV lcsu_name, PlainTV n_name]
-                           [ ClassP ''Fractional [n]
-                           , ClassP ''CompatibleUnit [lcsu, unit_type] ] $
+                           [ mkClassP ''Fractional [n]
+                           , mkClassP ''CompatibleUnit [lcsu, unit_type] ] $
                    ConT ''MkQu_ULN `AppT` unit_type `AppT` lcsu `AppT` n
       ty_sig = SigD const_name const_type
       dec    = ValD (VarP const_name) (NormalB $
@@ -202,4 +207,9 @@ declareConstant name value q_unit_type = do
                                                  `AppE` SigE (VarE 'undefined)
                                                              unit_type) []
   return [ty_sig, dec]
-                   
+  where
+#if __GLASGOW_HASKELL__ < 709
+    mkClassP = ClassP
+#else
+    mkClassP n tys = foldl AppT (ConT n) tys
+#endif
