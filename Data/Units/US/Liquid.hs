@@ -14,13 +14,13 @@
 -- in the USA and from liquid volumes in the UK.
 --
 -- Included are all units mentioned here:
--- http://en.wikipedia.org/wiki/United_States_customary_units
+-- <http://en.wikipedia.org/wiki/United_States_customary_units>
 -- Where possible, conversion rates have been independently verified
 -- at a US government website. However, Wikipedia's base is /much/
 -- better organized than any government resource immediately available.
 -- The US government references used are as follows:
--- http://nist.gov/pml/wmd/metric/upload/SP1038.pdf
--- http://nist.gov/pml/wmd/pubs/upload/appc-14-hb44-final.pdf
+-- <http://nist.gov/pml/wmd/metric/upload/SP1038.pdf>
+-- <http://nist.gov/pml/wmd/pubs/upload/appc-14-hb44-final.pdf>
 -----------------------------------------------------------------------------
 
 module Data.Units.US.Liquid where
@@ -49,7 +49,7 @@ declareDerivedUnit "Hogshead"   [t| Gallon        |] 63      (Just "hogshead")
 declareDerivedUnit "Barrel"     [t| Hogshead      |] (1/2)   (Just "bbl")
 declareDerivedUnit "OilBarrel"  [t| Gallon        |] 42      (Just "bbl")
 
--- | As shown on Wikipedia: http://en.wikipedia.org/wiki/United_States_customary_units
+-- | As shown on Wikipedia: <http://en.wikipedia.org/wiki/United_States_customary_units>
 commonLiquidMeasures :: [Name]
 commonLiquidMeasures = [ ''Teaspoon, ''Tablespoon, ''FluidOunce, ''Cup, ''Pint
                        , ''Quart, ''Gallon ]

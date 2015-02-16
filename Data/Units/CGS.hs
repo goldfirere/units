@@ -14,7 +14,7 @@
 -- of measurement.
 --
 -- Included are all mechanical units mentioned here:
--- http://en.wikipedia.org/wiki/Centimetre%E2%80%93gram%E2%80%93second_system_of_units
+-- <http://en.wikipedia.org/wiki/Centimetre%E2%80%93gram%E2%80%93second_system_of_units>
 --
 -- Some electromagnetic units are not included, because these do not have
 -- reliable conversions to/from the SI units, on which the @units-defs@
