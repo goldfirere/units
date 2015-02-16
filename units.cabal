@@ -69,6 +69,7 @@ library
     Data.Metrology.Z,
     Data.Metrology.Set,
     Data.Metrology.Vector,
+    Data.Metrology.Linear,
     Data.Metrology.Parser,
     Data.Metrology.Poly,
     Data.Metrology.TH,
