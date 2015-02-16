@@ -12,10 +12,10 @@ import Data.Metrology.Poly
 import Data.Metrology.Z
 import Data.Metrology.SI.Mono         ()
 import Data.Metrology.SI.PolyTypes
-import Data.Metrology.SI.Prefixes
-import Data.Metrology.SI.Units
 import Data.Metrology.SI.Poly (SI)
-import qualified Data.Metrology.SI.Dims as D
+import Data.Units.SI
+import Data.Units.SI.Prefixes
+import qualified Data.Dimensions.SI as D
 -- import Data.Metrology.Show
 
 import Test.Tasty

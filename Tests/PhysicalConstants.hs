@@ -7,7 +7,7 @@ module Tests.PhysicalConstants where
 import Data.Metrology.Poly
 import Data.Metrology.Show ()
 import Data.Metrology.SI.Poly
-import qualified Data.Metrology.SI.Dims as D
+import qualified Data.Dimensions.SI as D
 
 import Tests.Compile.MetrologySynonyms
 
