@@ -54,6 +54,7 @@ library
                , th-desugar >= 1.4.2
                , singletons >= 0.9 && < 2
                , vector-space >= 0.8
+               , linear >= 1.16.2
                , template-haskell
                , mtl >= 1.1
                , multimap >= 1.2
@@ -96,6 +97,7 @@ test-suite main
                   , th-desugar >= 1.4.2
                   , singletons >= 0.9 && < 2
                   , vector-space >= 0.8
+                  , linear >= 1.16.2
                   , tasty >= 0.8
                   , tasty-hunit >= 0.8
                   , HUnit-approx >= 1.0
