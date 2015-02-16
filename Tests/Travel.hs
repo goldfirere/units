@@ -6,16 +6,16 @@
 module Tests.Travel where
 
 import Data.Metrology.Poly
-import Data.Metrology.SI.Poly
+-- import Data.Metrology.SI.Poly
 -- import Data.Metrology.Imperial.Types (Imperial)
 -- import Data.Metrology.Imperial.Units
-import Data.Units.US
+-- import Data.Units.US
 import Data.Metrology.Show ()
 import qualified Data.Dimensions.SI as D
 
 import Test.Tasty
-import Test.Tasty.HUnit
-import Test.HUnit.Approx
+-- import Test.Tasty.HUnit
+-- import Test.HUnit.Approx
 
 type PerArea lcsu n = MkQu_DLN (D.Area :^ MOne) lcsu n
 
@@ -42,7 +42,7 @@ gasolineWeight len0 ef0 den0 = len0 |/| ef0 |*| den0
 
 tests :: TestTree
 tests =
-  let ?epsilon = 0.00001 in
+  let ?epsilon = 0.00001 :: Double in
   testGroup "Travel"
   []
 {-
