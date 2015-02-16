@@ -418,4 +418,4 @@ More examples
 
 Check out some of the test examples we have written to get more of a feel for
 how this all works,
-[here](https://github.com/goldfirere/units/tree/master/Test).
+[here](https://github.com/goldfirere/units/tree/master/Tests).
