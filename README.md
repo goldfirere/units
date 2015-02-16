@@ -131,7 +131,7 @@ Dimension definitions
 
 When setting up your well-typed units-of-measure program, the first step is
 to define the dimensions you will be working in. (If your application involves
-physical quantities, you may want to check `Data.Metrology.SI.Dims` in the
+physical quantities, you may want to check `Data.Dimensions.SI` in the
 `units-defs` package first.)
 
     data LengthDim = LengthDim  -- each dimension is a datatype that acts as its own proxy
