@@ -1,3 +1,8 @@
+Version 2.0.0.1
+---------------
+
+* Typos in documentation. Thanks to Doug Burke for a pull request!
+
 Version 2.0
 -----------
 
