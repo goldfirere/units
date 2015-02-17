@@ -13,13 +13,13 @@
 -- are rarely used.
 --
 -- Included are all units mentioned here:
--- http://en.wikipedia.org/wiki/United_States_customary_units
+-- <http://en.wikipedia.org/wiki/United_States_customary_units>
 -- Where possible, conversion rates have been independently verified
 -- at a US government website. However, Wikipedia's base is /much/
 -- better organized than any government resource immediately available.
 -- The US government references used are as follows:
--- http://nist.gov/pml/wmd/metric/upload/SP1038.pdf
--- http://nist.gov/pml/wmd/pubs/upload/appc-14-hb44-final.pdf
+-- <http://nist.gov/pml/wmd/metric/upload/SP1038.pdf>
+-- <http://nist.gov/pml/wmd/pubs/upload/appc-14-hb44-final.pdf>
 -----------------------------------------------------------------------------
 
 module Data.Units.US.Apothecaries (
