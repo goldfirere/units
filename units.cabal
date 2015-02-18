@@ -14,9 +14,13 @@ extra-source-files: README.md
                   , Tests/README.md
                   , Tests/Compile/*.hs
                   , Tests/Compile/UnitParser/*.hs
+                  , units-defs/Data/Constants/*.hs
+                  , units-defs/Data/Dimensions/*.hs
                   , units-defs/Data/Metrology/*.hs
                   , units-defs/Data/Metrology/SI/*.hs
-                  , units-defs/Data/Metrology/Imperial/*.hs
+                  , units-defs/Data/Units/*.hs
+                  , units-defs/Data/Units/SI/*.hs
+                  , units-defs/Data/Units/US/*.hs
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
