@@ -69,8 +69,8 @@ import Language.Haskell.TH.Quote
 import Language.Haskell.TH.Desugar.Lift  ()  -- get the Lift Name instance
 import Data.Maybe
 import Control.Monad
+import Text.Parse.Units
 
-import Data.Metrology.Parser.Internal
 import Data.Metrology
 import Data.Metrology.TH
 
