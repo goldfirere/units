@@ -70,7 +70,7 @@ import Language.Haskell.TH.Desugar.Lift  ()  -- get the Lift Name instance
 import Data.Maybe
 import Control.Monad
 
-import Data.Metrology.Parser.Internal
+import Text.Parse.Units
 import Data.Metrology
 import Data.Metrology.TH
 

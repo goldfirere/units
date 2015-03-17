@@ -1,5 +1,5 @@
 name:           units
-version:        2.2.1
+version:        2.2.2
 cabal-version:  >= 1.10
 synopsis:       A domain-specific type system for dimensional analysis
 homepage:       https://github.com/goldfirere/units
@@ -42,7 +42,7 @@ description:
 source-repository this
   type:     git
   location: https://github.com/goldfirere/units.git
-  tag:      v2.2.1
+  tag:      v2.2.2
 
 library
   ghc-options: -Wall
@@ -59,7 +59,7 @@ library
                , multimap >= 1.2
                , syb >= 0.3
                , containers >= 0.4
-               , parsec >= 3
+               , units-parser >= 0.1 && < 1.0
   exposed-modules:    
     Data.Metrology, 
     Data.Metrology.Internal,
@@ -80,8 +80,7 @@ library
     Data.Metrology.Dimensions,
     Data.Metrology.Units,
     Data.Metrology.Combinators,
-    Data.Metrology.Validity,
-    Data.Metrology.Parser.Internal
+    Data.Metrology.Validity
 
     -- cabal now recommends that TH be explicitly listed in cabal files
   other-extensions: TemplateHaskell
@@ -104,7 +103,7 @@ test-suite main
                   , multimap >= 1.2
                   , syb >= 0.3
                   , containers >= 0.4
-                  , parsec >= 3
+                  , units-parser >= 0.1 && < 1.0
   hs-source-dirs:   units-defs, .
 
     -- optimize compile time, not runtime!

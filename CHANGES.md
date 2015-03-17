@@ -1,6 +1,10 @@
 Release notes for `units`
 =========================
 
+Version 2.2.2
+-------------
+* Break out the units parser into its own package: `units-parser`.
+
 Version 2.2.1
 -------------
 
