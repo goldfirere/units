@@ -3,11 +3,11 @@
 
 module Tests.Compile.Physics where
 
+import Data.Dimensions.SI
 import Data.Metrology.Poly
 import Data.Metrology.SI.Poly ( SI )
-import Data.Metrology.SI.Dims
-import Data.Metrology.SI.Prefixes
-import Data.Metrology.SI.Units
+import Data.Units.SI
+import Data.Units.SI.Prefixes
 import Tests.Compile.CGS
 
 type Position = Length

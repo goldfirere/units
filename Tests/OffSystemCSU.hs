@@ -5,7 +5,7 @@ module Tests.OffSystemCSU where
 
 import Data.Metrology.Poly
 import Data.Metrology.SI
-import qualified Data.Metrology.SI.Dims as D
+import qualified Data.Dimensions.SI as D
 
 import Test.Tasty.HUnit
 import Test.HUnit.Approx

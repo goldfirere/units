@@ -4,7 +4,7 @@ module Tests.Compile.CGS where
 
 import Data.Metrology
 import Data.Metrology.SI
-import qualified Data.Metrology.SI.Dims as D
+import qualified Data.Dimensions.SI as D
 
 type CGS = MkLCSU '[ (D.Length, Centi :@ Meter)
                    , (D.Mass, Gram)
