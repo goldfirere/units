@@ -73,6 +73,12 @@ import only *one* of `Data.Metrology`, `Data.Metrology.Poly`, or
     but provides numerical operations based on `vector-space` instead of the
     standard numerical classes.
 
+ -  __`Data.Metrology.Vector`__
+
+    This also re-exports a similar set of definitions as `Data.Metrology.Poly`,
+    but provides numerical operations based on `linear` instead of the
+    standard numerical classes.
+
  -  __`Data.Metrology.Internal`__
 
     This module contains mostly-internal definitions that may appear in GHC's
