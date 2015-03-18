@@ -73,11 +73,11 @@ import only *one* of `Data.Metrology`, `Data.Metrology.Poly`, or
     but provides numerical operations based on `vector-space` instead of the
     standard numerical classes.
 
- -  __`Data.Metrology.Vector`__
+ -  __`Data.Metrology.Linear`__
 
-    This also re-exports a similar set of definitions as `Data.Metrology.Poly`,
-    but provides numerical operations based on `linear` instead of the
-    standard numerical classes.
+    This exports a set of definitions for interoperability with the `linear`
+    package. This is /not/ a top-level import; generally, import this with
+    `Data.Metrology.Poly` as well.
 
  -  __`Data.Metrology.Internal`__
 
