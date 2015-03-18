@@ -1,5 +1,5 @@
 name:           units
-version:        2.2.2
+version:        2.3
 cabal-version:  >= 1.10
 synopsis:       A domain-specific type system for dimensional analysis
 homepage:       https://github.com/goldfirere/units
@@ -46,7 +46,7 @@ description:
 source-repository this
   type:     git
   location: https://github.com/goldfirere/units.git
-  tag:      v2.2.2
+  tag:      v2.3
 
 library
   ghc-options: -Wall

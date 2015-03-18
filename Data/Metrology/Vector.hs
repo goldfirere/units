@@ -42,6 +42,7 @@ module Data.Metrology.Vector (
 
   -- ** Affine operations
   Point(..), QPoint, (|.-.|), (|.+^|), (|.-^|), qDistanceSq, qDistance,
+  pointNumIn, (.#), quOfPoint, (%.),
   
   -- ** Comparison
   qCompare, (|<|), (|>|), (|<=|), (|>=|), (|==|), (|/=|),
@@ -228,6 +229,37 @@ instance AdditiveGroup n => AffineSpace (Point n) where
   type Diff (Point n) = n
   (.-.) = coerce ((^-^) :: n -> n -> n)
   (.+^) = coerce ((^+^) :: n -> n -> n)
+
+-- | Make a point quantity at the given unit. Like 'quOf'.
+quOfPoint :: forall dim lcsu unit n.
+             ( ValidDLU dim lcsu unit
+             , VectorSpace n
+             , Fractional (Scalar n) )
+          => n -> unit -> Qu dim lcsu (Point n)
+quOfPoint n unit = Qu (Point x)
+  where Qu x = quOf n unit :: Qu dim lcsu n
+
+infix 5 %.
+-- | Infix synonym of 'quOfPoint'
+(%.) :: ( ValidDLU dim lcsu unit
+        , VectorSpace n
+        , Fractional (Scalar n) )
+     => n -> unit -> Qu dim lcsu (Point n)
+(%.) = quOfPoint
+
+-- | Extract the numerical value from a point quantity. Like 'numIn'.
+pointNumIn :: forall unit dim lcsu n.
+              ( ValidDLU dim lcsu unit
+              , VectorSpace n
+              , Fractional (Scalar n) )
+           => Qu dim lcsu (Point n) -> unit -> n
+pointNumIn (Qu (Point n)) unit = numIn (Qu n :: Qu dim lcsu n) unit
+
+infix 5 .#
+-- | Infix synonym for 'pointNumIn'.
+(.#) :: (ValidDLU dim lcsu unit, VectorSpace n, Fractional (Scalar n))
+     => Qu dim lcsu (Point n) -> unit -> n
+(.#) = pointNumIn
 
 infixl 6 |.-.|, |.+^|, |.-^|
 
