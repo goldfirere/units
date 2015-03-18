@@ -11,7 +11,7 @@ the International System (SI) are exported from the companion package `units-def
 This package supports independent notions of _dimension_ and _unit_. Examples
 of dimensions include length and mass. Examples of unit include meter and
 gram. Every unit measures a particular dimension, but a given dimension
-may be measure by many different units. For example, both meters and feet
+may be measured by many different units. For example, both meters and feet
 measure length.
 
 The package supports defining multiple inter-convertible units of the same
