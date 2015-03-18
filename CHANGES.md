@@ -5,6 +5,9 @@ Version 2.2.2
 -------------
 * Break out the units parser into its own package: `units-parser`.
 
+* Add `Data.Metrology.Unsafe.UnsafeQu`, which has `Functor` and other
+instances.
+
 Version 2.2.1
 -------------
 
