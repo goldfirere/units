@@ -302,7 +302,7 @@ quOf d u
                (canonicalConvRatio u
                 / canonicalConvRatioSpec (Proxy :: Proxy (LookupList dim lcsu))))
 
-infixr 9 %
+infix 5 %
 -- | Infix synonym for 'quOf'
 (%) :: ( ValidDLU dim lcsu unit
        , VectorSpace n

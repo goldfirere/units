@@ -8,6 +8,8 @@ Version 2.2.2
 * Add `Data.Metrology.Unsafe.UnsafeQu`, which has `Functor` and other
 instances.
 
+* Fix the fixity of `%`. It was way too high! Now it's 5.
+
 Version 2.2.1
 -------------
 
