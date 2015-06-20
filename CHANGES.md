@@ -3,6 +3,9 @@ Release notes for `units`
 
 Version 2.3
 -----------
+* `Data.Metrology.TH.evalType` now works in GHC 7.10 on dimensions like `Volume` instead
+of just base dimensions.
+
 * Break out the units parser into its own package: `units-parser`.
 
 * Add `Data.Metrology.Unsafe.UnsafeQu`, which has `Functor` and other

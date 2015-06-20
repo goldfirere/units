@@ -18,14 +18,14 @@ module Data.Metrology.TH (
   evalType,
   declareDimension, declareCanonicalUnit, declareDerivedUnit, declareMonoUnit,
   declareConstant,
-  
+
   -- for internal use only
-  checkIsType                                    
+  checkIsType
   ) where
 
 import Language.Haskell.TH
 import Language.Haskell.TH.Desugar         ( dsType, sweeten )
-import Language.Haskell.TH.Desugar.Expand  ( expandType )
+import Language.Haskell.TH.Desugar.Expand  ( expandUnsoundly )
 import Language.Haskell.TH.Desugar.Lift ()   -- need Lift Rational
 
 import Data.Metrology.Dimensions
@@ -46,15 +46,12 @@ import Data.Metrology.Poly
 -- will be evaluated, and the instance declaration will fail. This function
 -- should never cause /incorrect/ behavior.)
 --
--- Note: Under GHC 7.10 and later, this function works only for base types
--- like @Length@, not compound types like @Volume@ or @Velocity@. See
--- <https://github.com/goldfirere/units/issues/34> for more info and a
--- workaround.
 evalType :: Q Type -> Q Type
 evalType qty = do
   ty <- qty
   dty <- dsType ty
-  ex_dty <- expandType dty
+  ex_dty <- expandUnsoundly dty
+    -- NB: No units type families branch on kind variables, so this is safe here.
   return $ sweeten ex_dty
 
 -- Checks to make sure the given name names a /type/, not a /data constructor/.
