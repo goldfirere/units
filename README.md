@@ -36,7 +36,12 @@ sequence of computations that works within one CSU, there is no unit
 conversion. Unit conversions are needed only when putting values in and out of
 quantities, or converting between two different CSUs.
 
+Checking out units
+------------------
 
+Units has a git submodule, so you'll want to use `git clone --recursive`. Example:
+
+    git clone --recursive https://github.com/goldfirere/units
 
 User contributions
 ------------------
