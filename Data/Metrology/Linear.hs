@@ -185,6 +185,16 @@ qCross :: Num a
        => Qu d1 l (V3 a) -> Qu d2 l (V3 a) -> Qu (Normalize (d1 @+ d2)) l (V3 a)
 qCross (Qu x) (Qu y) = Qu (x `cross` y)
 
+-- | Square of the distance between two vectors.
+qQd :: (d1 @~ d2, Metric f, Metric (Diff f), Num a)
+            => Qu d1 l (f a) -> Qu d2 l (f a) -> Qu (d1 @* Z.Two) l a
+qQd (Qu a) (Qu b) = Qu (a `qd` b)
+
+-- | Distance between two vectors.
+qDistance :: (d1 @~ d2, Metric f, Metric (Diff f), Floating a)
+          => Qu d1 l (f a) -> Qu d2 l (f a) -> Qu d1 l a
+qDistance (Qu a) (Qu b) = Qu (a `distance` b)
+
 ---------------------------------------
 -- Affine space operations
 ---------------------------------------
@@ -202,14 +212,14 @@ qCross (Qu x) (Qu y) = Qu (x `cross` y)
 (Qu a) |.-^| (Qu b) = Qu (a .-^ b)
 
 -- | Square of the distance between two points.
-qQd :: (d1 @~ d2, Metric f, Metric (Diff f), Num a)
+qQdA :: (d1 @~ d2, Affine f, Foldable (Diff f), Num a)
             => Qu d1 l (f a) -> Qu d2 l (f a) -> Qu (d1 @* Z.Two) l a
-qQd (Qu a) (Qu b) = Qu (a `qd` b)
+qQdA (Qu a) (Qu b) = Qu (a `qdA` b)
 
 -- | Distance between two points.
-qDistance :: (d1 @~ d2, Metric f, Metric (Diff f), Floating a)
+qDistanceA :: (d1 @~ d2, Affine f, Foldable (Diff f), Floating a)
           => Qu d1 l (f a) -> Qu d2 l (f a) -> Qu d1 l a
-qDistance (Qu a) (Qu b) = Qu (a `distance` b)
+qDistanceA (Qu a) (Qu b) = Qu (a `distanceA` b)
 
 ---------------------------------------
 -- Top-level operations
