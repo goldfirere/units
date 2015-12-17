@@ -1,9 +1,20 @@
 Release notes for `units`
 =========================
 
-Version 2.2.2
--------------
+Version 2.3
+-----------
+* `Data.Metrology.TH.evalType` now works in GHC 7.10 on dimensions like `Volume` instead
+of just base dimensions.
+
 * Break out the units parser into its own package: `units-parser`.
+
+* Add `Data.Metrology.Unsafe.UnsafeQu`, which has `Functor` and other
+instances.
+
+* Fix the fixity of `%`. It was way too high! Now it's 5.
+
+* Add the ability to convert in and out of point quantities. See `quOfPoint`
+and friends in `Data.Metrology.Vector`.
 
 Version 2.2.1
 -------------

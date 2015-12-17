@@ -100,7 +100,7 @@ quOf :: ( ValidDLU dim DefaultLCSU unit
       => n -> unit -> Qu dim DefaultLCSU n
 quOf = Poly.quOf
 
-infixr 9 %
+infixr 5 %
 -- | Infix synonym for 'quOf'
 (%) :: ( ValidDLU dim DefaultLCSU unit
        , Fractional n )
