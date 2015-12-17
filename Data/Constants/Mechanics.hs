@@ -24,3 +24,9 @@ import Data.Metrology.TH
 
 -- | Acceleration at Earth's surface due to gravity.
 declareConstant "gravity_g" 9.80665 [t| Meter :/ Second :^ Two |]
+
+-- | Gravitational constant (value recommended by CODATA, see the
+-- <http://arxiv.org/abs/1507.07956 arXiv> paper)
+declareConstant "gravity_G" 6.6740831e-11
+  [t| (Meter :^ Three) :* ((Kilo :@ Gram) :^ MOne) :* (Second :^ MTwo) |]
+  -- Thanks to @hesiod, PR #13
