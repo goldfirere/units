@@ -22,6 +22,7 @@ import Data.Metrology.Units
 import Data.Metrology.Z
 import Data.Metrology.LCSU
 
+import Control.DeepSeq (NFData (..))
 import Data.VectorSpace
 
 -------------------------------------------------------------
@@ -208,6 +209,7 @@ qCubeRoot = qNthRoot sThree
 
 deriving instance Eq n => Eq (Qu d l n)
 deriving instance Ord n => Ord (Qu d l n)
+deriving instance NFData n => NFData (Qu d l n)
 
 deriving instance AdditiveGroup n => AdditiveGroup (Qu d l n)
 instance VectorSpace n => VectorSpace (Qu d l n) where
