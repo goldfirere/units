@@ -71,8 +71,9 @@ showFactor p
     build_string_helper [s] = s
     build_string_helper (h:t) = h ++ " * " ++ build_string_helper t
 
-instance (ShowUnitFactor (LookupList dims lcsu), Show n)
-           => Show (Qu dims lcsu n) where
+instance
+    {-# OVERLAPPABLE #-}
+    (ShowUnitFactor (LookupList dims lcsu), Show n)
+    => Show (Qu dims lcsu n) where
   show (Qu d) = show d ++
                 (showFactor (Proxy :: Proxy (LookupList dims lcsu)))
-

@@ -1,6 +1,10 @@
 Release notes for `units`
 =========================
 
+Version 2.4
+-----------
+* New `Show` and `Read` instances for dimensionless quantities.
+
 Version 2.3
 -----------
 * `Data.Metrology.TH.evalType` now works in GHC 7.10 on dimensions like `Volume` instead
