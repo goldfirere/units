@@ -12,7 +12,8 @@
 
 {-# LANGUAGE TypeFamilies, TypeOperators, DataKinds, UndecidableInstances,
              ConstraintKinds, StandaloneDeriving, GeneralizedNewtypeDeriving,
-             FlexibleInstances, RoleAnnotations, FlexibleContexts #-}
+             FlexibleInstances, RoleAnnotations, FlexibleContexts,
+             ScopedTypeVariables #-}
 
 module Data.Metrology.Qu where
 
@@ -23,6 +24,9 @@ import Data.Metrology.Z
 import Data.Metrology.LCSU
 
 import Data.VectorSpace
+
+import Text.Read
+import Data.Coerce
 
 -------------------------------------------------------------
 --- Internal ------------------------------------------------
@@ -163,14 +167,14 @@ qApprox :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
       => Qu d0 l n  -- ^ /epsilon/
       -> Qu d1 l n  -- ^ left hand side
       -> Qu d2 l n  -- ^ right hand side
-      -> Bool  
+      -> Bool
 qApprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) <= epsilon
 
--- | Compare two compatible quantities for approixmate inequality.  
+-- | Compare two compatible quantities for approixmate inequality.
 -- @qNapprox e a b = not $ qApprox e a b@
 qNapprox :: (d0 @~ d1, d0 @~ d2, Num n, Ord n)
-       => Qu d0 l n  -- ^ /epsilon/      
-       -> Qu d1 l n  -- ^ left hand side 
+       => Qu d0 l n  -- ^ /epsilon/
+       -> Qu d1 l n  -- ^ left hand side
        -> Qu d2 l n  -- ^ right hand side
        -> Bool
 qNapprox (Qu epsilon) (Qu a) (Qu b) = abs(a-b) > epsilon
@@ -227,6 +231,22 @@ deriving instance (d ~ '[], Fractional n) => Fractional (Qu d l n)
 deriving instance (d ~ '[], Floating n)   => Floating (Qu d l n)
 deriving instance (d ~ '[], RealFrac n)   => RealFrac (Qu d l n)
 deriving instance (d ~ '[], RealFloat n)  => RealFloat (Qu d l n)
+
+-- But don't do this for Read and Show, because other instances
+-- are indeed sensible. Using the above technique here would make
+-- other instances impossible. Also, note that GeneralizedNewtypeDeriving
+-- puts the "Qu" constructor in Read and Show instances, so don't use
+-- that.
+instance Show n => Show (Qu '[] l n) where
+  showsPrec = coerce (showsPrec :: Int -> n -> ShowS)
+  show      = coerce (show      :: n -> String)
+  showList  = coerce (showList  :: [n] -> ShowS)
+
+instance Read n => Read (Qu '[] l n) where
+  readsPrec    = coerce (readsPrec    :: Int -> ReadS n)
+  readList     = coerce (readList     :: ReadS [n])
+  readPrec     = coerce (readPrec     :: ReadPrec n)
+  readListPrec = coerce (readListPrec :: ReadPrec [n])
 
 -------------------------------------------------------------
 --- Combinators ---------------------------------------------
