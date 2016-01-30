@@ -66,6 +66,7 @@ library
                , containers >= 0.4
                , units-parser >= 0.1 && < 1.0
                , lens >= 4 && < 5
+               , deepseq >= 1.1.0.0 && < 1.5
   exposed-modules:    
     Data.Metrology, 
     Data.Metrology.Internal,
@@ -113,6 +114,7 @@ test-suite main
                   , containers >= 0.4
                   , units-parser >= 0.1 && < 1.0
                   , lens >= 4 && < 5
+                  , deepseq >= 1.1.0.0 && < 1.5
   hs-source-dirs:   units-defs, .
 
     -- optimize compile time, not runtime!
