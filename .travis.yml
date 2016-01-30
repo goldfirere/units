@@ -5,14 +5,11 @@
 env:
  - CABALVER=1.18 GHCVER=7.8.3 SINGLETONS=" == 0.9.*"
  - CABALVER=1.18 GHCVER=7.8.3 SINGLETONS=" == 0.10.*"
- - CABALVER=1.18 GHCVER=7.8.3 SINGLETONS=""     # with SINGLETONS blank, we get most recent
+ - CABALVER=1.18 GHCVER=7.8.3 SINGLETONS=" == 1.*"
  - CABALVER=1.18 GHCVER=7.8.4 SINGLETONS=""
  - CABALVER=1.22 GHCVER=7.10.1 SINGLETONS=""
- - CABALVER=head GHCVER=head SINGLETONS=""
-
-matrix:
-  allow_failures:
-    - env: CABALVER=head GHCVER=head SINGLETONS=""
+ - CABALVER=1.22 GHCVER=7.10.2 SINGLETONS=""
+ - CABALVER=1.22 GHCVER=7.10.3 SINGLETONS=""
 
 # Note: the distinction between `before_install` and `install` is not important.
 before_install:
