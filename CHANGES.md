@@ -3,6 +3,8 @@ Release notes for `units`
 
 Version 2.4
 -----------
+* New interface with the `linear` package in `Data.Metrology.Linear`.
+
 * New `Show` and `Read` instances for dimensionless quantities.
 
 Version 2.3
