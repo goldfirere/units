@@ -1,3 +1,8 @@
+Version 2.0.1
+-------------
+
+* Added the universal gravitational constant, thanks to @hesiod.
+
 Version 2.0.0.1
 ---------------
 
