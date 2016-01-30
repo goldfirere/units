@@ -64,6 +64,7 @@ library
                , syb >= 0.3
                , containers >= 0.4
                , units-parser >= 0.1 && < 1.0
+               , deepseq >= 1.1.0.0 && < 1.5
   exposed-modules:
     Data.Metrology,
     Data.Metrology.Internal,
