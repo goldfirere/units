@@ -109,6 +109,7 @@ test-suite main
                   , syb >= 0.3
                   , containers >= 0.4
                   , units-parser >= 0.1 && < 1.0
+                  , deepseq >= 1.1.0.0 && < 1.5
   hs-source-dirs:   units-defs, .
 
     -- optimize compile time, not runtime!
