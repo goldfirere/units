@@ -1,5 +1,10 @@
 {-# LANGUAGE PolyKinds, DataKinds, TypeOperators, FlexibleInstances,
-             ScopedTypeVariables, FlexibleContexts, ConstraintKinds #-}
+             ScopedTypeVariables, FlexibleContexts, ConstraintKinds, CPP #-}
+
+#if __GLASGOW_HASKELL__ < 709
+{-# LANGUAGE OverlappingInstances #-}
+#endif
+
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -----------------------------------------------------------------------------
@@ -72,7 +77,9 @@ showFactor p
     build_string_helper (h:t) = h ++ " * " ++ build_string_helper t
 
 instance
+#if __GLASGOW_HASKELL__ >= 709
     {-# OVERLAPPABLE #-}
+#endif
     (ShowUnitFactor (LookupList dims lcsu), Show n)
     => Show (Qu dims lcsu n) where
   show (Qu d) = show d ++
