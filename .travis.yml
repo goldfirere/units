@@ -6,10 +6,10 @@ env:
  - CABALVER=1.18 GHCVER=7.8.3 SINGLETONS=" == 0.9.*"
  - CABALVER=1.18 GHCVER=7.8.3 SINGLETONS=" == 0.10.*"
  - CABALVER=1.18 GHCVER=7.8.3 SINGLETONS=" == 1.*"
- - CABALVER=1.18 GHCVER=7.8.4 SINGLETONS=""
- - CABALVER=1.22 GHCVER=7.10.1 SINGLETONS=""
- - CABALVER=1.22 GHCVER=7.10.2 SINGLETONS=""
- - CABALVER=1.22 GHCVER=7.10.3 SINGLETONS=""
+ - CABALVER=1.18 GHCVER=7.8.4 SINGLETONS=" == 2.*"
+ - CABALVER=1.22 GHCVER=7.10.1 SINGLETONS=" == 2.*"
+ - CABALVER=1.22 GHCVER=7.10.2 SINGLETONS=" == 2.*"
+ - CABALVER=1.22 GHCVER=7.10.3 SINGLETONS=" == 2.*"
 
 # Note: the distinction between `before_install` and `install` is not important.
 before_install:
@@ -22,8 +22,7 @@ install:
  - cabal --version
  - ghc --version
  - travis_retry cabal update
- - cabal install -v -j1 "singletons$SINGLETONS"
- - cabal install -v -j1 --only-dependencies --enable-tests --enable-benchmarks
+ - cabal install -v -j1 --only-dependencies --enable-tests --enable-benchmarks --constraint="singletons $SINGLETONS"
 
 # Here starts the actual work to be performed for the package under test; any command which exits with a non-zero exit code causes the build to fail.
 script:
