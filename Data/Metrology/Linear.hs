@@ -33,7 +33,7 @@ module Data.Metrology.Linear (
   qQuadrance, qNorm, qSignorm, qProject, qCross,
 
   -- ** Affine operations
-  (|.-.|), (|.+^|), (|.-^|), qQd, qDistance,
+  (|.-.|), (|.+^|), (|.-^|), qQd, qDistance, qQdA, qDistanceA,
 
   -- * Nondimensional units, conversion between quantities and numeric values
   numInV, (^#), quOfV, (^%), showInV,
@@ -54,7 +54,6 @@ import qualified Control.Lens as Lens
 
 import Data.Proxy
 import Data.Foldable    as F
-import Data.Traversable as T
 
 ---------------------------------------
 -- Additive operations
