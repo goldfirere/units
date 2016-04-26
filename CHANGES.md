@@ -1,10 +1,6 @@
 Release notes for `units`
 =========================
 
-Version 2.4.1
--------------
-* GHC 8 compatibility.
-
 Version 2.4
 -----------
 * New interface with the `linear` package in `Data.Metrology.Linear`.
@@ -12,6 +8,8 @@ Version 2.4
 * New `Show` and `Read` instances for dimensionless quantities.
 
 * New `NFData` instances for quantities, thanks to @rimmington.
+
+* GHC 8 compatibility.
 
 Version 2.3
 -----------
