@@ -7,9 +7,13 @@
    This file defines combinators to build more complex units and dimensions from simpler ones.
 -}
 
-{-# LANGUAGE TypeOperators, TypeFamilies, UndecidableInstances, 
+{-# LANGUAGE TypeOperators, TypeFamilies, UndecidableInstances,
              ScopedTypeVariables, DataKinds, FlexibleInstances,
-             ConstraintKinds #-}
+             ConstraintKinds, CPP #-}
+
+#if __GLASGOW_HASKELL__ >= 711
+{-# OPTIONS_GHC -Wno-redundant-constraints #-}
+#endif
 
 module Data.Metrology.Combinators where
 

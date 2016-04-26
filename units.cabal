@@ -121,6 +121,8 @@ test-suite main
   ghc-options:        -O0 -Wall -main-is Tests.Main
   if impl(ghc >= 7.10)
     ghc-options: -fno-warn-unticked-promoted-constructors
+  if impl(ghc >= 8.0)
+    ghc-options: -Wno-missing-signatures -Wno-redundant-constraints -Wno-name-shadowing
 
     -- GHC 7.10 requires this in more places, and I don't feel like ferreting out exactly
     -- where.

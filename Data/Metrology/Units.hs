@@ -9,8 +9,12 @@
 -}
 
 {-# LANGUAGE TypeFamilies, DataKinds, DefaultSignatures, MultiParamTypeClasses,
-             ConstraintKinds, UndecidableInstances, FlexibleContexts,
+             ConstraintKinds, UndecidableInstances, FlexibleContexts, CPP,
              FlexibleInstances, ScopedTypeVariables, TypeOperators, PolyKinds #-}
+
+#if __GLASGOW_HASKELL__ >= 711
+{-# LANGUAGE UndecidableSuperClasses #-}
+#endif
 
 module Data.Metrology.Units where
 

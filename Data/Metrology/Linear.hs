@@ -1,6 +1,10 @@
 {-# LANGUAGE TypeOperators, FlexibleContexts, DataKinds, TypeFamilies,
              ScopedTypeVariables, ConstraintKinds, GeneralizedNewtypeDeriving,
-             MultiParamTypeClasses, FlexibleInstances, InstanceSigs #-}
+             MultiParamTypeClasses, FlexibleInstances, InstanceSigs, CPP #-}
+
+#if __GLASGOW_HASKELL__ >= 711
+{-# OPTIONS_GHC -Wno-redundant-constraints #-}
+#endif
 
 -----------------------------------------------------------------------------
 -- |

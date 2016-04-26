@@ -78,8 +78,13 @@ checkIsType n = do
 -- > instance Dimension Length
 declareDimension :: String -> Q [Dec]
 declareDimension str =
-  return [ DataD [] name [] [NormalC name []] []
-         , InstanceD [] (ConT ''Dimension `AppT` ConT name) [] ]
+  return [ mkDataD [] name [] [NormalC name []] []
+#if __GLASGOW_HASKELL__ >= 711
+         , InstanceD Nothing [] (ConT ''Dimension `AppT` ConT name) []
+#else
+         , InstanceD [] (ConT ''Dimension `AppT` ConT name) []
+#endif
+         ]
   where
     name = mkName str
 
@@ -104,7 +109,7 @@ declareCanonicalUnit unit_name_str dim m_abbrev = do
   unit_instance <- [d| instance Unit $unit_type where
                          type BaseUnit $unit_type = Canonical
                          type DimOfUnit $unit_type = $dim |]
-  return $ (DataD [] unit_name [] [NormalC unit_name []] [])
+  return $ (mkDataD [] unit_name [] [NormalC unit_name []] [])
            : unit_instance ++ show_instance
   where
     unit_name = mkName unit_name_str
@@ -127,7 +132,7 @@ declareDerivedUnit unit_name_str base_unit ratio m_abbrev = do
   unit_instance <- [d| instance Unit $unit_type where
                          type BaseUnit $unit_type = $base_unit
                          conversionRatio _ = ratio |]
-  return $ (DataD [] unit_name [] [NormalC unit_name []] [])
+  return $ (mkDataD [] unit_name [] [NormalC unit_name []] [])
            : unit_instance ++ show_instance
   where
     unit_name = mkName unit_name_str
@@ -167,7 +172,7 @@ declareMonoUnit unit_name_str m_abbrev = do
                          type BaseUnit $unit_type = Canonical
                          type DimOfUnit $unit_type = $unit_type |]
   default_instance <- [d| type instance DefaultUnitOfDim $unit_type = $unit_type |]
-  return $ (DataD [] unit_name [] [NormalC unit_name []] [])
+  return $ (mkDataD [] unit_name [] [NormalC unit_name []] [])
            : show_instance ++ dim_instance ++ unit_instance ++ default_instance
   where
     unit_name = mkName unit_name_str
@@ -209,4 +214,12 @@ declareConstant name value q_unit_type = do
     mkClassP = ClassP
 #else
     mkClassP n tys = foldl AppT (ConT n) tys
+#endif
+
+-- Local function that provides compatibility across TH versions
+mkDataD :: Cxt -> Name -> [TyVarBndr] -> [Con] -> Cxt -> Dec
+#if __GLASGOW_HASKELL__ >= 711
+mkDataD cxt name tvbs = DataD cxt name tvbs Nothing
+#else
+mkDataD = DataD
 #endif

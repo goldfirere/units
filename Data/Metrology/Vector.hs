@@ -1,5 +1,9 @@
-{-# LANGUAGE TypeOperators, FlexibleContexts, DataKinds, TypeFamilies,
+{-# LANGUAGE TypeOperators, FlexibleContexts, DataKinds, TypeFamilies, CPP,
              ScopedTypeVariables, ConstraintKinds, GeneralizedNewtypeDeriving #-}
+
+#if __GLASGOW_HASKELL__ >= 711
+{-# OPTIONS_GHC -Wno-redundant-constraints #-}
+#endif
 
 -----------------------------------------------------------------------------
 -- |
@@ -18,7 +22,7 @@ module Data.Metrology.Vector (
   -- * Term-level combinators
 
   -- | The term-level arithmetic operators are defined by
-  -- applying vertical bar(s) to the sides the dimensioned 
+  -- applying vertical bar(s) to the sides the dimensioned
   -- quantities acts on.
 
   -- ** Additive operations
@@ -32,7 +36,7 @@ module Data.Metrology.Vector (
 
   -- ** Multiplicative operations on vectors
   (|*^|), (|^*|), (|^/|), (|.|),
-  
+
   -- ** Exponentiation
   (|^), (|^^), qNthRoot,
   qSq, qCube, qSqrt, qCubeRoot,
@@ -43,15 +47,15 @@ module Data.Metrology.Vector (
   -- ** Affine operations
   Point(..), QPoint, (|.-.|), (|.+^|), (|.-^|), qDistanceSq, qDistance,
   pointNumIn, (.#), quOfPoint, (%.),
-  
+
   -- ** Comparison
   qCompare, (|<|), (|>|), (|<=|), (|>=|), (|==|), (|/=|),
-  qApprox, qNapprox,        
+  qApprox, qNapprox,
 
   -- * Nondimensional units, conversion between quantities and numeric values
   numIn, (#), quOf, (%), showIn,
   unity, redim, convert,
-  defaultLCSU, constant, 
+  defaultLCSU, constant,
 
   -- * Type-level unit combinators
   (:*)(..), (:/)(..), (:^)(..), (:@)(..),
@@ -61,13 +65,13 @@ module Data.Metrology.Vector (
   type (%*), type (%/), type (%^),
 
   -- * Creating quantity types
-  Qu, MkQu_D, MkQu_DLN, MkQu_U, MkQu_ULN, 
+  Qu, MkQu_D, MkQu_DLN, MkQu_U, MkQu_ULN,
 
   -- * Creating new dimensions
   Dimension,
 
   -- * Creating new units
-  Unit(type BaseUnit, type DimOfUnit, conversionRatio), 
+  Unit(type BaseUnit, type DimOfUnit, conversionRatio),
   Canonical,
 
   -- * Numbers, the only built-in unit
@@ -297,7 +301,7 @@ qDistance (Qu a) (Qu b) = Qu (a `distance` b)
 --
 --   or
 --
---   > inMeters x = x # Meter   
+--   > inMeters x = x # Meter
 numIn :: forall unit dim lcsu n.
          ( ValidDLU dim lcsu unit
          , VectorSpace n
@@ -343,10 +347,10 @@ infix 5 %
 (%) = quOf
 
 -- | Dimension-keeping cast between different CSUs.
-convert :: forall d l1 l2 n. 
+convert :: forall d l1 l2 n.
   ( ConvertibleLCSUs d l1 l2
   , VectorSpace n
-  , Fractional (Scalar n) ) 
+  , Fractional (Scalar n) )
   => Qu d l1 n -> Qu d l2 n
 convert (Qu x) = Qu $ x ^* fromRational (
   canonicalConvRatioSpec (Proxy :: Proxy (LookupList d l1))

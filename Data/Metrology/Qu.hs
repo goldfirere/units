@@ -13,7 +13,11 @@
 {-# LANGUAGE TypeFamilies, TypeOperators, DataKinds, UndecidableInstances,
              ConstraintKinds, StandaloneDeriving, GeneralizedNewtypeDeriving,
              FlexibleInstances, RoleAnnotations, FlexibleContexts,
-             ScopedTypeVariables #-}
+             ScopedTypeVariables, CPP #-}
+
+#if __GLASGOW_HASKELL__ >= 711
+{-# OPTIONS_GHC -Wno-redundant-constraints #-}
+#endif
 
 module Data.Metrology.Qu where
 

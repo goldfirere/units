@@ -50,7 +50,7 @@ module Data.Metrology.Parser (
   makeQuasiQuoter, allUnits, allPrefixes,
 
   -- * Direct interface
-  
+
   -- | The definitions below allow users to access the unit parser directly.
   -- The parser produces 'UnitExp's which can then be further processed as
   -- necessary.
@@ -153,7 +153,7 @@ makeQuasiQuoter qq_name_str prefix_names unit_names = do
          , ValD (VarP qq_name) (NormalB qq) []]
   where
     qq_name = mkName qq_name_str
-    
+
     mk_pair :: Name -> Q Exp   -- Exp is of type (String, Name)
     mk_pair n = [| (show (undefined :: $( return $ ConT n )), n) |]
 
@@ -172,7 +172,11 @@ getInstanceNames class_name = do
   ClassI _ insts <- reify class_name
   m_names <- forM insts $ \inst ->
     case inst of
-      InstanceD _ ((ConT class_name') `AppT` (ConT unit_name)) []
+      InstanceD
+#if __GLASGOW_HASKELL__ >= 711
+        _
+#endif
+          _ ((ConT class_name') `AppT` (ConT unit_name)) []
         |  class_name == class_name'
         -> do show_insts <- reifyInstances ''Show [ConT unit_name]
               case show_insts of

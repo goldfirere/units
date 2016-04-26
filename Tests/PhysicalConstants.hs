@@ -1,6 +1,10 @@
 {-# LANGUAGE ConstraintKinds, DataKinds, FlexibleContexts, TypeFamilies,
-             TypeOperators, ImplicitParams #-}
+             TypeOperators, ImplicitParams, CPP #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
+
+#if __GLASGOW_HASKELL__ >= 711
+{-# OPTIONS_GHC -fconstraint-solver-iterations=10 #-}
+#endif
 
 module Tests.PhysicalConstants where
 
@@ -75,15 +79,15 @@ planckTime = constant $ planckLength |/| speedOfLight
 -- eps0
 vacuumPermittivity :: CompatibleUnit l SIPermittivityUnit
   => MkQu_UL SIPermittivityUnit l
-vacuumPermittivity =  
+vacuumPermittivity =
   (1 / (4 * pi * 1e-7 * 299792458**2)) % (undefined :: SIPermittivityUnit)
--- mu0                     
-vacuumPermeability :: CompatibleUnit l SIPermeabilityUnit 
+-- mu0
+vacuumPermeability :: CompatibleUnit l SIPermeabilityUnit
   => MkQu_UL SIPermeabilityUnit l
 vacuumPermeability = (4 * pi * 1e-7) % (undefined :: SIPermeabilityUnit)
 
 -- |Planck constant
-planckConstant :: CompatibleUnit l JouleSecond 
+planckConstant :: CompatibleUnit l JouleSecond
   => MkQu_UL JouleSecond l
 planckConstant =  (6.6260695729e-34) % (undefined :: JouleSecond)
 
@@ -108,5 +112,3 @@ typechecks!
 1.616199256057012e-35 m
 
 -}
-
-
