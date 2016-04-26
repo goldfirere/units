@@ -10,7 +10,11 @@
 
 {-# LANGUAGE ExplicitNamespaces, DataKinds, FlexibleInstances, TypeFamilies,
              TypeOperators, ConstraintKinds, ScopedTypeVariables,
-             FlexibleContexts, UndecidableInstances #-}
+             FlexibleContexts, UndecidableInstances, CPP #-}
+
+#if __GLASGOW_HASKELL__ >= 711
+{-# OPTIONS_GHC -Wno-redundant-constraints #-}
+#endif
 
 -----------------------------------------------------------------------------
 -- |
@@ -33,7 +37,7 @@ module Data.Metrology.Poly (
   -- * Term-level combinators
 
   -- | The term-level arithmetic operators are defined by
-  -- applying vertical bar(s) to the sides the dimensioned 
+  -- applying vertical bar(s) to the sides the dimensioned
   -- quantities acts on.
 
   -- ** Additive operations
@@ -51,12 +55,12 @@ module Data.Metrology.Poly (
 
   -- ** Comparison
   qCompare, (|<|), (|>|), (|<=|), (|>=|), (|==|), (|/=|),
-  qApprox, qNapprox,        
+  qApprox, qNapprox,
 
   -- * Nondimensional units, conversion between quantities and numeric values
   numIn, (#), quOf, (%), showIn,
   unity, redim, convert,
-  defaultLCSU, constant, 
+  defaultLCSU, constant,
 
   -- * Type-level unit combinators
   (:*)(..), (:/)(..), (:^)(..), (:@)(..),
@@ -66,13 +70,13 @@ module Data.Metrology.Poly (
   type (%*), type (%/), type (%^),
 
   -- * Creating quantity types
-  Qu, MkQu_D, MkQu_DLN, MkQu_U, MkQu_ULN, 
+  Qu, MkQu_D, MkQu_DLN, MkQu_U, MkQu_ULN,
 
   -- * Creating new dimensions
   Dimension,
 
   -- * Creating new units
-  Unit(type BaseUnit, type DimOfUnit, conversionRatio), 
+  Unit(type BaseUnit, type DimOfUnit, conversionRatio),
   Canonical,
 
   -- * Numbers, the only built-in unit
@@ -130,10 +134,10 @@ import Data.Proxy
 --
 --   or
 --
---   > inMeters x = x # Meter   
+--   > inMeters x = x # Meter
 numIn :: forall unit dim lcsu n.
          ( ValidDLU dim lcsu unit
-         , Fractional n ) 
+         , Fractional n )
       => Qu dim lcsu n -> unit -> n
 numIn (Qu val) u
   = val * fromRational
@@ -182,7 +186,7 @@ showIn :: ( ValidDLU dim lcsu unit
 showIn x u = show (x # u) ++ " " ++ show u
 
 -- | Dimension-keeping cast between different CSUs.
-convert :: forall d l1 l2 n. 
+convert :: forall d l1 l2 n.
   ( ConvertibleLCSUs d l1 l2
   , Fractional n )
   => Qu d l1 n -> Qu d l2 n
@@ -239,4 +243,3 @@ a *| (Qu b) = Qu (a * b)
 -- | Divide a quantity by a scalar
 (|/) :: Fractional n => Qu a l n -> n -> Qu a l n
 (Qu a) |/ b = Qu (a / b)
-
