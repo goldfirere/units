@@ -1,6 +1,10 @@
 Release notes for `units`
 =========================
 
+Version 2.4.1
+-------------
+* GHC 8 compatibility.
+
 Version 2.4
 -----------
 * New interface with the `linear` package in `Data.Metrology.Linear`.
