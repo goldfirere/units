@@ -58,6 +58,9 @@ import qualified Control.Lens as Lens
 
 import Data.Proxy
 import Data.Foldable    as F
+#if __GLASGOW_HASKELL__ < 709
+import Data.Traversable ( Traversable )
+#endif
 
 ---------------------------------------
 -- Additive operations
