@@ -217,9 +217,9 @@ declareConstant name value q_unit_type = do
 #endif
 
 -- Local function that provides compatibility across TH versions
-mkDataD :: Cxt -> Name -> [TyVarBndr] -> [Con] -> Cxt -> Dec
+mkDataD :: Cxt -> Name -> [TyVarBndr] -> [Con] -> [Name] -> Dec
 #if __GLASGOW_HASKELL__ >= 711
-mkDataD ct name tvbs = DataD ct name tvbs Nothing
+mkDataD ct name tvbs cons derivs = DataD ct name tvbs Nothing cons (map ConT derivs)
 #else
 mkDataD = DataD
 #endif
