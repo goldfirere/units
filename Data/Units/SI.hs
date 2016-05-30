@@ -37,11 +37,15 @@ import Language.Haskell.TH ( Name )
 declareCanonicalUnit "Meter"   [t| Length |]                         (Just "m")
 
 type Metre = Meter
+
+pattern Metre :: Metre
 pattern Metre = Meter
 
 declareCanonicalUnit "Gram"    [t| Mass |]                           (Just "g")
 
 type Gramme = Gram
+
+pattern Gramme :: Gramme
 pattern Gramme = Gram
 
 declareCanonicalUnit "Second"  [t| Time |]                           (Just "s")
@@ -63,6 +67,8 @@ declareDerivedUnit "Hertz"     [t| Number :/ Second |]          1    (Just "Hz")
 declareDerivedUnit "Liter"     [t| (Centi :@ Meter) :^ Three |] 1000 (Just "L")
 
 type Litre = Liter
+
+pattern Litre :: Litre
 pattern Litre = Liter
 
 declareDerivedUnit "Newton"    [t| Gram :* Meter :/ (Second :^ Two) |]  1000  (Just "N")
@@ -91,6 +97,7 @@ declareDerivedUnit "Hectare"   [t| Meter :^ Two |]                      10000 (J
 declareDerivedUnit "Ton"       [t| Kilo :@ Gram |]                      1000  (Just "t")
 
 type Tonne = Ton
+pattern Tonne :: Tonne
 pattern Tonne = Ton
 
 -- | A list of the names of all unit types. Useful with
@@ -103,4 +110,3 @@ siUnits =
   , ''Weber, ''Tesla, ''Henry, ''Lumen, ''Lux, ''Becquerel, ''Gray
   , ''Sievert, ''Katal, ''Hectare, ''Ton
   ]
-    

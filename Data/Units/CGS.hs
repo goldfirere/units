@@ -32,9 +32,13 @@ import Data.Metrology.Poly
 import Data.Metrology.TH
 
 type Centimeter = Centi :@ Meter
+
+pattern Centimeter :: Centimeter
 pattern Centimeter = Centi :@ Meter
 
 type Centimetre = Centimeter
+
+pattern Centimetre :: Centimetre
 pattern Centimetre = Centimeter
 
 declareDerivedUnit "Gal"
