@@ -1,3 +1,8 @@
+Version 2.0.1.1
+---------------
+
+* Drop 7.8 support, fixing warnings on 8.0.
+
 Version 2.0.1
 -------------
 
