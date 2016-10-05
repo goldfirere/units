@@ -132,9 +132,13 @@ instance ( False ~ IsCanonical noncanonical_unit
 -- Conversion ratios for lists of units
 -----------------------------------------------------------------------
 
+type family Units (dfactors :: [Factor *]) :: Constraint where
+  Units '[]                    = ()
+  Units (F unit z ': dfactors) = (Unit unit, Units dfactors)
+
 -- | Classifies well-formed list of unit factors, and permits calculating a
 -- conversion ratio for the purposes of LCSU conversions.
-class UnitFactor (units :: [Factor *]) where
+class (Units units) => UnitFactor (units :: [Factor *]) where
   canonicalConvRatioSpec :: Proxy units -> Rational
 
 instance UnitFactor '[] where

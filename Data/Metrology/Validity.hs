@@ -38,10 +38,6 @@ type family MultUnitFactors (facts :: [Factor *]) where
 type family UnitOfDimFactors (dims :: [Factor *]) (lcsu :: LCSU *) :: * where
   UnitOfDimFactors dims lcsu = MultUnitFactors (LookupList dims lcsu)
 
-type family Units (dfactors :: [Factor *]) :: Constraint where
-  Units '[]                    = ()
-  Units (F unit z ': dfactors) = (Unit unit, Units dfactors)
-
 ------------------------------------------------
 -- Main validity functions
 ------------------------------------------------
@@ -51,7 +47,6 @@ type family ValidDLU (dfactors :: [Factor *]) (lcsu :: LCSU *) (unit :: *) where
   ValidDLU dfactors lcsu unit =
     ( dfactors ~ DimFactorsOf (DimOfUnit unit)
     , UnitFactor (LookupList dfactors lcsu)
-    , Units (LookupList dfactors lcsu)  -- needed only in GHC 8
     , Unit unit
     , UnitFactorsOf unit *~ LookupList dfactors lcsu )
 
