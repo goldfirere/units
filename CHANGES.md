@@ -1,6 +1,11 @@
 Release notes for `units`
 =========================
 
+Version 2.4.1
+-------------
+* Add `Units` superclass to `UnitFactor`, easing type inference in
+GHC 8.0, thanks to @rimmington.
+
 Version 2.4
 -----------
 * New interface with the `linear` package in `Data.Metrology.Linear`.
