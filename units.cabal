@@ -58,7 +58,7 @@ library
                , th-desugar >= 1.5.4
                , singletons >= 0.9 && < 3
                , vector-space >= 0.8
-               , linear >= 1.16.2
+               , linear >= 1.20.4
                , template-haskell
                , mtl >= 1.1
                , multimap >= 1.2
