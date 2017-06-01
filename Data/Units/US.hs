@@ -3,7 +3,7 @@
 -- Module      :  Data.Units.US
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
--- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Maintainer  :  Richard Eisenberg (rae@cs.brynmawr.edu)
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
@@ -33,7 +33,7 @@ module Data.Units.US (
 
   -- * Velocity
   Knot(..),
-  
+
   -- * Area
   Survey.Acre(..),
 

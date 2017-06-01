@@ -5,7 +5,7 @@
 -- Module      :  Data.Units.US.Misc
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
--- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Maintainer  :  Richard Eisenberg (rae@cs.brynmawr.edu)
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
@@ -81,5 +81,3 @@ declareDerivedUnit "Oersted"    [t| Ampere :/ Meter |]
 -- | Standard lengths: 'Foot', 'Inch', 'Yard', and 'Mile'
 lengths :: [Name]
 lengths = [ ''Foot, ''Inch, ''Yard, ''Mile ]
-
-
