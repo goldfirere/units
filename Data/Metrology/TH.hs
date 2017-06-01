@@ -78,7 +78,7 @@ checkIsType n = do
 -- > instance Dimension Length
 declareDimension :: String -> Q [Dec]
 declareDimension str =
-  return [ mkDataD [] name [] [NormalC name []] []
+  return [ mkEmptyDataD name
 #if __GLASGOW_HASKELL__ >= 711
          , InstanceD Nothing [] (ConT ''Dimension `AppT` ConT name) []
 #else
@@ -109,7 +109,7 @@ declareCanonicalUnit unit_name_str dim m_abbrev = do
   unit_instance <- [d| instance Unit $unit_type where
                          type BaseUnit $unit_type = Canonical
                          type DimOfUnit $unit_type = $dim |]
-  return $ (mkDataD [] unit_name [] [NormalC unit_name []] [])
+  return $ (mkEmptyDataD unit_name)
            : unit_instance ++ show_instance
   where
     unit_name = mkName unit_name_str
@@ -132,7 +132,7 @@ declareDerivedUnit unit_name_str base_unit ratio m_abbrev = do
   unit_instance <- [d| instance Unit $unit_type where
                          type BaseUnit $unit_type = $base_unit
                          conversionRatio _ = ratio |]
-  return $ (mkDataD [] unit_name [] [NormalC unit_name []] [])
+  return $ (mkEmptyDataD unit_name)
            : unit_instance ++ show_instance
   where
     unit_name = mkName unit_name_str
@@ -172,7 +172,7 @@ declareMonoUnit unit_name_str m_abbrev = do
                          type BaseUnit $unit_type = Canonical
                          type DimOfUnit $unit_type = $unit_type |]
   default_instance <- [d| type instance DefaultUnitOfDim $unit_type = $unit_type |]
-  return $ (mkDataD [] unit_name [] [NormalC unit_name []] [])
+  return $ (mkEmptyDataD unit_name)
            : show_instance ++ dim_instance ++ unit_instance ++ default_instance
   where
     unit_name = mkName unit_name_str
@@ -216,10 +216,15 @@ declareConstant name value q_unit_type = do
     mkClassP n tys = foldl AppT (ConT n) tys
 #endif
 
--- Local function that provides compatibility across TH versions
-mkDataD :: Cxt -> Name -> [TyVarBndr] -> [Con] -> [Name] -> Dec
-#if __GLASGOW_HASKELL__ >= 711
-mkDataD ct name tvbs cons derivs = DataD ct name tvbs Nothing cons (map ConT derivs)
+-- Make a DataD like `data <name> = <name>`.
+mkEmptyDataD :: Name -> Dec
+mkEmptyDataD name
+#if __GLASGOW_HASKELL__ >= 801
+  = DataD [] name [] Nothing [con] []
+#elif __GLASGOW_HASKELL__ >= 711
+  = DataD [] name [] Nothing [con] []
 #else
-mkDataD = DataD
+  = DataD [] name [] [con] []
 #endif
+  where
+    con = NormalC name []
