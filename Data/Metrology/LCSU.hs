@@ -2,11 +2,11 @@
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
-   eir@cis.upenn.edu
+   rae@cs.brynmawr.edu
 
    Defines a locally coherent system of units (LCSUs),
    implemented as an association list.
-   An LCSU is a from base dimensions to units, thus 
+   An LCSU is a from base dimensions to units, thus
    defining a uniquely mapping units for any dimensions.
 -}
 

@@ -2,7 +2,7 @@
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
-   eir@cis.upenn.edu
+   rae@cs.brynmawr.edu
 
    This file gathers and exports all user-visible pieces of the units package.
    It also defines the main creators and consumers of dimensioned objects.
@@ -21,7 +21,7 @@
 -- Module      :  Data.Metrology.Poly
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
--- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Maintainer  :  Richard Eisenberg (rae@cs.brynmawr.edu)
 -- Stability   :  experimental
 -- Portability :  non-portable
 --

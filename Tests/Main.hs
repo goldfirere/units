@@ -2,7 +2,7 @@
 
    The units Package
    Copyright (c) 2014 Richard Eisenberg
-   eir@cis.upenn.edu
+   rae@cs.brynmawr.edu
 
    This is the main testing file for the units package.
 -}
@@ -48,12 +48,12 @@ tests =
   testGroup "Tests"
   [ Tests.Imperial.tests
   , Tests.LennardJones.tests
-  , Tests.Linearity.tests    
+  , Tests.Linearity.tests
   , Tests.OffSystemAdd.tests
   , Tests.OffSystemCSU.tests
   , Tests.Parser.tests
   , Tests.PhysicalConstants.tests
   , Tests.Show.tests
   , Tests.Travel.tests
-  , Tests.Vector.tests    
+  , Tests.Vector.tests
   ]

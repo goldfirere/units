@@ -11,7 +11,7 @@
 -- Module      :  Data.Metrology.Linear
 -- Copyright   :  (C) 2014 Richard Eisenberg, (C) 2015 Tobias Markus
 -- License     :  BSD-style (see LICENSE)
--- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Maintainer  :  Richard Eisenberg (rae@cs.brynmawr.edu)
 -- Stability   :  experimental
 -- Portability :  non-portable
 --

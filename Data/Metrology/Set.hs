@@ -2,7 +2,7 @@
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
-   eir@cis.upenn.edu
+   rae@cs.brynmawr.edu
 
    Defines set-like operations on type-level lists.
 -}
@@ -12,7 +12,7 @@
 -- Module      :  Data.Metrology.Set
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
--- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Maintainer  :  Richard Eisenberg (rae@cs.brynmawr.edu)
 -- Stability   :  experimental
 -- Portability :  non-portable
 --

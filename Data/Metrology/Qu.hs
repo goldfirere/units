@@ -2,7 +2,7 @@
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
-   eir@cis.upenn.edu
+   rae@cs.brynmawr.edu
 
    This file defines the 'Qu' type that represents quantity
    (a number paired with its measurement reference).

@@ -4,8 +4,8 @@ cabal-version:  >= 1.10
 synopsis:       A domain-specific type system for dimensional analysis
 homepage:       https://github.com/goldfirere/units
 category:       Math
-author:         Richard Eisenberg <eir@cis.upenn.edu>
-maintainer:     Richard Eisenberg <eir@cis.upenn.edu>, Takayuki Muranushi <muranushi@gmail.com>
+author:         Richard Eisenberg <rae@cs.brynmawr.edu>
+maintainer:     Richard Eisenberg <rae@cs.brynmawr.edu>, Takayuki Muranushi <muranushi@gmail.com>
 bug-reports:    https://github.com/goldfirere/units/issues
 stability:      experimental
 extra-source-files: README.md

@@ -2,7 +2,7 @@
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
-   eir@cis.upenn.edu
+   rae@cs.brynmawr.edu
 
    This file defines validity checks on dimension, unit, and LCSU definitions.
 -}

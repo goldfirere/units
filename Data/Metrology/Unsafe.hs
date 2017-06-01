@@ -5,12 +5,12 @@
 -- Module      :  Data.Metrology.Unsafe
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
--- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Maintainer  :  Richard Eisenberg (rae@cs.brynmawr.edu)
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
 -- This module exports the constructor of the 'Qu' type. This allows you
--- to write code that takes creates and reads quantities at will, 
+-- to write code that takes creates and reads quantities at will,
 -- which may lead to dimension unsafety. Use at your peril.
 --
 -- This module also exports 'UnsafeQu', which is a simple wrapper around

@@ -1,8 +1,8 @@
 {- Data/Metrology/Z.hs
- 
+
    The units Package
    Copyright (c) 2013 Richard Eisenberg
-   eir@cis.upenn.edu
+   rae@cs.brynmawr.edu
 
    This file contains a definition of integers at the type-level, in terms
    of a promoted datatype 'Z'.
@@ -18,14 +18,14 @@
 -- Module      :  Data.Metrology.Z
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
--- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Maintainer  :  Richard Eisenberg (rae@cs.brynmawr.edu)
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
 -- This module defines a datatype and operations to represent type-level
 -- integers. Though it's defined as part of the units package, it may be
 -- useful beyond dimensional analysis. If you have a compelling non-units
--- use of this package, please let me (Richard, @eir@ at @cis.upenn.edu@)
+-- use of this package, please let me (Richard, @rae@ at @cs.brynmawr.edu@)
 -- know.
 -----------------------------------------------------------------------------
 
@@ -218,4 +218,3 @@ pMFive  = sMFive
 
 pSucc = sSucc
 pPred = sPred
-

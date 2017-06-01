@@ -2,7 +2,7 @@
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
-   eir@cis.upenn.edu
+   rae@cs.brynmawr.edu
 
    This file defines the Factor kind and operations over lists of Factors.
 

@@ -2,7 +2,7 @@
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
-   eir@cis.upenn.edu
+   rae@cs.brynmawr.edu
 
    This file gathers and exports user-visible type-level definitions, to
    make error messages less cluttered. Non-expert users should never have
@@ -14,7 +14,7 @@
 -- Module      :  Data.Metrology.Internal
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
--- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Maintainer  :  Richard Eisenberg (rae@cs.brynmawr.edu)
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
@@ -54,5 +54,3 @@ import Data.Metrology.Units
 import Data.Metrology.Factor
 import Data.Metrology.Set
 import Data.Metrology.Dimensions
-
-  

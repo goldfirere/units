@@ -2,7 +2,7 @@
 
    The units Package
    Copyright (c) 2013 Richard Eisenberg
-   eir@cis.upenn.edu
+   rae@cs.brynmawr.edu
 
    This file defines the class Dimension, which is needed for
    defining dimensions.
@@ -24,4 +24,3 @@ class Dimension dim where
   -- the default of this type family should not be necessary in user code.
   type DimFactorsOf dim :: [Factor *]
   type DimFactorsOf dim = '[F dim One]
-  

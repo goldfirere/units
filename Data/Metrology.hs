@@ -2,7 +2,7 @@
 
    The units Package
    Copyright (c) 2014 Richard Eisenberg
-   eir@cis.upenn.edu
+   rae@cs.brynmawr.edu
 
    This file gathers and exports all user-visible pieces of the units package.
    It also defines the main creators and consumers of dimensioned objects.
@@ -26,7 +26,7 @@
 -- Module      :  Data.Metrology
 -- Copyright   :  (C) 2014 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
--- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Maintainer  :  Richard Eisenberg (rae@cs.brynmawr.edu)
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
@@ -37,7 +37,7 @@
 --
 -- Some of the types below refer to declarations that are not exported and
 -- not documented here. This is because Haddock does not allow finely-tuned
--- abstraction in documentation. (In particular, right-hand sides of type 
+-- abstraction in documentation. (In particular, right-hand sides of type
 -- synonym declarations are always included.) If a symbol is not exported,
 -- you do /not/ need to know anything about it to use this package.
 --
@@ -74,7 +74,7 @@ import qualified Data.Metrology.Poly as Poly
 --
 --   or
 --
---   > inMeters x = x # Meter   
+--   > inMeters x = x # Meter
 numIn :: ( ValidDLU dim DefaultLCSU unit
          , Fractional n )
       => Qu dim DefaultLCSU n -> unit -> n
