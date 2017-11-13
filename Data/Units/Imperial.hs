@@ -3,14 +3,14 @@
 -- Module      :  Data.Units.Imperial
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
--- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Maintainer  :  Richard Eisenberg (rae@cs.brynmawr.edu)
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
 -- This module defines the Imperial system of units, based on the
 -- Exchequer Standards of 1825. Two big differences between the
 -- Imperial system and the US customary one are that because the
--- USA declared their independance from the UK in 1776, the US
+-- USA declared their independence from the UK in 1776, the US
 -- customary system is based on the previous Winchester Standards, and
 -- that the Imperial systems uses the same units for dry and fluid
 -- measures. This module gathers together a subjective set of units of
@@ -21,7 +21,7 @@
 -- computations. If you want the foot-pound-second system, use the 'FPS'.
 --
 -- Where possible, reference have been made to UK legislation. However,
--- Wikipedia's base is /much/ better organized than any government
+-- Wikipedia's page is /much/ better organized than any government
 -- resource immediately available.
 -- The UK legislation used as reference is as follows:
 -- <http://www.legislation.gov.uk/uksi/1995/1804/made>
@@ -33,7 +33,7 @@ module Data.Units.Imperial (
 
   -- * Velocity
   Knot(..),
-  
+
   -- * Area
   Acre(..),
 

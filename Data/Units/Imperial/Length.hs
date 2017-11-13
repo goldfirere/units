@@ -3,7 +3,7 @@
 -- Module      :  Data.Units.Imperial.Length
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
--- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Maintainer  :  Richard Eisenberg (rae@cs.brynmawr.edu)
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
@@ -16,7 +16,7 @@
 -- by reference to the international yard, not the US survey one).
 --
 -- Where possible, reference have been made to UK legislation. However,
--- Wikipedia's base is /much/ better organized than any government
+-- Wikipedia's page is /much/ better organized than any government
 -- resource immediately available.
 -----------------------------------------------------------------------------
 

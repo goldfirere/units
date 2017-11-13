@@ -3,14 +3,14 @@
 -- Module      :  Data.Units.Astronomical
 -- Copyright   :  (C) 2013 Richard Eisenberg
 -- License     :  BSD-style (see LICENSE)
--- Maintainer  :  Richard Eisenberg (eir@cis.upenn.edu)
+-- Maintainer  :  Richard Eisenberg (rae@cs.brynmawr.edu)
 -- Stability   :  experimental
 -- Portability :  non-portable
 --
 -- The system of astronomical units, as defined by the International
 -- Astronomical Union in 1976 and since then updated a few times.
 --
--- The IAU documents used as reference are as follow:
+-- The IAU documents used as reference are as follows:
 -- <http://www.iau.org/static/resolutions/IAU1976_French.pdf>
 -- <http://www.iau.org/static/resolutions/IAU1994_French.pdf>
 -- <http://syrte.obspm.fr/IAU_resolutions/Res_IAU2012_B2.pdf>
