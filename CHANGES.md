@@ -1,3 +1,8 @@
+Version 2.1
+-----------
+
+* Add support for Imperial and astronomical units, thanks to @Bebere.
+
 Version 2.0.1.1
 ---------------
 
