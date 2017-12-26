@@ -15,7 +15,7 @@ module Data.Metrology.Factor where
 
 import GHC.Exts (Constraint)
 import Data.Metrology.Z as Z
-import Data.Type.Equality
+import Data.Type.Equality as DTE
 import Data.Type.Bool
 
 import Data.Singletons.Prelude
@@ -55,7 +55,7 @@ reorder x (h:t) =
 infix 4 $=
 -- | Do these Factors represent the same dimension?
 type family (a :: Factor *) $= (b :: Factor *) :: Bool where
-  (F n1 z1) $= (F n2 z2) = n1 == n2
+  (F n1 z1) $= (F n2 z2) = n1 DTE.== n2
   a         $= b         = False
 
 -- | @(Extract s lst)@ pulls the Factor that matches s out of lst, returning a

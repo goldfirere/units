@@ -119,7 +119,7 @@ test-suite main
   hs-source-dirs:   units-defs, .
 
     -- optimize compile time, not runtime!
-  ghc-options:        -O0 -Wall -main-is Tests.Main
+  ghc-options:        -O0 -Wall
   if impl(ghc >= 7.10)
     ghc-options: -fno-warn-unticked-promoted-constructors
   if impl(ghc >= 8.0)

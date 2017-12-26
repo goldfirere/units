@@ -52,7 +52,7 @@ module Data.Metrology.Z (
   sSucc, sPred, sNegate,
 
   -- ** Comparisons
-  type (<), NonNegative,
+  type (Data.Metrology.Z.<), NonNegative,
 
   -- * Synonyms for certain numbers
   One, Two, Three, Four, Five, MOne, MTwo, MThree, MFour, MFive,
@@ -137,15 +137,17 @@ type family ZDiv (counter :: Z) (n :: Z) (z :: Z) :: Z where
 
 -- | Less-than comparison
 type family (a :: Z) < (b :: Z) :: Bool where
-  Zero  < Zero   = False
-  Zero  < (S n)  = True
-  Zero  < (P n)  = False
-  (S n) < Zero   = False
-  (S n) < (S n') = n < n'
-  (S n) < (P n') = False
-  (P n) < Zero   = True
-  (P n) < (S n') = True
-  (P n) < (P n') = n < n'
+  -- fully qualify everywhere, because Data.Singletons.TH started exporting <
+  -- at some point
+  Zero  Data.Metrology.Z.< Zero   = False
+  Zero  Data.Metrology.Z.< (S n)  = True
+  Zero  Data.Metrology.Z.< (P n)  = False
+  (S n) Data.Metrology.Z.< Zero   = False
+  (S n) Data.Metrology.Z.< (S n') = n Data.Metrology.Z.< n'
+  (S n) Data.Metrology.Z.< (P n') = False
+  (P n) Data.Metrology.Z.< Zero   = True
+  (P n) Data.Metrology.Z.< (S n') = True
+  (P n) Data.Metrology.Z.< (P n') = n Data.Metrology.Z.< n'
 
 -- | Check if a type-level integer is in fact a natural number
 type family NonNegative z :: Constraint where
