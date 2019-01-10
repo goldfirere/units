@@ -1,5 +1,6 @@
 {-# LANGUAGE PolyKinds, DataKinds, TypeOperators, FlexibleInstances,
-             ScopedTypeVariables, FlexibleContexts, ConstraintKinds, CPP #-}
+             ScopedTypeVariables, FlexibleContexts, ConstraintKinds, CPP,
+             UndecidableInstances #-}
 
 #if __GLASGOW_HASKELL__ < 709
 {-# LANGUAGE OverlappingInstances #-}
