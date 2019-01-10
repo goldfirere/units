@@ -33,19 +33,19 @@ type Thirteen = S Twelve
 
 
 sSix     = SS sFive
-sSeven   = SS sSix     
-sEight   = SS sSeven   
-sNine    = SS sEight   
-sTen     = SS sNine    
-sEleven  = SS sTen     
-sTwelve  = SS sEleven  
-sThirteen= SS sTwelve  
+sSeven   = SS sSix
+sEight   = SS sSeven
+sNine    = SS sEight
+sTen     = SS sNine
+sEleven  = SS sTen
+sTwelve  = SS sEleven
+sThirteen= SS sTwelve
 
 
 data EV = EV
 instance Show EV where show _ = "eV"
 instance Unit EV where
-  type BaseUnit EV = Joule 
+  type BaseUnit EV = Joule
   conversionRatio _ = 1.60217657e-19
 
 data ProtonMass = ProtonMass
@@ -87,7 +87,7 @@ type APara = MkQu_DLN AParameterDim
 type BPara = MkQu_DLN BParameterDim
 
 ljForceP :: Energy l Float -> Length l Float -> Length l Float -> Force l Float
-ljForceP eps sigma r 
+ljForceP eps sigma r
   = redim $ 24 *| eps |*| sigma|^ sSix |/| r |^ sSeven
         |-| 48 *| eps |*| sigma|^ sTwelve |/| r |^ sThirteen
 
@@ -103,7 +103,7 @@ bParaAr = 24 *|  convert epsAr  |*| convert sigmaAr|^ sSix
 
 
 ljForcePOpt :: APara l Float -> BPara l Float -> Length l Float -> Force l Float
-ljForcePOpt a b r 
+ljForcePOpt a b r
   = redim $ b |/| r |^ sSeven
         |-| a |/| r |^ sThirteen
 
@@ -141,16 +141,16 @@ tests =
       val = 9.3407324e-14
   in
   testGroup "LennardJones"
-  [ testCase "NaN" (assert (isNaN $ ljForce (4 % Å) # Newton))
-  , testCase "NaNPoly" (assert (isNaN $ (ljForceP (convert epsAr) (convert sigmaAr) (4 % Å) :: Force SI Float) # Newton))
+  [ testCase "NaN" (assertBool "NaN" (isNaN $ ljForce (4 % Å) # Newton))
+  , testCase "NaNPoly" (assertBool "NaNPoly" (isNaN $ (ljForceP (convert epsAr) (convert sigmaAr) (4 % Å) :: Force SI Float) # Newton))
   , testCase "CU" ((ljForceP (convert epsAr) (convert sigmaAr) (4 % Å) :: Force CU Float) # Newton @?~ val)
-  , testCase "ansNaN" (assert $ isNaN $ (ans :: Force SI Float) # Newton)
+  , testCase "ansNaN" (assertBool "ansNaN" $ isNaN $ (ans :: Force SI Float) # Newton)
   , testCase "ansCU" ((ans :: Force CU Float) # Newton @?~ val)
-  , testCase "optNaN" (assert $ isNaN $ (ljForcePOpt aParaAr bParaAr (4%Å) :: Force SI Float) # Newton)
+  , testCase "optNaN" (assertBool "optNaN" $ isNaN $ (ljForcePOpt aParaAr bParaAr (4%Å) :: Force SI Float) # Newton)
   , testCase "optCU" ((ljForcePOpt aParaAr bParaAr (4%Å) :: Force CU Float) # Newton @?~ val)
-  , testCase "precompNaN" (assert $ isNaN $ (ljForcePOpt aParaAr' bParaAr' (4%Å) :: Force SI Float) # Newton)
-  , testCase "precompNaN2" (assert $ isNaN $ (ljForcePOpt aParaAr' bParaAr' (4%Å) :: Force CU Float) # Newton)
-  , testCase "precompPolyNaN" (assert $ isNaN $ (ljForcePOpt aParaAr'' bParaAr'' (4%Å) :: Force SI Float) # Newton)
+  , testCase "precompNaN" (assertBool "precompNaN" $ isNaN $ (ljForcePOpt aParaAr' bParaAr' (4%Å) :: Force SI Float) # Newton)
+  , testCase "precompNaN2" (assertBool "precompNaN2" $ isNaN $ (ljForcePOpt aParaAr' bParaAr' (4%Å) :: Force CU Float) # Newton)
+  , testCase "precompPolyNaN" (assertBool "precompPolyNaN" $ isNaN $ (ljForcePOpt aParaAr'' bParaAr'' (4%Å) :: Force SI Float) # Newton)
   , testCase "precompPolyCU" ((ljForcePOpt aParaAr'' bParaAr'' (4%Å) :: Force CU Float) # Newton @?~ val) ]
 {-
 main :: IO ()
@@ -169,7 +169,7 @@ main = do
   let ans :: (ConvertibleLCSUs_D D.Length SI l, ConvertibleLCSUs_D D.Energy SI l)=> Force l Float
       ans = ljForceP (convert epsAr) (convert sigmaAr) (4 % Å)
 
-  putStrLn "We compare again:"  
+  putStrLn "We compare again:"
   putStrLn $ (ans :: Force SI Float) `showIn` (Newton)
   putStrLn $ (ans :: Force CU Float) `showIn` (Newton)
 
@@ -181,10 +181,10 @@ main = do
   putStrLn $ "We cannot use the default LCSU for calculating constants in this case."
   putStrLn $ (ljForcePOpt aParaAr' bParaAr' (4%Å):: Force SI Float) `showIn` Newton
   putStrLn $ (ljForcePOpt aParaAr' bParaAr' (4%Å):: Force CU Float) `showIn` Newton
-  
+
   putStrLn $ "We must pay attention in which LCSU the constants are computed in."
   putStrLn $ (ljForcePOpt aParaAr'' bParaAr'' (4%Å):: Force SI Float) `showIn` Newton
-  putStrLn $ (ljForcePOpt aParaAr'' bParaAr'' (4%Å):: Force CU Float) `showIn` Newton  
+  putStrLn $ (ljForcePOpt aParaAr'' bParaAr'' (4%Å):: Force CU Float) `showIn` Newton
 
 
 

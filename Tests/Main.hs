@@ -31,7 +31,6 @@ import qualified Tests.LennardJones
 import qualified Tests.Linearity
 import qualified Tests.OffSystemAdd
 import qualified Tests.OffSystemCSU
-import qualified Tests.Parser
 import qualified Tests.PhysicalConstants
 import qualified Tests.Show
 import qualified Tests.Travel
@@ -51,7 +50,6 @@ tests =
   , Tests.Linearity.tests
   , Tests.OffSystemAdd.tests
   , Tests.OffSystemCSU.tests
-  , Tests.Parser.tests
   , Tests.PhysicalConstants.tests
   , Tests.Show.tests
   , Tests.Travel.tests
