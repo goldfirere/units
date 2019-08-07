@@ -1,3 +1,8 @@
+Version 2.1.0.1
+---------------
+
+* Update .cabal file to export Data.Units.Astronomical.
+
 Version 2.1
 -----------
 

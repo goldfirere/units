@@ -1,3 +1,5 @@
+{-# LANGUAGE TemplateHaskell, TypeFamilies, TypeOperators #-}
+
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.Units.Astronomical
@@ -30,17 +32,18 @@ module Data.Units.Astronomical (
 
 import Data.Constants.Math
 import Data.Metrology.TH
+import Data.Metrology
 import Data.Units.SI
 import Data.Units.SI.Prefixes
 
 declareDerivedUnit "Day"           [t| Second |]        86400 (Just "D")
-declareDerivedUnit "JulianYear"    [t| JulianCentury |] 0.01  (Just "a")
 declareDerivedUnit "JulianCentury" [t| Day |]           36525 (Just "julian century")
+declareDerivedUnit "JulianYear"    [t| JulianCentury |] 0.01  (Just "a")
 
 declareDerivedUnit "AstronomicalUnit" [t| Metre            |] 149597870700     (Just "au")
 declareDerivedUnit "LightYear"        [t| Metre            |] 9460730472580800 (Just "ly")
-declareDerivedUnit "Parsec"           [t| AstronomicalUnit |] 648000 / piR     (Just "pc")
+declareDerivedUnit "Parsec"           [t| AstronomicalUnit |] (648000 / piR)   (Just "pc")
 
-declareDerivedUnit "EarthMass"  [t| SolarMass |] 1 / 332946.0487     (Just "E")
-declareDerivedUnit "JovianMass" [t| SolarMass |] 1 / 1047.348644     (Just "MJ")
-declareDerivedUnit "SolarMass"  [t| Kilo :@ Gram |] 1.9891 * 10 ^ 30 (Just "S")
+declareDerivedUnit "SolarMass"  [t| Kilo :@ Gram |] (1.9891 * 10 ^ (30 :: Int)) (Just "S")
+declareDerivedUnit "EarthMass"  [t| SolarMass |]    (1 / 332946.0487)           (Just "E")
+declareDerivedUnit "JovianMass" [t| SolarMass |]    (1 / 1047.348644)           (Just "MJ")
