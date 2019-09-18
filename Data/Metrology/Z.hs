@@ -10,7 +10,8 @@
 
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances,
              GADTs, PolyKinds, TemplateHaskell, ScopedTypeVariables,
-             EmptyCase, CPP, TypeSynonymInstances, FlexibleInstances #-}
+             EmptyCase, CPP, TypeSynonymInstances, FlexibleInstances,
+             TypeApplications #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 
 -----------------------------------------------------------------------------
