@@ -41,11 +41,10 @@ module Data.Metrology.Z (
   -- * The 'Z' datatype
   Z(..),
 #if MIN_VERSION_singletons(2,6,0)
-  Sing,
+  Sing, SZ(..),
 #else
-  Sing(..),
+  Sing(..), SZ,
 #endif
-  SZ,
 
 #if MIN_VERSION_singletons(1,0,0)
   -- ** Defunctionalization symbols (these can be ignored)
