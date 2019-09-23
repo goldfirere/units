@@ -1,6 +1,10 @@
 Release notes for `units`
 =========================
 
+Version 2.4.1.2
+---------------
+* Compatibility with singletons 2.6 and GHC 8.8, further thanks to @ocharles.
+
 Version 2.4.1.1
 ---------------
 * Fix some GHC compatibility issues, thanks to @ocharles.

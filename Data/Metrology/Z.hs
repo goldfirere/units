@@ -10,8 +10,10 @@
 
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances,
              GADTs, PolyKinds, TemplateHaskell, ScopedTypeVariables,
-             EmptyCase, CPP, TypeSynonymInstances, FlexibleInstances,
-             TypeApplications #-}
+             EmptyCase, CPP, TypeSynonymInstances, FlexibleInstances #-}
+#if __GLASGOW_HASKELL__ >= 800
+{-# LANGUAGE TypeApplications #-}
+#endif
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 
 -----------------------------------------------------------------------------
@@ -37,7 +39,13 @@
 
 module Data.Metrology.Z (
   -- * The 'Z' datatype
-  Z(..), Sing(..), SZ,
+  Z(..),
+#if MIN_VERSION_singletons(2,6,0)
+  Sing,
+#else
+  Sing(..),
+#endif
+  SZ,
 
 #if MIN_VERSION_singletons(1,0,0)
   -- ** Defunctionalization symbols (these can be ignored)

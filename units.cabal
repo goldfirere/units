@@ -1,11 +1,11 @@
 name:           units
-version:        2.4.1.1
+version:        2.4.1.2
 cabal-version:  >= 1.10
 synopsis:       A domain-specific type system for dimensional analysis
 homepage:       https://github.com/goldfirere/units
 category:       Math
-author:         Richard Eisenberg <rae@cs.brynmawr.edu>
-maintainer:     Richard Eisenberg <rae@cs.brynmawr.edu>, Takayuki Muranushi <muranushi@gmail.com>
+author:         Richard Eisenberg <rae@richarde.dev>, Takayuki Muranushi <muranushi@gmail.com>
+maintainer:     Richard Eisenberg <rae@richarde.dev>
 bug-reports:    https://github.com/goldfirere/units/issues
 stability:      experimental
 extra-source-files: README.md
@@ -24,7 +24,7 @@ extra-source-files: README.md
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
-Tested-With: GHC == 7.8.4, GHC == 7.10.2, GHC == 7.10.3, GHC == 8.0.1, GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.1, GHC == 8.6.3 
+Tested-With: GHC == 7.8.4, GHC == 7.10.2, GHC == 7.10.3, GHC == 8.0.1, GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.1, GHC == 8.6.3, GHC == 8.8.1
 description:
 
     The units package provides a mechanism for compile-time
@@ -47,7 +47,7 @@ description:
 source-repository this
   type:     git
   location: https://github.com/goldfirere/units.git
-  tag:      v2.4.1.1
+  tag:      v2.4.1.2
 
 library
   ghc-options: -Wall
