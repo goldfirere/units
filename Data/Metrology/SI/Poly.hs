@@ -36,4 +36,6 @@ type SI = MkLCSU '[ (D.Length, Meter)
                   , (D.Temperature, Kelvin)
                   , (D.AmountOfSubstance, Mole)
                   , (D.LuminousIntensity, Lumen)
+                  , (D.PlaneAngle, Radian)
+                  , (D.SolidAngle, Steradian)
                   ]
