@@ -26,6 +26,19 @@ declareDimension "Temperature"
 declareDimension "AmountOfSubstance"
 declareDimension "LuminousIntensity"
 
+-- | A plane angle is dimensionless; alternatively, it has dimension
+-- length/length. It would be wrong to divide 2 meters by 1
+-- meter and conclude that the quantity is 2 radians or degrees. To make
+-- plane angle safe to use, we define it as a fundamental dimension.
+declareDimension "PlaneAngle"
+
+-- | As we did for plane angle, we must make solid angle a fundamental
+-- dimension to avoid programming mistakes.
+-- 
+-- A solid angle is a measure of the amount of the field of view from some
+-- particular point that a given object covers.
+declareDimension "SolidAngle"
+
 type Area                = Length            :^ Two
 type Volume              = Length            :^ Three
 type Velocity            = Length            :/ Time
@@ -36,7 +49,7 @@ type SurfaceDensity      = Mass              :/ Area
 type SpecificVolume      = Volume            :/ Mass
 type CurrentDensity      = Current           :/ Area
 type MagneticStrength    = Current           :/ Length
-type Concentration       = AmountOfSubstance          :/ Volume
+type Concentration       = AmountOfSubstance        :/ Volume
 type Luminance           = LuminousIntensity        :/ Area
 
 type Frequency           = Time              :^ MOne
@@ -58,3 +71,4 @@ type Kerma               = Area              :/ (Time :^ Two)
 type CatalyticActivity   = AmountOfSubstance :/ Time
 
 type Momentum            = Mass              :* Velocity
+type AngularVelocity     = PlaneAngle        :/ Time

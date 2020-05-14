@@ -38,3 +38,5 @@ type instance DefaultUnitOfDim D.Current           = Ampere
 type instance DefaultUnitOfDim D.Temperature       = Kelvin
 type instance DefaultUnitOfDim D.AmountOfSubstance = Mole
 type instance DefaultUnitOfDim D.LuminousIntensity = Lumen
+type instance DefaultUnitOfDim D.PlaneAngle        = Radian
+type instance DefaultUnitOfDim D.SolidAngle        = Steradian

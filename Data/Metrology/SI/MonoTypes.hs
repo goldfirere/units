@@ -26,6 +26,8 @@ type Current             = MkQu_D D.Current
 type Temperature         = MkQu_D D.Temperature
 type AmountOfSubstance   = MkQu_D D.AmountOfSubstance
 type LuminousIntensity   = MkQu_D D.LuminousIntensity
+type PlaneAngle          = MkQu_D D.PlaneAngle
+type SolidAngle          = MkQu_D D.SolidAngle
 
 type Area                = MkQu_D D.Area
 type Volume              = MkQu_D D.Volume
@@ -57,3 +59,4 @@ type Illuminance         = MkQu_D D.Illuminance
 type Kerma               = MkQu_D D.Kerma
 type CatalyticActivity   = MkQu_D D.CatalyticActivity
 type Momentum            = MkQu_D D.Momentum
+type AngularVelocity     = MkQu_D D.AngularVelocity

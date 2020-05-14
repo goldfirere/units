@@ -31,6 +31,7 @@ import Data.Metrology.Poly
 import Data.Metrology.TH
 import Data.Dimensions.SI
 import Data.Units.SI.Prefixes ( Kilo, Centi )
+import Data.Constants.Math (piR)
 
 import Language.Haskell.TH ( Name )
 
@@ -61,6 +62,10 @@ declareCanonicalUnit "Kelvin"  [t| Temperature |]                    (Just "K")
 declareCanonicalUnit "Mole"    [t| AmountOfSubstance |]              (Just "mol")
 declareCanonicalUnit "Candela" [t| LuminousIntensity |]              (Just "cd")
 
+-- | The two angular dimensions that must be fundamental dimensions.
+declareCanonicalUnit "Radian"     [t| PlaneAngle |]                  (Just "rad")
+declareCanonicalUnit "Steradian"  [t| SolidAngle |]                  (Just "sr")
+
 declareDerivedUnit "Hertz"     [t| Number :/ Second |]          1    (Just "Hz")
 
 -- | This is not in the SI standard, but is used widely.
@@ -90,6 +95,14 @@ declareDerivedUnit "Gray"      [t| (Meter :^ Two) :/ (Second :^ Two) |] 1     (J
 declareDerivedUnit "Sievert"   [t| (Meter :^ Two) :/ (Second :^ Two) |] 1     (Just "Sv")
 declareDerivedUnit "Katal"     [t| Mole :/ Second |]                    1     (Just "kat")
 
+-- Non-SI units accepted for use with SI 
+-- (https://en.wikipedia.org/wiki/International_System_of_Units#Non-SI_units_accepted_for_use_with_SI)
+declareDerivedUnit "Degree"       [t| Radian |]       (piR / 180)           (Just "deg")
+-- This should be printed as /'/ but Text.Parse.Units.mkSymbolTable says that's illegal.
+declareDerivedUnit "Arcminute"    [t| Degree |]       (1 / 60)              (Just "arcminute")
+-- This should be printed as /"/ but Text.Parse.Units.mkSymbolTable says that's illegal.
+declareDerivedUnit "Arcsecond"    [t| Arcminute |]    (1 / 60)              (Just "arcsecond")
+
 -- | Derived SI unit
 declareDerivedUnit "Hectare"   [t| Meter :^ Two |]                      10000 (Just "ha")
 
@@ -107,6 +120,7 @@ siUnits =
   [ ''Meter, ''Gram, ''Second, ''Minute, ''Hour, ''Ampere
   , ''Kelvin, ''Mole, ''Candela, ''Hertz, ''Liter, ''Newton, ''Pascal
   , ''Joule, ''Watt, ''Coulomb, ''Volt, ''Farad, ''Ohm, ''Siemens
-  , ''Weber, ''Tesla, ''Henry, ''Lumen, ''Lux, ''Becquerel, ''Gray
-  , ''Sievert, ''Katal, ''Hectare, ''Ton
+  , ''Weber, ''Tesla, ''Henry, ''Lumen, ''Radian, ''Lux, ''Becquerel, ''Gray
+  , ''Sievert, ''Katal, ''Degree, ''Arcminute
+  , ''Arcsecond,''Hectare, ''Ton
   ]
