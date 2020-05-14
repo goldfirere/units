@@ -1,11 +1,11 @@
 name:           units-defs
-version:        2.1.0.1
+version:        2.2
 cabal-version:  >= 1.10
 synopsis:       Definitions for use with the units package
 homepage:       http://github.com/goldfirere/units-defs
 category:       Physics
-author:         Richard Eisenberg <rae@cs.brynmawr.edu>, Takayuki Muranushi <muranushi@gmail.com>
-maintainer:     Richard Eisenberg <rae@cs.brynmawr.edu>, Takayuki Muranushi <muranushi@gmail.com>
+author:         Richard Eisenberg <rae@richarde.dev>, Takayuki Muranushi <muranushi@gmail.com>
+maintainer:     Richard Eisenberg <rae@richarde.dev>, Takayuki Muranushi <muranushi@gmail.com>
 bug-reports:    https://github.com/goldfirere/units-defs/issues
 stability:      experimental
 extra-source-files: README.md, CHANGES.md
@@ -22,7 +22,7 @@ description:
 source-repository this
   type:     git
   location: https://github.com/goldfirere/units-defs.git
-  tag:      v2.1.0.1
+  tag:      v2.2
 
 library
   build-depends:      

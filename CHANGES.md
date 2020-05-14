@@ -1,3 +1,9 @@
+Version 2.2
+-----------
+
+* Add support for new PlaneAngle and SolidAngle dimensions, thanks
+to @gittywithexcitement.
+
 Version 2.1.0.1
 ---------------
 
