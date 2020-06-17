@@ -14,6 +14,9 @@
 #if __GLASGOW_HASKELL__ >= 800
 {-# LANGUAGE TypeApplications #-}
 #endif
+#if __GLASGOW_HASKELL__ >= 810
+{-# LANGUAGE StandaloneKindSignatures #-}
+#endif
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 
 -----------------------------------------------------------------------------
