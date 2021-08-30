@@ -1,0 +1,58 @@
+name:           units-defs
+version:        2.2
+cabal-version:  >= 1.10
+synopsis:       Definitions for use with the units package
+homepage:       http://github.com/goldfirere/units-defs
+category:       Physics
+author:         Richard Eisenberg <rae@richarde.dev>, Takayuki Muranushi <muranushi@gmail.com>
+maintainer:     Richard Eisenberg <rae@richarde.dev>, Takayuki Muranushi <muranushi@gmail.com>
+bug-reports:    https://github.com/goldfirere/units-defs/issues
+stability:      experimental
+extra-source-files: README.md, CHANGES.md
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+description:
+    This package provides system definitions for use with the separate
+    @units@ package. See the individual modules for details.
+
+    User contributions to this package are strongly encouraged. Please
+    submit pull requests!
+
+source-repository this
+  type:     git
+  location: https://github.com/goldfirere/units-defs.git
+  tag:      v2.2
+
+library
+  build-depends:      
+      base >= 4.8 && < 5,
+      units >= 2.2 && < 3,
+      template-haskell
+  exposed-modules:
+    Data.Constants.Mechanics
+    Data.Constants.Math
+    Data.Dimensions.SI
+    Data.Metrology.SI
+    Data.Metrology.SI.Mono
+    Data.Metrology.SI.Poly
+    Data.Metrology.SI.MonoTypes
+    Data.Metrology.SI.PolyTypes
+    Data.Units.SI
+    Data.Units.SI.Prefixes
+    Data.Units.SI.Parser
+    Data.Units.CGS
+    Data.Units.US
+    Data.Units.US.Apothecaries
+    Data.Units.US.Avoirdupois
+    Data.Units.US.DryVolume
+    Data.Units.US.Liquid
+    Data.Units.US.Misc
+    Data.Units.US.Survey
+    Data.Units.US.Troy
+    Data.Units.PreciousMetals
+    Data.Units.Astronomical
+
+  default-language:   Haskell2010
+  other-extensions:   TemplateHaskell
+  ghc-options:        -Wall
