@@ -1,0 +1,109 @@
+name:           units-test
+version:        0.0
+cabal-version:  >= 1.10
+synopsis:       Testing the *units* package
+homepage:       https://github.com/goldfirere/units
+category:       Math
+author:         Richard Eisenberg <rae@richarde.dev>
+maintainer:     Richard Eisenberg <rae@richarde.dev>
+bug-reports:    https://github.com/goldfirere/units/issues
+stability:      experimental
+extra-source-files: README.md
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+Tested-With: GHC == 7.8.4, GHC == 7.10.2, GHC == 7.10.3, GHC == 8.0.1, GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.1, GHC == 8.6.3, GHC == 8.8.1, GHC == 8.10.4, GHC == 9.0.1
+description:
+
+  This package is intended only to test the @units@ package. Many
+  tests require also the @units-defs@ package, and so this testsuite
+  cannot be part of @units@ itself, as that would require cyclic dependencies.
+
+  Do not install this package.
+
+source-repository head
+  type:     git
+  location: https://github.com/goldfirere/units.git
+
+test-suite main
+  type:             exitcode-stdio-1.0
+  main-is:          Tests/Main.hs
+  default-language: Haskell2010
+
+  if impl(ghc >= 9.0)
+    build-depends:    units
+                    , units-defs
+                    , base >= 4.7 && < 5
+                    , th-desugar >= 1.5.4
+                    , singletons >= 0.9 && < 4
+                    , singletons-th == 3.*
+                    , singletons-base == 3.*
+                    , vector-space >= 0.8
+                    , linear >= 1.16.2
+                    , tasty >= 0.8
+                    , tasty-hunit >= 0.8
+                    , HUnit-approx >= 1.0
+                    , template-haskell
+                    , mtl >= 1.1
+                    , multimap >= 1.2
+                    , syb >= 0.3
+                    , containers >= 0.4
+                    , units-parser >= 0.1 && < 1.0
+                    , lens >= 4 && < 6
+                    , deepseq >= 1.1.0.0 && < 1.5
+  else
+    build-depends:    units
+                    , units-defs
+                    , base >= 4.7 && < 5
+                    , th-desugar >= 1.5.4
+                    , singletons >= 0.9 && < 4
+                    , vector-space >= 0.8
+                    , linear >= 1.16.2
+                    , tasty >= 0.8
+                    , tasty-hunit >= 0.8
+                    , HUnit-approx >= 1.0
+                    , template-haskell
+                    , mtl >= 1.1
+                    , multimap >= 1.2
+                    , syb >= 0.3
+                    , containers >= 0.4
+                    , units-parser >= 0.1 && < 1.0
+                    , lens >= 4 && < 6
+                    , deepseq >= 1.1.0.0 && < 1.5
+
+    -- optimize compile time, not runtime!
+  ghc-options:        -O0 -Wall
+  if impl(ghc >= 7.10)
+    ghc-options: -fno-warn-unticked-promoted-constructors
+  if impl(ghc >= 8.0)
+    ghc-options: -Wno-missing-signatures -Wno-redundant-constraints -Wno-name-shadowing -Wno-missing-pattern-synonym-signatures
+
+    -- GHC 7.10 requires this in more places, and I don't feel like ferreting out exactly
+    -- where.
+  default-extensions: FlexibleContexts
+
+  other-modules:
+        Tests.Compile.CGS
+        Tests.Compile.EvalType
+        Tests.Compile.Lcsu
+        Tests.Compile.MetrologySynonyms
+        Tests.Compile.NoVector
+        Tests.Compile.Physics
+        Tests.Compile.Quantity
+        Tests.Compile.Readme
+        Tests.Compile.Simulator
+        Tests.Compile.T23
+        Tests.Compile.TH
+        Tests.Compile.UnitParser
+        Tests.Compile.UnitParser.Quoters
+        Tests.Compile.Units
+        Tests.Imperial
+        Tests.LennardJones
+        Tests.Linearity
+        Tests.OffSystemAdd
+        Tests.OffSystemCSU
+        Tests.PhysicalConstants
+        Tests.Show
+        Tests.Travel
+        Tests.Vector
+
