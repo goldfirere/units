@@ -1,3 +1,8 @@
+Version 2.2.1
+-------------
+* Actually export Imperial units, along with bugfixes (thanks to @Bebere).
+* Export Eurocard units (thanks to @mlang).
+
 Version 2.2
 -----------
 
