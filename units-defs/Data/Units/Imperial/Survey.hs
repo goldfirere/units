@@ -1,3 +1,5 @@
+{-# LANGUAGE TemplateHaskell, TypeFamilies, TypeOperators #-}
+
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.Units.Imperial.Survey
@@ -24,8 +26,8 @@ import Data.Units.Imperial.Length
 
 import Language.Haskell.TH
 
-declareDerivedUnit "Link" [t| Rod   |] 0.04 (Just "li")
 declareDerivedUnit "Rod"  [t| Chain |] 0.25 (Just "rd")
+declareDerivedUnit "Link" [t| Rod   |] 0.04 (Just "li")
 
 -- | Survey lengths: All units above
 surveyLengths :: [Name]

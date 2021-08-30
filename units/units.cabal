@@ -67,7 +67,8 @@ library
   else
     build-depends: base >= 4.7 && < 5
                  , th-desugar >= 1.5.4
-                 , singletons >= 0.9 && < 4
+                 , singletons >= 0.9 && < 3  
+                       -- keep it < 3 to avoid the need for singletons-th and -base
                  , vector-space >= 0.8
                  , linear >= 1.16.2
                  , template-haskell

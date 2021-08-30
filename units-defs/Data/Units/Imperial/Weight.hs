@@ -1,3 +1,5 @@
+{-# LANGUAGE TemplateHaskell, TypeFamilies, TypeOperators #-}
+
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.Units.Imperial.Weight
@@ -21,22 +23,27 @@
 -- Where possible, reference have been made to UK legislation. However,
 -- Wikipedia's page is /much/ better organized than any government
 -- resource immediately available.
+--
+-- The UK legislation used as references are as follows:
+-- <http://www.legislation.gov.uk/ukpga/1985/72/enacted>
+-- <http://www.legislation.gov.uk/uksi/1994/2867/schedule/part/VI/made>
+-- <http://www.legislation.gov.uk/uksi/1995/1804/schedule/made>
 -----------------------------------------------------------------------------
 
 module Data.Units.Imperial.Weight where
 
 import Data.Metrology.TH
 
-import Data.Units.SI ( Gramme )
-import qualified Data.Units.US.Avoirdupoids as Avdp
+import qualified Data.Units.SI as SI
+import qualified Data.Units.US.Avoirdupois as Avdp
 
 import Language.Haskell.TH
 
 declareDerivedUnit "Pound"         [t| Avdp.Pound    |] 1          (Just "lb")
 declareDerivedUnit "Grain"         [t| Avdp.Grain    |] 1          (Just "gr")
-declareDerivedUnit "Drachm"        [t| Avdp.Drachm   |] 1          (Just "dr")
+declareDerivedUnit "Dram"          [t| Avdp.Dram     |] 1          (Just "dr")
 declareDerivedUnit "Ounce"         [t| Avdp.Ounce    |] 1          (Just "oz")
-declareDerivedUnit "TroyOunce"     [t| Gramme        |] 31.1034768 (Just "t oz")
+declareDerivedUnit "TroyOunce"     [t| SI.Gramme     |] 31.1034768 (Just "t oz")
 declareDerivedUnit "Stone"         [t| Pound         |] 14         (Just "st")
 declareDerivedUnit "Quarter"       [t| Stone         |] 2          (Just "qr")
 declareDerivedUnit "Cental"        [t| Pound         |] 100        (Just "cental")

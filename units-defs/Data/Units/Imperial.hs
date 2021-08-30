@@ -12,7 +12,7 @@
 -- Imperial system and the US customary one are that because the
 -- USA declared their independence from the UK in 1776, the US
 -- customary system is based on the previous Winchester Standards, and
--- that the Imperial systems uses the same units for dry and fluid
+-- that the Imperial system uses the same units for dry and fluid
 -- measures. This module gathers together a subjective set of units of
 -- general use appearing <https://en.wikipedia.org/wiki/Imperial_units
 -- here>, submodules will gather measures of more limited use. It also
@@ -23,8 +23,11 @@
 -- Where possible, reference have been made to UK legislation. However,
 -- Wikipedia's page is /much/ better organized than any government
 -- resource immediately available.
--- The UK legislation used as reference is as follows:
--- <http://www.legislation.gov.uk/uksi/1995/1804/made>
+--
+-- The UK legislation used as references are as follows:
+-- <http://www.legislation.gov.uk/ukpga/1985/72/enacted>
+-- <http://www.legislation.gov.uk/uksi/1994/2867/schedule/part/VI/made>
+-- <http://www.legislation.gov.uk/uksi/1995/1804/schedule/made>
 -----------------------------------------------------------------------------
 
 module Data.Units.Imperial (
@@ -62,3 +65,4 @@ import Data.Units.Imperial.Nautical
 import Data.Units.Imperial.Weight
 import Data.Units.Imperial.Volume
 import Data.Units.Imperial.Area
+import Data.Units.Imperial.Length

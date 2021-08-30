@@ -1,3 +1,5 @@
+{-# LANGUAGE TemplateHaskell, TypeFamilies, TypeOperators #-}
+
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  Data.Units.Imperial.Length
@@ -18,6 +20,11 @@
 -- Where possible, reference have been made to UK legislation. However,
 -- Wikipedia's page is /much/ better organized than any government
 -- resource immediately available.
+--
+-- The UK legislation used as references are as follows:
+-- <http://www.legislation.gov.uk/ukpga/1985/72/enacted>
+-- <http://www.legislation.gov.uk/uksi/1994/2867/schedule/part/VI/made>
+-- <http://www.legislation.gov.uk/uksi/1995/1804/schedule/made>
 -----------------------------------------------------------------------------
 
 module Data.Units.Imperial.Length where
@@ -37,7 +44,7 @@ declareDerivedUnit "Furlong" [t| Chain   |] 10 (Just "fur")
 declareDerivedUnit "Mile"    [t| US.Mile |] 1  (Just "mi")
 declareDerivedUnit "League"  [t| Mile    |] 3  (Just "lea")
 
-declareDerivedUnit "Hand" [t| Inch |] 4 (Just "th")
+declareDerivedUnit "Hand" [t| Inch |] 4 (Just "hand")
 
 -- | Common lengths units: 'Foot', 'Inch', 'Yard', and 'Mile'
 commonLengths :: [Name]
