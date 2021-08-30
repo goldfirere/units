@@ -1,4 +1,4 @@
-{-# LANGUAGE TypeFamilies, TypeOperators, PatternSynonyms, TemplateHaskell #-}
+{-# LANGUAGE TypeFamilies, TypeOperators, PatternSynonyms, TemplateHaskell, CPP #-}
 
 -----------------------------------------------------------------------------
 -- |
@@ -39,14 +39,18 @@ declareCanonicalUnit "Meter"   [t| Length |]                         (Just "m")
 
 type Metre = Meter
 
+#if __GLASGOW_HASKELL >= 710
 pattern Metre :: Metre
+#endif
 pattern Metre = Meter
 
 declareCanonicalUnit "Gram"    [t| Mass |]                           (Just "g")
 
 type Gramme = Gram
 
+#if __GLASGOW_HASKELL__ >= 710
 pattern Gramme :: Gramme
+#endif
 pattern Gramme = Gram
 
 declareCanonicalUnit "Second"  [t| Time |]                           (Just "s")
@@ -73,7 +77,9 @@ declareDerivedUnit "Liter"     [t| (Centi :@ Meter) :^ Three |] 1000 (Just "L")
 
 type Litre = Liter
 
+#if __GLASGOW_HASKELL__ >= 710
 pattern Litre :: Litre
+#endif
 pattern Litre = Liter
 
 declareDerivedUnit "Newton"    [t| Gram :* Meter :/ (Second :^ Two) |]  1000  (Just "N")
@@ -95,7 +101,7 @@ declareDerivedUnit "Gray"      [t| (Meter :^ Two) :/ (Second :^ Two) |] 1     (J
 declareDerivedUnit "Sievert"   [t| (Meter :^ Two) :/ (Second :^ Two) |] 1     (Just "Sv")
 declareDerivedUnit "Katal"     [t| Mole :/ Second |]                    1     (Just "kat")
 
--- Non-SI units accepted for use with SI 
+-- Non-SI units accepted for use with SI
 -- (https://en.wikipedia.org/wiki/International_System_of_Units#Non-SI_units_accepted_for_use_with_SI)
 declareDerivedUnit "Degree"       [t| Radian |]       (piR / 180)           (Just "deg")
 -- This should be printed as /'/ but Text.Parse.Units.mkSymbolTable says that's illegal.
@@ -110,7 +116,9 @@ declareDerivedUnit "Hectare"   [t| Meter :^ Two |]                      10000 (J
 declareDerivedUnit "Ton"       [t| Kilo :@ Gram |]                      1000  (Just "t")
 
 type Tonne = Ton
+#if __GLASGOW_HASKELL__ >= 710
 pattern Tonne :: Tonne
+#endif
 pattern Tonne = Ton
 
 -- | A list of the names of all unit types. Useful with

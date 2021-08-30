@@ -1,5 +1,5 @@
 {-# LANGUAGE PatternSynonyms, TemplateHaskell, TypeOperators,
-             TypeFamilies #-}
+             TypeFamilies, CPP #-}
 
 -----------------------------------------------------------------------------
 -- |
@@ -33,12 +33,16 @@ import Data.Metrology.TH
 
 type Centimeter = Centi :@ Meter
 
+#if __GLASGOW_HASKELL__ >= 710
 pattern Centimeter :: Centimeter
+#endif
 pattern Centimeter = Centi :@ Meter
 
 type Centimetre = Centimeter
 
+#if __GLASGOW_HASKELL__ >= 710
 pattern Centimetre :: Centimetre
+#endif
 pattern Centimetre = Centimeter
 
 declareDerivedUnit "Gal"
