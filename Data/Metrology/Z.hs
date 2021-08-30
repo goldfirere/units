@@ -10,7 +10,8 @@
 
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances,
              GADTs, PolyKinds, TemplateHaskell, ScopedTypeVariables,
-             EmptyCase, CPP, TypeSynonymInstances, FlexibleInstances #-}
+             EmptyCase, CPP, TypeSynonymInstances, FlexibleInstances,
+             InstanceSigs #-}
 #if __GLASGOW_HASKELL__ >= 800
 {-# LANGUAGE TypeApplications #-}
 #endif
@@ -75,6 +76,9 @@ module Data.Metrology.Z (
   ) where
 
 import Data.Singletons.TH
+#if MIN_VERSION_singletons(3,0,0)
+import Data.Singletons.Base.TH hiding ( Negate, sNegate, NegateSym0, NegateSym1 )
+#endif
 import GHC.Exts ( Constraint )
 
 -- | The datatype for type-level integers.

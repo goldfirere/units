@@ -16,6 +16,10 @@
 {-# LANGUAGE UndecidableSuperClasses #-}
 #endif
 
+#if __GLASGOW_HASKELL__ >= 900
+{-# OPTIONS_GHC -Wno-star-is-type #-}
+#endif
+
 module Data.Metrology.Units where
 
 import Data.Metrology.Z

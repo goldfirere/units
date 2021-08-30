@@ -9,7 +9,16 @@
    Factors represents dimensions and units raised to a power of integers, and the lists of Factors represents monomials of dimensions and units.
 -}
 
-{-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances #-}
+{-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances, CPP #-}
+
+-- allow compilation even without Cabal
+#ifndef MIN_VERSION_singletons
+#define MIN_VERSION_singletons(a,b,c) 1
+#endif
+
+#if __GLASGOW_HASKELL__ >= 900
+{-# OPTIONS_GHC -Wno-star-is-type #-}
+#endif
 
 module Data.Metrology.Factor where
 
@@ -18,7 +27,11 @@ import Data.Metrology.Z as Z
 import Data.Type.Equality as DTE
 import Data.Type.Bool
 
+#if MIN_VERSION_singletons(3,0,0)
+import Prelude.Singletons
+#else
 import Data.Singletons.Prelude
+#endif
 
 -- | This will only be used at the kind level. It holds a dimension or unit
 -- with its exponent.

@@ -8,7 +8,11 @@
 -}
 
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, PolyKinds,
-             UndecidableInstances #-}
+             UndecidableInstances, CPP #-}
+
+#if __GLASGOW_HASKELL__ >= 900
+{-# OPTIONS_GHC -Wno-star-is-type #-}
+#endif
 
 module Data.Metrology.Validity where
 

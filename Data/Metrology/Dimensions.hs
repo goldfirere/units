@@ -10,7 +10,11 @@
 
 {-# LANGUAGE TypeFamilies, DataKinds, DefaultSignatures, MultiParamTypeClasses,
              ConstraintKinds, UndecidableInstances, FlexibleContexts,
-             FlexibleInstances, ScopedTypeVariables, TypeOperators #-}
+             FlexibleInstances, ScopedTypeVariables, TypeOperators, CPP #-}
+
+#if __GLASGOW_HASKELL__ >= 900
+{-# OPTIONS_GHC -Wno-star-is-type #-}
+#endif
 
 module Data.Metrology.Dimensions where
 

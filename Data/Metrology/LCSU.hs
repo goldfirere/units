@@ -10,7 +10,12 @@
    defining a uniquely mapping units for any dimensions.
 -}
 
-{-# LANGUAGE DataKinds, PolyKinds, TypeFamilies, TypeOperators, UndecidableInstances #-}
+{-# LANGUAGE DataKinds, PolyKinds, TypeFamilies, TypeOperators, UndecidableInstances,
+             CPP #-}
+
+#if __GLASGOW_HASKELL__ >= 900
+{-# OPTIONS_GHC -Wno-star-is-type #-}
+#endif
 
 module Data.Metrology.LCSU (
   LCSU(DefaultLCSU), DefaultUnitOfDim,

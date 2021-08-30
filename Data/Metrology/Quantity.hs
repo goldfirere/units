@@ -11,7 +11,11 @@
 -- quantities and types from other libraries.
 ------------------------------------------------------------------------------
 
-{-# LANGUAGE DataKinds, TypeFamilies, ConstraintKinds, UndecidableInstances #-}
+{-# LANGUAGE DataKinds, TypeFamilies, ConstraintKinds, UndecidableInstances, CPP #-}
+
+#if __GLASGOW_HASKELL__ >= 900
+{-# OPTIONS_GHC -Wno-star-is-type #-}
+#endif
 
 module Data.Metrology.Quantity where
 

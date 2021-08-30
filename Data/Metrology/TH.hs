@@ -187,7 +187,8 @@ declareMonoUnit unit_name_str m_abbrev = do
 --
 -- yields
 --
--- > gravity_g :: ( Fractional n
+-- > gravity_g :: forall lcsu n.
+-- >              ( Fractional n
 -- >              , CompatibleUnit lcsu (Meter :/ Second :^ Two) )
 -- >           => MkQu_ULN (Meter :/ Second :^ Two) lcsu n
 -- > gravity_g = 9.80665 % (undefined :: Meter :/ Second :^ Two)
@@ -199,7 +200,12 @@ declareConstant name value q_unit_type = do
   let lcsu = VarT lcsu_name
       n    = VarT n_name
       const_name = mkName name
-      const_type = ForallT [PlainTV lcsu_name, PlainTV n_name]
+      const_type =
+#if __GLASGOW_HASKELL__ >= 900
+                   ForallT [PlainTV lcsu_name SpecifiedSpec, PlainTV n_name SpecifiedSpec]
+#else
+                   ForallT [PlainTV lcsu_name, PlainTV n_name]
+#endif
                            [ mkClassP ''Fractional [n]
                            , mkClassP ''CompatibleUnit [lcsu, unit_type] ] $
                    ConT ''MkQu_ULN `AppT` unit_type `AppT` lcsu `AppT` n

@@ -6,6 +6,10 @@
 {-# LANGUAGE OverlappingInstances #-}
 #endif
 
+#if __GLASGOW_HASKELL__ >= 900
+{-# OPTIONS_GHC -Wno-star-is-type #-}
+#endif
+
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -----------------------------------------------------------------------------

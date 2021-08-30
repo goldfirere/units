@@ -19,6 +19,10 @@
 {-# OPTIONS_GHC -Wno-redundant-constraints #-}
 #endif
 
+#if __GLASGOW_HASKELL__ >= 900
+{-# OPTIONS_GHC -Wno-star-is-type #-}
+#endif
+
 module Data.Metrology.Qu where
 
 import Data.Metrology.Dimensions
