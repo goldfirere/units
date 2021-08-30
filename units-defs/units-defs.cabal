@@ -52,6 +52,7 @@ library
     Data.Units.US.Survey
     Data.Units.US.Troy
     Data.Units.PreciousMetals
+    Data.Units.Eurocard
     Data.Units.Imperial
     Data.Units.Imperial.Area
     Data.Units.Imperial.Length
