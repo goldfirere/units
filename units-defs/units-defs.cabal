@@ -20,9 +20,9 @@ description:
     User contributions to this package are strongly encouraged. Please
     submit pull requests!
 
-source-repository this
+source-repository head
   type:     git
-  location: https://github.com/goldfirere/units-defs.git
+  location: https://github.com/goldfirere/units.git
   tag:      v2.2
 
 library
