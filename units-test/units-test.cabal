@@ -107,4 +107,5 @@ test-suite main
         Tests.Show
         Tests.Travel
         Tests.Vector
+        Tests.T69
 

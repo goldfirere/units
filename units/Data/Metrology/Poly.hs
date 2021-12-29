@@ -221,7 +221,7 @@ infixl 6 |+|
 infixl 6 |-|
 -- | Subtract two compatible quantities
 (|-|) :: (d1 @~ d2, Num n) => Qu d1 l n -> Qu d2 l n -> Qu d1 l n
-a |-| b = a |+| qNegate b
+(Qu a) |-| (Qu b) = Qu (a - b)
 
 -- | Take the sum of a list of quantities
 qSum :: (Foldable f, Num n) => f (Qu d l n) -> Qu d l n

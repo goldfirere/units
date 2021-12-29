@@ -36,6 +36,8 @@ import qualified Tests.Show
 import qualified Tests.Travel
 import qualified Tests.Vector
 
+import qualified Tests.T69
+
 import Test.Tasty
 
 main :: IO ()
@@ -54,4 +56,5 @@ tests =
   , Tests.Show.tests
   , Tests.Travel.tests
   , Tests.Vector.tests
+  , Tests.T69.tests
   ]
