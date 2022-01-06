@@ -12,7 +12,7 @@ extra-source-files: README.md, CHANGES.md
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
-Tested-With: GHC == 7.8.4, GHC == 7.10.2, GHC == 7.10.3, GHC == 8.0.1, GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.1, GHC == 8.6.3, GHC == 8.8.1, GHC == 8.10.4, GHC == 9.0.1
+Tested-With: GHC == 7.8.4, GHC == 7.10.2, GHC == 7.10.3, GHC == 8.0.1, GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.1, GHC == 8.6.3, GHC == 8.8.1, GHC == 8.10.4, GHC == 9.0.1, GHC == 9.2.1
 description:
     This package provides system definitions for use with the separate
     @units@ package. See the individual modules for details.
@@ -25,7 +25,7 @@ source-repository head
   location: https://github.com/goldfirere/units.git
 
 library
-  build-depends:      
+  build-depends:
       base >= 4.7 && < 5,
       units >= 2.2 && < 3,
       template-haskell

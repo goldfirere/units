@@ -11,7 +11,7 @@
 {-# LANGUAGE TypeFamilies, DataKinds, TypeOperators, UndecidableInstances,
              GADTs, PolyKinds, TemplateHaskell, ScopedTypeVariables,
              EmptyCase, CPP, TypeSynonymInstances, FlexibleInstances,
-             InstanceSigs #-}
+             InstanceSigs, FlexibleContexts #-}
 #if __GLASGOW_HASKELL__ >= 800
 {-# LANGUAGE TypeApplications #-}
 #endif

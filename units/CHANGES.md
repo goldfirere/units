@@ -1,6 +1,12 @@
 Release notes for `units`
 =========================
 
+Version 2.4.1.4
+---------------
+* Use the `(-)` operator of the underlying `Num` instance in `(|-|)`.
+  This prevents crashes when the underlying number type does not support
+  negation. (Issue #69)
+
 Version 2.4.1.3
 ---------------
 * Compatibility with GHC 8.10, thanks to @ocharles.
