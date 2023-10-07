@@ -25,6 +25,9 @@ force1 = 10 % Joule
 force2 = fromQuantity force1
 force3 = toQuantity force1
 
+ratio :: Double
+ratio = extract $ len2 |/| len3
+
 newtype MyTime = MyTime { getTime :: Double }   -- measured in seconds
 
 instance Quantity MyTime where
