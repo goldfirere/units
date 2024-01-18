@@ -63,7 +63,7 @@ library
                  , containers >= 0.4
                  , units-parser >= 0.1 && < 1.0
                  , lens >= 4 && < 6
-                 , deepseq >= 1.1.0.0 && < 1.5
+                 , deepseq >= 1.1.0.0 && < 1.6
   else
     build-depends: base >= 4.7 && < 5
                  , th-desugar >= 1.5.4
@@ -78,7 +78,7 @@ library
                  , containers >= 0.4
                  , units-parser >= 0.1 && < 1.0
                  , lens >= 4 && < 6
-                 , deepseq >= 1.1.0.0 && < 1.5
+                 , deepseq >= 1.1.0.0 && < 1.6
   exposed-modules:
     Data.Metrology,
     Data.Metrology.Internal,

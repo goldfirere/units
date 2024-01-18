@@ -50,7 +50,7 @@ test-suite main
                     , containers >= 0.4
                     , units-parser >= 0.1 && < 1.0
                     , lens >= 4 && < 6
-                    , deepseq >= 1.1.0.0 && < 1.5
+                    , deepseq >= 1.1.0.0 && < 1.6
   else
     build-depends:    units
                     , units-defs
@@ -70,7 +70,7 @@ test-suite main
                     , containers >= 0.4
                     , units-parser >= 0.1 && < 1.0
                     , lens >= 4 && < 6
-                    , deepseq >= 1.1.0.0 && < 1.5
+                    , deepseq >= 1.1.0.0 && < 1.6
                     , nats >= 0.1
                        -- only really for GHC 7.8, before base had Numeric.Natural
                        -- but we depend on this indirectly, so adding it here is free
