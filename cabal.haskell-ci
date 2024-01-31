@@ -1,0 +1,2 @@
+-- Work around https://github.com/haskell/haddock/issues/574
+haddock: <8.0 || >=8.4
