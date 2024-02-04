@@ -1,2 +1,6 @@
 -- Work around https://github.com/haskell/haddock/issues/574
 haddock: <8.0 || >=8.4
+
+raw-project
+  if !impl(ghc >= 8.0)
+    constraints: safe < 0.3.18
