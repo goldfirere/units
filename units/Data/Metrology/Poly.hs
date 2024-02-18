@@ -80,7 +80,7 @@ module Data.Metrology.Poly (
   Canonical,
 
   -- * Numbers, the only built-in unit
-  Dimensionless(..), Number(..), Count, quantity,
+  Dimensionless(..), Number(..), Count, quantity, extract,
 
   -- * LCSUs (locally coherent system of units)
   MkLCSU, LCSU(DefaultLCSU), DefaultUnitOfDim,
