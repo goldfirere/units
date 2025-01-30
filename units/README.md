@@ -25,16 +25,16 @@ used. For example, the gravitational force between two bodies is
 2)^2`, regardless of whether the distance is given in meters or feet
 or centimeters. In other words, every law of nature is unit-polymorphic.
 
-The _units_ package supports unit-polymorphic programs through the coherent
-system of units (CSU) mechanism. A CSU is essentially a mapping from
+The _units_ package supports unit-polymorphic programs through the locally coherent
+system of units (LCSU) mechanism. An LCSU is essentially a mapping from
 dimensions to the units. All dimensioned quantities (generally just called
 quantities) are expressed using the `Qu` type. The `Qu` type constructor takes
 a (perhaps compound) dimension, a CSU and a numerical value type as arguments.
 Internally, the quantity is stored as a number in the units as specified in
-the CSU -- this may matter if you are worried about rounding errors. In the
-sequence of computations that works within one CSU, there is no unit
+the LCSU -- this may matter if you are worried about rounding errors. In the
+sequence of computations that works within one LCSU, there is no unit
 conversion. Unit conversions are needed only when putting values in and out of
-quantities, or converting between two different CSUs.
+quantities, or converting between two different LCSUs.
 
 Checking out units
 ------------------
@@ -192,7 +192,7 @@ To perform computations with _units_, we must define a so-called _local coherent
 set of units_, or LCSU. This is a mapping from dimensions to units, and it informs
 exactly how the quantities are stored. For example:
 
-    type LCSU = MkLCSU '[(LengthDim, Meter), (TimeDim, Second)]
+    type MyLCSU = MkLCSU '[(LengthDim, Meter), (TimeDim, Second)]
 
 This definition says that we wish to store lengths in meters and times in seconds.
 Note that, even though `Meter` is defined as the `Canonical` length, we could have
@@ -205,12 +205,12 @@ Value types
 To use all these pieces to build the actual type that will store quantities, we
 use one of the `MkQu_xxx` type synonyms, as follows:
 
-    type Length = MkQu_DLN LengthDim LCSU Double
+    type Length = MkQu_DLN LengthDim MyLCSU Double
       -- Length stores lengths in our defined LCSU, using `Double` as the numerical type
-    type Length' = MkQu_ULN Foot LCSU Double
+    type Length' = MkQu_ULN Foot MyLCSU Double
       -- same as Length. Note the `U` in `MkQu_ULN`, allowing it to take a unit
 
-    type Time = MkQu_DLN TimeDim LCSU Double
+    type Time = MkQu_DLN TimeDim MyLCSU Double
 
 Some computations
 -----------------
