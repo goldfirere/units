@@ -26,7 +26,7 @@ import Data.Metrology.TH
 declareConstant "gravity_g" 9.80665 [t| Meter :/ Second :^ Two |]
 
 -- | Gravitational constant, taken from the
---   <https://pml.nist.gov/cuu/Constants/Table/allascii.txt NIST reference>.
+--   <https://pml.nist.gov/cuu/Constants/Table/allascii.txt NIST table>.
 declareConstant "gravity_G" 6.67430e-11
   [t| (Meter :^ Three) :* ((Kilo :@ Gram) :^ MOne) :* (Second :^ MTwo) |]
   -- Thanks to @hesiod, PR #13
