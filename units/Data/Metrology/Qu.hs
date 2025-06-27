@@ -94,6 +94,10 @@ type MkQu_ULN unit = Qu (DimFactorsOf (DimOfUnit unit))
 quantity :: n -> Qu '[] l n
 quantity = Qu
 
+-- | Extract a untless dimensioned quantity.
+extract :: Qu '[] l n -> n
+extract = coerce
+
 ---------------------------------------
 -- Multiplicative operations
 ---------------------------------------
